@@ -22,7 +22,7 @@ A user of Synphony can either listen to other people’s real-time playlist or o
 
 1. Hosts can search & add songs into music studio
 
-<Nice to have> Users can like/collect a song 
+2. <Nice to have> Users can like/collect a song 
 
 #### User
 
