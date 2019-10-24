@@ -47,14 +47,14 @@ A complete list of all functionality (i.e., the actions) of your project, and an
 
 # Todo list
 
-| Module                                   | Priority | Estimate | Sprint | Action                                                       |
+| Module                                   | Priority | Estimate | Sprint | Action                                                       | Assigned to |
 | ---------------------------------------- | -------- | -------- | ------ | ------------------------------------------------------------ |
-| Authorization Related                    | P1       | 3        |        | User signup / login                                          |
-|                                          | P1       | 3        |        | Get sharable links for studios                               |
-|                                          | P1       | 2        |        | Enter a studio using link                                    |
-|                                          | P3       | 5        |        | Host’s position can be switched to one of the participants   |
-| **Hosting A Studio (Host)**              | P1       | 2        | 1      | Create a new studio and input information<studio name, etc.> |
-|                                          | P1       | 3        | 1      | Search songs from search bar                                 |
+| Authorization Related                    | P1       | 3        |        | User signup / login                                          | Jiayue      |
+|                                          | P1       | 3        |        | Get sharable links for studios                               | Jiayue      |
+|                                          | P1       | 2        |        | Enter a studio using link                                    | Jiayue      |
+|                                          | P3       | 5        |        | Host’s position can be switched to one of the participants   | Jiayue      |
+| **Hosting A Studio (Host)**              | P1       | 2        | 1      | Create a new studio and input information<studio name, etc.> | Jiayue      |
+|                                          | P1       | 3        | 1      | Search songs from search bar                                 | Jiayue      |
 |                                          | P1       | 2        | 1      | Add songs to the studio                                      |
 |                                          | P1       | 2        | 1      | Play/stop/pause/skip/change songs                            |
 |                                          | P1       | 2        |        | Close a studio                                               |
