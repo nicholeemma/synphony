@@ -12,7 +12,10 @@ class Music(models.Model):
     description = models.CharField(max_length=255, blank=True)
     lyrics = models.TextField(max_length=255, blank=True) ##
     liked_user = models.ManyToManyField(User,on_delete=models.CASCADE)
-    
+
+# The goal is to record the liked music of a certain user
+# We should implement abstract user, liked_music should be an attribute of it, as we don't know to do that
+# For now, we just extend the user here  
 class Syner(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE) 
     liked_music = models.ManyToManyField(Music,on_delete=models.CASCADE)
