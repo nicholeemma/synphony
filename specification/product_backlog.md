@@ -48,7 +48,7 @@ A complete list of all functionality (i.e., the actions) of your project, and an
 # Todo list
 
 | Module                                   | Priority | Estimate | Sprint | Action                                                       | Assigned to |
-| ---------------------------------------- | -------- | -------- | ------ | ------------------------------------------------------------ |
+| ---------------------------------------- | -------- | -------- | ------ | ------------------------------------------------------------ |  -------- |
 | Authorization Related                    | P1       | 3        |        | User signup / login                                          | Jiayue      |
 |                                          | P1       | 3        |        | Get sharable links for studios                               | Jiayue      |
 |                                          | P1       | 2        |        | Enter a studio using link                                    | Jiayue      |
