@@ -47,12 +47,12 @@ A complete list of all functionality (i.e., the actions) of your project, and an
 
 # Todo list
 
-| Module                                   | Priority | Estimate | Sprint | Action                                                       |
+| Module                                   | Priority | Estimate | Sprint | Action | Assigned to                                                       |
 | ---------------------------------------- | -------- | -------- | ------ | ------------------------------------------------------------ |
-| Authorization Related                    | P1       | 3        |        | User signup / login                                          |
-|                                          | P1       | 3        |        | Get sharable links for studios                               |
-|                                          | P1       | 2        |        | Enter a studio using link                                    |
-|                                          | P3       | 4        |        | Host’s position can be switched to one of the participants   |
+| Authorization Related                    | P1       | 3        |        | User signup / login                                       |
+|                                          | P1       | 3        |        | Get sharable links for studios                             |
+|                                          | P1       | 2        |        | Enter a studio using link                                 |
+|                                          | P3       | 5        |        | Host’s position can be switched to one of the   participants   |
 | **Hosting A Studio (Host)**              | P1       | 2        | 1      | Create a new studio and input information<studio name, etc.> |
 |                                          | P1       | 3        | 1      | Search songs from search bar                                 |
 |                                          | P1       | 2        | 1      | Add songs to the studio                                      |
@@ -61,11 +61,11 @@ A complete list of all functionality (i.e., the actions) of your project, and an
 |                                          | P2       | 2        |        | <Nice to have> shuffle/Loop/Single loop songs                |
 |                                          | P3       | 1        |        | <Nice to have>customise the capacity(max number of participants) of the studio |
 |                                          | P3       | 1        |        | <Nice to have>set the lifetime for a studio (e.g. 2 hours)   |
-| **Participating a Studio (Participant)** | P1       | 5        |        | participate in a studio and listen to music in synchronization |
+| **Participating a Studio (Participant)** | P1       | 8        |        | participate in a studio and listen to music in synchronization |
 | **Studio**                               | P1       | 1        |        | Display list of users in the studio                          |
 |                                          | P1       | 1        |        | Display songs added in the studio                            |
 |                                          | P1       | 3        |        | "like" a song in a studio                                    |
-|                                          | P2       | 4        |        | send real-time comments in studio                            |
+|                                          | P2       | 5        |        | send real-time comments in studio                            |
 |                                          | P3       | 1        |        | <Nice to have> Display lyrics                                |
 | **All Users**                            | P2       | 1        |        | Remove liked songs                                           |
 |                                          | P1       | 1        |        | View studio history (either as host or as participant)       |
