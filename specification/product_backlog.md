@@ -47,12 +47,12 @@ A complete list of all functionality (i.e., the actions) of your project, and an
 
 # Todo list
 
-| Module                                   | Priority | Estimate | Sprint | Action | Assigned to                                                       |
+| Module                                   | Priority | Estimate | Sprint | Action                                                       |
 | ---------------------------------------- | -------- | -------- | ------ | ------------------------------------------------------------ |
-| Authorization Related                    | P1       | 3        |        | User signup / login                                       |
-|                                          | P1       | 3        |        | Get sharable links for studios                             |
-|                                          | P1       | 2        |        | Enter a studio using link                                 |
-|                                          | P3       | 5        |        | Host’s position can be switched to one of the   participants   |
+| Authorization Related                    | P1       | 3        |        | User signup / login                                          |
+|                                          | P1       | 3        |        | Get sharable links for studios                               |
+|                                          | P1       | 2        |        | Enter a studio using link                                    |
+|                                          | P3       | 5        |        | Host’s position can be switched to one of the participants   |
 | **Hosting A Studio (Host)**              | P1       | 2        | 1      | Create a new studio and input information<studio name, etc.> |
 |                                          | P1       | 3        | 1      | Search songs from search bar                                 |
 |                                          | P1       | 2        | 1      | Add songs to the studio                                      |
