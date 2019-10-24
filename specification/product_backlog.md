@@ -55,8 +55,8 @@ A complete list of all functionality (i.e., the actions) of your project, and an
 |                                          | P3       | 5        |        | Host’s position can be switched to one of the participants   | Jiayue      |
 | **Hosting A Studio (Host)**              | P1       | 2        | 1      | Create a new studio and input information<studio name, etc.> | Jiayue      |
 |                                          | P1       | 3        | 1      | Search songs from search bar                                 | Wenjing     |
-|                                          | P1       | 2        | 1      | Add songs to the studio                                      | Wenjing     |
-|                                          | P1       | 2        | 1      | Play/stop/pause/skip/change songs                            | Wenjing     |
+|                                          | P1       | 2        | 1      | Add songs to the studio                                      | Suqi        |
+|                                          | P1       | 2        | 1      | Play/stop/pause/skip/change songs                            | Alan        |
 |                                          | P1       | 2        |        | Close a studio                                               | Wenjing     |
 |                                          | P2       | 2        |        | <Nice to have> shuffle/Loop/Single loop songs                | Alan        |
 |                                          | P3       | 1        |        | <Nice to have>customise the capacity(max number of participants) of the studio |  Alan        |
