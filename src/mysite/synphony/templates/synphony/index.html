@@ -6,11 +6,21 @@
 </head>
 <body>
     Please input song title.<br/>
-<form action=/synphony/ method = "POST">
-    {% csrf_token %}
-    <input id="song-name" type="text" size="100"/><br/>
-    <button id="song-name-submit" name="song-name-submit" type="submit" value="get-list"/>Get
-</form>
+    <form action=/synphony/ method = "POST">
+        {% csrf_token %}
+        <input id="song-name" name="song-name" type="text" size="100" required><br/>
+        <button id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
+    </form>
+
+    <div class="search-box-result-wrapper">
+        {% for song in list %}
+        <li>{{song.name}} , by: {{song.ar}}  <button id="{{song.name}}" name="song-name-add" type="submit" value="{{song.id}}"/>Add</button></li>
+
+        {% endfor %}
+    </div>
+
+
+
 
 <!--
     <script>
