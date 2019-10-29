@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 
 def index(request):
-    if request.method == 'POST' and 'get-list' in request.POST:
+    if request.method == 'POST' and 'song-name-submit' in request.POST:
         return displaySongList(request)
     return render(request, 'synphony/index.html', {})
 
