@@ -5,7 +5,7 @@ import requests
 def index(request):
     if request.method == 'POST' and 'song-name-submit' in request.POST:
         return displaySongList(request)
-    return render(request, 'synphony/index.html', {'list': []})
+    return render(request, 'synphony/index.html')
 
 
 def displaySongList(request):
@@ -30,6 +30,6 @@ def displaySongList(request):
         dic['ar'] = ""
         for j in i['ar']:
             dic['ar'] += j['name'] + "/ "
-        dic['ar'] = dic['ar'][0: -2];# remove last "/ "
+        dic['ar'] = dic['ar'][0: -2];  # remove last "/ "
         list.append(dic)
     return render(request, 'synphony/index.html', {'list': list})
