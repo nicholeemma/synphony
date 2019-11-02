@@ -6,17 +6,24 @@
     <input id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
     <button id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
 </form>
-
+<!-- Below is the search result -->
 <div class="search-box-result-wrapper">
     {% for song in list %}
     <li>{{song.name}}, by: {{song.ar}}  <button id="{{song.name}}" onclick=addSongs(this.value) name="song-name-add" type="submit" value="{{song.id}}"/>Add</button></li>
     {% endfor %}
 </div>
+<!-- Audio -->
 <audio controls autoplay controller class="audio" id="music-bar">
     <source  type="audio/mpeg">
         <source src="" type="audio/mpeg">
           Your browser does not support the audio element.
 </audio>
+
+<!-- Below is the playlist of the studio -->
+<table  class="table table-bordered"  id="myTable">
+<tbody>
+</tbody>
+</table>
 {% endblock main%}
 {% block extrajs %}
   {% load static %}
