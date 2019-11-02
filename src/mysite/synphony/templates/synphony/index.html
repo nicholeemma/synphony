@@ -22,6 +22,17 @@
 <!-- Below is the playlist of the studio -->
 <table  class="table table-bordered"  id="myTable">
 <tbody>
+    <!-- NEED TO CHANGE BY NICOLE -->
+    <tr>
+        <td>${room.room_number}</td>
+            <td>${room.name}</td>
+            <td>${room.nobeds}</td>
+            <td>${room.room_type}</td>
+            <td>
+                <button class="btn deleteBtn" data-id="${room.id}">Delete</button>
+                <button class="btn updateBtn" data-id="${room.id}">Update</button>
+            </td>
+        </tr>
 </tbody>
 </table>
 {% endblock main%}
