@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import requests
+from django.shortcuts import redirect
 
 
 def index(request):
@@ -9,6 +10,7 @@ def index(request):
 
 
 def displaySongList(request):
+    print(request.path)
     title = request.POST.get('song-name')
     # TODO currently, only search songs by title
     # search songs using third-party API of Netease Music

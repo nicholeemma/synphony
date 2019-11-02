@@ -1,7 +1,7 @@
 {% extends 'synphony/base.html' %}
 {% block title %}Studio{% endblock title%}
 {% block main %}
-<form action=/synphony/ method = "POST">
+<form action=/synphony/adgjlsfhk/getSongs/ method = "POST">
     {% csrf_token %}
     <input id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
     <button id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
