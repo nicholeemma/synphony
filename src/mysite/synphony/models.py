@@ -23,17 +23,18 @@ class Syner(models.Model):
     liked_music = models.ManyToManyField(Music)
 
 
-# class Playlist(models.Model):
+class Playlist(models.Model):
 
-#     name = models.CharField(max_length=30)
-#     music = models.ManyToManyField(Music)
-#     created_by = models.ForeignKey(User,on_delete=models.CASCADE)
-#     created_on = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=30)
+    music = models.ManyToManyField(Music)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_on = models.DateTimeField(auto_now_add=True)
 
-# class Like(models.Model):
 
-#     music = models.ForeignKey(Music,on_delete=models.CASCADE)
-#     like_user = models.ForeignKey(User,on_delete=models.CASCADE)
+class Like(models.Model):
+
+    music = models.ForeignKey(Music, on_delete=models.CASCADE)
+    like_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Studio(models.Model):
