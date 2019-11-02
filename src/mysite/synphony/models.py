@@ -40,7 +40,7 @@ class Studio(models.Model):
 
     name = models.CharField(max_length=30)
     # participants = models.ManyToManyField(Participant)
-    music = models.ManyToManyField(Music)
+    # music = models.ManyToManyField(Music) -> dont need since playlist exists
     # record whether the studio is active or not
     status = models.BooleanField(default=True)
     # constraint will be set in form.py cannot be larger than 10
