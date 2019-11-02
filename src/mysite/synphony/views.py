@@ -10,7 +10,6 @@ def index(request):
 
 def displaySongList(request):
     title = request.POST.get('song-name')
-
     # TODO currently, only search songs by title
     # search songs using third-party API of Netease Music
     # use song title to call api
@@ -33,3 +32,20 @@ def displaySongList(request):
         dic['ar'] = dic['ar'][0: -2];  # remove last "/ "
         list.append(dic)
     return render(request, 'synphony/index.html', {'list': list})
+
+
+# display the playlist for an active studio
+def showPlayList(request):
+    pass
+
+# add a song to the playlist for an active studio
+
+
+def addSongsToPlayList(request):
+    pass
+
+# remove a song from the playlist for an active studio
+
+
+def removeSongsFromPlayList(request):
+    pass
