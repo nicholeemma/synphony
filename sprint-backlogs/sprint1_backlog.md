@@ -7,7 +7,15 @@
 | **Hosting A Studio (Host)** | P1       | 2        | 1      | a new studio and input information<studio name, etc.> | Creation Page | Alan        |
 |                             | P1       | 3        | 1      | **Search songs from search bar**                      | Studio Page   | W&N         |
 |                             | P1       | 2        | 1      | **Add songs to the studio**                           | Studio Page   | W&N         |
+|                             | P1       | 2        | 1      | **Play/stop/pause/skip/change songs**                 | Studio Page   | W&N         |
 |                             | P1       | 2        | 1      | Close a studio                                        | Studio Page   | Alan        |
 |                             | P2       | 2        | 1      | <Nice to have> shuffle/Loop/Single loop songs         | Studio Page   | -           |
 | **Studio**                  | P1       | 2        | 1      | "like" a song in a studio                             | Studio Page   | Suqi        |
 
+## 3trd party API for songs
+
+### Netease
+
+https://zhuanlan.zhihu.com/p/30246788
+
+https://api.imjad.cn/cloudmusic.md
