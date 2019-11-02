@@ -17,7 +17,7 @@ class SynerAdmin(admin.ModelAdmin):
 class PlaylistAdmin(admin.ModelAdmin):
     list_display = ("name", "music_", "created_by", "created_on")
     def music_(self, obj):
-        return "\n".join([s.name for s in obj.name.all()])
+        return "\n".join([s.name for s in obj.music.all()])
 
 
 class StudioAdmin(admin.ModelAdmin):
