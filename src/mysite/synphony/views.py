@@ -1,6 +1,9 @@
 from django.shortcuts import render
 import requests
 from django.shortcuts import redirect
+# from django.http import HttpResponse
+from django.http import JsonResponse
+from django.forms.models import model_to_dict
 
 
 def index(request):
@@ -37,14 +40,26 @@ def displaySongList(request):
 
 
 # display the playlist for an active studio
-def showPlayList(request):
+def showStudio(request):
     pass
 
 # add a song to the playlist for an active studio
 
 
-def addSongsToPlayList(request):
-    pass
+def addSongsToStudio(request):
+    music_form = MusicForm(request)
+    rsp = dict()
+    if(music_form.isValid()):
+        music = music_form.save()
+        # get studio hashed token
+        token = request.path.split('/')[-2]  # path = synphony/adgjlsfhk/addSongs
+        studio = Studio.objects.get(link=token)
+        studio.music.add(music)
+        rsp['music'] = model_to_dict(music)
+    else:
+        rsp['error'] = "form not valid!"
+    return JsonResponse(rsp)
+
 
 # remove a song from the playlist for an active studio
 
