@@ -72,12 +72,14 @@ function addSongs(val) {
             </td>
         </tr>`;
  //   });
-    $('#myTable > tbody').append(rows);}
-    // $('.deleteBtn').each((i, elm) => {
-    //     $(elm).on("click",  (e) => {
-    //         deleteSongs($(elm))
-    //     })
-    // })
+    $('#myTable > tbody').append(rows);
+    $('.deleteBtn').each((i, elm) => {
+        $(elm).on("click",  (e) => {
+            deleteSongs ($(elm))
+        })
+    })
+}
+
     });
 }
 
@@ -86,6 +88,23 @@ function Get(yourUrl){
     Httpreq.open("GET",yourUrl,false);
     Httpreq.send(null);
     return Httpreq.responseText;
+}
+
+
+function  deleteSongs(el){
+    console.log('delete song js triggered!');
+    musicId  =  $(el).data('id')
+    data = {'id': musicId};
+    console.log('music id: ' + musicId);
+    $.ajax({
+        url:  `/synphony/adgjlsfhk/deleteSongs`,
+        type:  'post',
+        dataType:  'json',
+        data: data,
+        success:  function (data) {
+            $(el).parents()[1].remove()
+        }
+    });
 }
 
 

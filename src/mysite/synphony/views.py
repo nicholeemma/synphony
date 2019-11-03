@@ -8,14 +8,18 @@ from .models import Studio, Music, Syner, Like, Participant, Comment, History
 from .forms import MusicForm
 
 
-def index(request):
-    # content = {}
-    # content["show"] = ""
-
-    path = request.path
+def getRoomHashLink(path):
     path_list = path.split('/')
     token_index = path_list.index('synphony') + 1
     token = str(path_list[token_index])
+    return token
+
+
+def index(request):
+    # content = {}
+    # content["show"] = ""
+    path = request.path
+    token = getRoomHashLink(path)
     print(token)
     # TODO: redirect user to some page if studio does not exist
     cur_studio = Studio.objects.get(link=token)
@@ -69,7 +73,6 @@ def showStudio(request):
 
 
 def addSongsToStudio(request):
-    print("haha you are in add songs views.py!")
     print(request.POST)
     music_form = MusicForm(request.POST)
     rsp = dict()
@@ -90,5 +93,18 @@ def addSongsToStudio(request):
 # remove a song from the playlist for an active studio
 
 
-def removeSongsFromPlayList(request):
-    pass
+def deleteSongsFromPlayList(request):
+    music_id = request.POST.get('id')
+    # check if music_id has corresponding music
+    music_set = Music.objects.filter(pk=music_id)
+    if music_set.count() > 0:
+        music = Music.objects.get(pk=music_id)
+        # get current studio
+        path = request.path
+        token = getRoomHashLink(path)
+        cur_studio = Studio.objects.get(link=token)
+        # check if music in cur_studio
+        if cur_studio.music.filter(pk=music_id).count() > 0:
+            cur_studio.music.remove(music)
+    rsp = dict()
+    return JsonResponse(rsp)
