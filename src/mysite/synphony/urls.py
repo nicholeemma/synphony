@@ -1,17 +1,14 @@
 # chat/urls.py
-from django.urls import re_path, path, url
+from django.urls import re_path, path
 from synphony import views
 from django.conf import settings
+from django.conf.urls import url
 from django.conf.urls.static import static
 
 urlpatterns = [
-    re_path(r'adgjlsfhk', views.index, name='index'),  # hard coded sharable link
-    re_path(r'adgjlsfhk/getSongs', views.displaySongList, name='displaySongList'),
-<<<<<<< HEAD
-	url("^studio/(?P<key>[a-f0-9]{8})$", views.studio, name = "studio"),
-=======
-    re_path(r'adgjlsfhk/addSongs', views.addSongsToStudio, name='addSongs'),
->>>>>>> fae6f9f956a21eef88b55bef709ef8555db7d379
+	url("^(?P<key>[a-f0-9]{16})$", views.index, name = "index"),
+	url("^(?P<key>[a-f0-9]{16})/getSongs$", views.displaySongList, name = "displaySongList"),
+	url("^(?P<key>[a-f0-9]{16})/addSongs$", views.addSongsToStudio, name = "addSongs"),
 ]
 
 if settings.DEBUG:

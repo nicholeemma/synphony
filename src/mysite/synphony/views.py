@@ -4,20 +4,21 @@ from django.shortcuts import redirect
 # from django.http import HttpResponse
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
-from .models import Studio, Music, Syner, Like, Participant, Comment, History
+from .models import Studio, Music, Syner, Like, Participant, Comment, History, StudioLink
 
 
-def index(request):
+def index(request, key = ""):
     # content = {}
     # content["show"] = ""
 
-    path = request.path
-    path_list = path.split('/')
-    token_index = path_list.index('synphony') + 1
-    token = str(path_list[token_index])
-    print(token)
-    # TODO: redirect user to some page if studio does not exist
-    cur_studio = Studio.objects.get(link=token)
+    try:
+        link = StudioLink.objects.get(key__exact = key)
+        cur_studio = link.studio
+    except:
+		# TODO: redirect user to some page if studio does not exist
+        print("Studio does not exist!")
+        return render(request, 'synphony/index.html')
+
     music_list = []
     music_list_des = []
     for s_music in cur_studio.music.all():
