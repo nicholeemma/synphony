@@ -4,19 +4,35 @@ from django.shortcuts import redirect
 # from django.http import HttpResponse
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
-from .models import Studio, Music, Syner, Like, Participant, Comment, History
+from .models import Studio, Music, Syner, Participant, Comment, History
 from .forms import MusicForm, CreateStudioForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
+def index(request, key = ""):
+	# content = {}
+	# content["show"] = ""
+	try:
+		cur_studio = Studio.objects.get(link__exact = key)
+	except:
+		# TODO: redirect user to some page if studio does not exist
+		print("Studio does not exist!")
+		return render(request, 'synphony/index.html')
+  music_list = []
+	music_list_des = []
+	for s_music in cur_studio.music.all():
+		music_list.append(s_music.id)
+		music_list_des.append(s_music.description)
+	musics = Music.objects.all().filter(id__in=music_list)
+	list = []
+	if request.method == 'POST' and 'song-name-submit' in request.POST:
+		list = displaySongList(request)
 
-def getRoomHashLink(path):
-    path_list = path.split('/')
-    token_index = path_list.index('synphony') + 1
-    token = str(path_list[token_index])
-    return token
+	ctx = {"musics": musics, "list": list, "user" : request.user}
+	return render(request, 'synphony/index.html', ctx)
+	# ,"show":error_message
 
 def signup(request):
     if request.method == 'POST':
@@ -65,95 +81,113 @@ def studio_view(request):
     return render(request, 'synphony/create_studio.html', context) 
 
 
-def index(request):
-    # content = {}
-    # content["show"] = ""
-    path = request.path
-    token = getRoomHashLink(path)
-    print(token)
-    # TODO: redirect user to some page if studio does not exist
-    cur_studio = Studio.objects.get(link=token)
-    music_list = []
-    music_list_des = []
-    for s_music in cur_studio.music.all():
-        music_list.append(s_music.id)
-        music_list_des.append(s_music.description)
-    musics = Music.objects.all().filter(id__in=music_list)
-    list = []
-    if request.method == 'POST' and 'song-name-submit' in request.POST:
-        list = displaySongList(request)
-    return render(request, 'synphony/index.html', {"musics": musics, "list": list})
-    # ,"show":error_message
-
-
 def displaySongList(request):
-    print(request.path)
-    title = request.POST.get('song-name')
-    # TODO currently, only search songs by title
-    # search songs using third-party API of Netease Music
-    # use song title to call api
-    URL = "https://api.imjad.cn/cloudmusic/?type=search&search_type=1&s=" + title
-    r = requests.get(url=URL)
-    data = r.json()
-    # if not found -> API will return the following
-    #{"result":{"songCount":0},"code":200}
+	print(request.path)
+	title = request.POST.get('song-name')
+	# TODO currently, only search songs by title
+	# search songs using third-party API of Netease Music
+	# use song title to call api
+	URL = "https://api.imjad.cn/cloudmusic/?type=search&search_type=1&s=" + title
+	r = requests.get(url=URL)
+	data = r.json()
+	# if not found -> API will return the following
+	#{"result":{"songCount":0},"code":200}
 
-    # process json -> dic list of Songs to be displayed to client
-    # i.e. name, id, author
-    list = []
-    for i in data['result']['songs']:
-        dic = {}
-        dic['name'] = i['name']
-        dic['id'] = i['id']
-        dic['ar'] = ""
-        for j in i['ar']:
-            dic['ar'] += j['name'] + "/ "
-        dic['ar'] = dic['ar'][0: -2];  # remove last "/ "
-        list.append(dic)
-    return list
+	# process json -> dic list of Songs to be displayed to client
+	# i.e. name, id, author
+	list = []
+	for i in data['result']['songs']:
+		dic = {}
+		dic['name'] = i['name']
+		dic['id'] = i['id']
+		dic['ar'] = ""
+		for j in i['ar']:
+			dic['ar'] += j['name'] + "/ "
+		dic['ar'] = dic['ar'][0: -2];  # remove last "/ "
+		list.append(dic)
+	return list
+
 
 # display the playlist for an active studio
-
-
 def showStudio(request):
-    pass
+	pass
 
 # add a song to the playlist for an active studio
+def addSongsToStudio(request, key = ""):
+	#print(request.POST)
+	rsp = dict()
 
+	try:
+		studio = Studio.objects.get(link__exact = key)
+	except:
+		rsp['error'] = "Studio not found!"
+		return JsonResponse(rsp)
 
-def addSongsToStudio(request):
-    print(request.POST)
-    music_form = MusicForm(request.POST)
-    rsp = dict()
-    if(music_form.is_valid()):
-        music = music_form.save()
-        # get studio hashed token
-        token = request.path.split('/')[-2]  # path = synphony/adgjlsfhk/addSongs
-        studio = Studio.objects.get(link=token)
-        studio.music.add(music)
-        rsp['music'] = model_to_dict(music)
-        print(rsp)
-    else:
-        rsp['error'] = "form not valid!"
-        print("forms not valid!")
-    return JsonResponse(rsp)
+	music_form = MusicForm(request.POST)
+	if(music_form.is_valid()):
+		music = music_form.save()
+		studio.music.add(music)
+		rsp['music'] = model_to_dict(music)
+		print(rsp)
+	else:
+		rsp['error'] = "form not valid!"
+		print("forms not valid!")
+	return JsonResponse(rsp)
 
 
 # remove a song from the playlist for an active studio
+def deleteSongsFromPlayList(request, key = ""):
+
+	rsp = dict()
+	try:
+		cur_studio = Studio.objects.get(link__exact = key)
+	except:
+		rsp['error'] = "Studio not found!"
+		return JsonResponse(rsp)
+
+	music_id = request.POST.get('id')
+	# check if music_id has corresponding music
+	music_set = Music.objects.filter(pk=music_id)
+	if music_set.count() > 0:
+		music = Music.objects.get(pk=music_id)
+		# check if music in cur_studio
+		if cur_studio.music.filter(pk=music_id).count() > 0:
+			cur_studio.music.remove(music)
+	
+	return JsonResponse(rsp)
 
 
-def deleteSongsFromPlayList(request):
-    music_id = request.POST.get('id')
-    # check if music_id has corresponding music
-    music_set = Music.objects.filter(pk=music_id)
-    if music_set.count() > 0:
-        music = Music.objects.get(pk=music_id)
-        # get current studio
-        path = request.path
-        token = getRoomHashLink(path)
-        cur_studio = Studio.objects.get(link=token)
-        # check if music in cur_studio
-        if cur_studio.music.filter(pk=music_id).count() > 0:
-            cur_studio.music.remove(music)
-    rsp = dict()
-    return JsonResponse(rsp)
+# like a song from the playlist for an active studio
+def likeSongsFromPlayList(request, key = ""):
+
+	rsp = dict()
+
+	# check login status
+	if not request.user.is_authenticated:
+		rsp['error'] = "Please login to like music!"
+		return JsonResponse(rsp)
+
+	# check if studio exists
+	try:
+		cur_studio = Studio.objects.get(link__exact = key)
+	except:
+		rsp['error'] = "Studio not found!"
+		return JsonResponse(rsp)
+
+	# check if music in cur_studio
+	try:
+		music_id = request.POST.get('id')
+		music = cur_studio.music.get(pk = music_id)
+	except:
+		rsp['error'] = "Music not found in current studio!"
+		return JsonResponse(rsp)
+	
+	try:
+		# Unlike music
+		music.liked_user.get(id = request.user.id)
+		music.liked_user.remove(request.user)
+	except:
+		# Like music
+		music.liked_user.add(request.user)
+
+	return JsonResponse(rsp)

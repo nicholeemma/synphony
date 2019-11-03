@@ -1,3 +1,4 @@
+
 from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
@@ -13,10 +14,6 @@ class Music(models.Model):
     lyrics = models.TextField(max_length=255, blank=True)
     liked_user = models.ManyToManyField(User)
 
-    def __str__(self):
-        return self.name
-
-
 # The goal is to record the liked music of a certain user
 # We should implement abstract user, liked_music should be an attribute of it, as we don't know to do that
 # For now, we just extend the user here
@@ -24,7 +21,6 @@ class Music(models.Model):
 
 class Syner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    liked_music = models.ManyToManyField(Music)
 
 
 # class Playlist(models.Model):
@@ -33,12 +29,6 @@ class Syner(models.Model):
 #     music = models.ManyToManyField(Music)
 #     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 #     created_on = models.DateTimeField(auto_now_add=True)
-
-
-class Like(models.Model):
-
-    music = models.ForeignKey(Music, on_delete=models.CASCADE)
-    like_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Studio(models.Model):
@@ -51,7 +41,7 @@ class Studio(models.Model):
     # constraint will be set in form.py cannot be larger than 10
     headcount = models.IntegerField(default=10)
     # field_for_sharablelink
-    link = models.CharField(max_length=30)
+    link = models.CharField(max_length = 16)
     host = models.ForeignKey(User, on_delete=models.CASCADE)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(auto_now_add=True)
