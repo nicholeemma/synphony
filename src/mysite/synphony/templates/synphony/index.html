@@ -23,16 +23,19 @@
 <table  class="table table-bordered"  id="myTable">
 <tbody>
     <!-- NEED TO CHANGE BY NICOLE -->
+    {% csrf_token %}
+    {% for music in musics %}
     <tr>
-        <td>${room.room_number}</td>
-            <td>${room.name}</td>
-            <td>${room.nobeds}</td>
-            <td>${room.room_type}</td>
+        <td>{{music.name}}</td>
+            <td>{{music.description}}</td>
+            
             <td>
-                <button class="btn deleteBtn" data-id="${room.id}">Delete</button>
-                <button class="btn updateBtn" data-id="${room.id}">Update</button>
+                <button class="btn deleteBtn" data-id="{music.id}">Delete</button>
+                <button class="btn updateBtn" data-id="{music.id}">Update</button>
             </td>
         </tr>
+        {% endfor %}
+        <!-- {{show}} -->
 </tbody>
 </table>
 {% endblock main%}
