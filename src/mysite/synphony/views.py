@@ -12,14 +12,12 @@ def index(request, key = ""):
 	# content = {}
 	# content["show"] = ""
 
-	ctx = {'key' : key}
-
 	try:
 		cur_studio = Studio.objects.get(link__exact = key)
 	except:
 		# TODO: redirect user to some page if studio does not exist
 		print("Studio does not exist!")
-		return render(request, 'synphony/index.html', ctx)
+		return render(request, 'synphony/index.html')
 
 	music_list = []
 	music_list_des = []
@@ -28,25 +26,14 @@ def index(request, key = ""):
 		music_list_des.append(s_music.description)
 	musics = Music.objects.all().filter(id__in=music_list)
 
+	list = []
 	if request.method == 'POST' and 'song-name-submit' in request.POST:
-		return displaySongList(request)
-
-	ctx['musics'] = musics
-	return render(request, 'synphony/index.html', ctx)
+		list = displaySongList(request)
+	return render(request, 'synphony/index.html', {"musics": musics, "list": list})
 	# ,"show":error_message
 
 
-def displaySongList(request, key = ""):
-
-	ctx = {'key' : key}
-
-	try:
-		Studio.objects.get(link__exact = key)
-	except:
-		# TODO: redirect user to some page if studio does not exist
-		print("Studio does not exist!")
-		return render(request, 'synphony/index.html', ctx)
-
+def displaySongList(request):
 	print(request.path)
 	title = request.POST.get('song-name')
 	# TODO currently, only search songs by title
@@ -70,9 +57,7 @@ def displaySongList(request, key = ""):
 			dic['ar'] += j['name'] + "/ "
 		dic['ar'] = dic['ar'][0: -2];  # remove last "/ "
 		list.append(dic)
-
-	ctx['list'] = list
-	return render(request, 'synphony/index.html', ctx)
+	return list
 
 # display the playlist for an active studio
 
@@ -81,29 +66,31 @@ def showStudio(request):
 	pass
 
 # add a song to the playlist for an active studio
-
-
 def addSongsToStudio(request, key = ""):
 	print("haha you are in add songs views.py!")
-
-	ctx = {'key' : key}
+	#print(request.POST)
 
 	try:
 		studio = Studio.objects.get(link__exact = key)
 	except:
 		# TODO: redirect user to some page if studio does not exist
 		print("Studio does not exist!")
-		return render(request, 'synphony/index.html', ctx)
+		rsp['error'] = "form not valid!"
+		return JsonResponse(rsp)
 
-	music_form = MusicForm(request)
+	music_form = MusicForm(request.POST)
 	rsp = dict()
 	if(music_form.is_valid()):
 		music = music_form.save()
+		# get studio hashed token
+		token = request.path.split('/')[-2]  # path = synphony/adgjlsfhk/addSongs
+		studio = Studio.objects.get(link=token)
 		studio.music.add(music)
 		rsp['music'] = model_to_dict(music)
 		print(rsp)
 	else:
 		rsp['error'] = "form not valid!"
+		print("forms not valid!")
 	return JsonResponse(rsp)
 
 

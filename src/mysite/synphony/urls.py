@@ -7,7 +7,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url("^(?P<key>[a-f0-9]{16})$", views.index, name = "index"),
-    url("^(?P<key>[a-f0-9]{16})/getSongs$", views.displaySongList, name = "displaySongList"),
     url("^(?P<key>[a-f0-9]{16})/addSongs$", views.addSongsToStudio, name = "addSongs"),
 ]
 
