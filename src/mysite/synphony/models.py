@@ -54,6 +54,13 @@ class Studio(models.Model):
     # playlist = models.OneToOneField(Playlist, on_delete=models.CASCADE)
 
 
+
+class StudioLink(models.Model):
+	
+	key = models.CharField(max_length = 16, unique = True)
+	studio = models.OneToOneField(Studio, on_delete = models.CASCADE)
+
+
 class Participant(models.Model):
 
     participant_user = models.ForeignKey(User, on_delete=models.CASCADE)
