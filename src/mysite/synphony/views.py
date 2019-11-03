@@ -25,10 +25,10 @@ def index(request):
         music_list.append(s_music.id)
         music_list_des.append(s_music.description)
     musics = Music.objects.all().filter(id__in=music_list)
-
+    list = []
     if request.method == 'POST' and 'song-name-submit' in request.POST:
-        return displaySongList(request)
-    return render(request, 'synphony/index.html', {"musics": musics})
+        list = displaySongList(request)
+    return render(request, 'synphony/index.html', {"musics": musics, "list": list})
     # ,"show":error_message
 
 
@@ -56,7 +56,7 @@ def displaySongList(request):
             dic['ar'] += j['name'] + "/ "
         dic['ar'] = dic['ar'][0: -2];  # remove last "/ "
         list.append(dic)
-    return render(request, 'synphony/index.html', {'list': list})
+    return list
 
 # display the playlist for an active studio
 
@@ -69,7 +69,12 @@ def showStudio(request):
 
 def addSongsToStudio(request):
     print("haha you are in add songs views.py!")
+<<<<<<< HEAD
     music_form = MusicForm(request)
+=======
+    print(request.POST)
+    music_form = MusicForm(request.POST)
+>>>>>>> 2297b7dae530997407bb73062899c3cec9fd0db8
     rsp = dict()
     if(music_form.is_valid()):
         music = music_form.save()
@@ -81,6 +86,10 @@ def addSongsToStudio(request):
         print(rsp)
     else:
         rsp['error'] = "form not valid!"
+<<<<<<< HEAD
+=======
+        print("forms not valid!")
+>>>>>>> 2297b7dae530997407bb73062899c3cec9fd0db8
     return JsonResponse(rsp)
 
 

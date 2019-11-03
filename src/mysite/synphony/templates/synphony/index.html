@@ -5,7 +5,7 @@
 {% endblock extrajs%}
 {% block title %}Studio{% endblock title%}
 {% block main %}
-<form action=/synphony/adgjlsfhk/getSongs/ method = "POST">
+<form  method = "POST">
     {% csrf_token %}
     <input id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
     <button id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
@@ -31,7 +31,7 @@
     {% for music in musics %}
     <tr>
         <td>
-        <a><div class = "to_right"> </div></a>
+        <div class = "to_right" onclick="playMusic(this)" id="{music.id}" value="{music.url}"> </div>
         </td>
         <td>{{music.name}}</td>
             <td>{{music.description}}</td>
