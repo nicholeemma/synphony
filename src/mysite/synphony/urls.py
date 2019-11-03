@@ -7,7 +7,11 @@ from django.conf.urls.static import static
 urlpatterns = [
     re_path(r'adgjlsfhk', views.index, name='index'),  # hard coded sharable link
     re_path(r'adgjlsfhk/getSongs', views.displaySongList, name='displaySongList'),
+<<<<<<< HEAD
 	url("^studio/(?P<key>[a-f0-9]{8})$", views.studio, name = "studio"),
+=======
+    re_path(r'adgjlsfhk/addSongs', views.addSongsToStudio, name='addSongs'),
+>>>>>>> fae6f9f956a21eef88b55bef709ef8555db7d379
 ]
 
 if settings.DEBUG:
