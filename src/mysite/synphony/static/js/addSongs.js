@@ -33,13 +33,6 @@ function addSongs(val) {
     data['description'] = description;
     data['url'] = musicUrl;
     console.log("data to be sent to server: " + data)
-    // //create a new source for media type and append to audio
-    // var source = document.createElement("SOURCE");
-    // source.id = val;
-    // source.src = musicUrl;
-    // source.type = "audio/mpeg";
-    // var audio = document.getElementById("music-bar")
-    // audio.appendChild(source)
 
     $.ajax({
         url:  '/synphony/adgjlsfhk/addSongs',
@@ -67,8 +60,7 @@ function addSongs(val) {
             <td>${name}</td>
             <td>${description}</td>
             <td>
-                <button class="btn deleteBtn" data-id="${id}">Delete</button>
-                <button class="btn updateBtn" data-id="${id}">Update</button>
+                <button class="btn deleteBtn" data-id="${id}">Remove</button>
             </td>
         </tr>`;
  //   });
@@ -77,9 +69,8 @@ function addSongs(val) {
         $(elm).on("click",  (e) => {
             deleteSongs ($(elm))
         })
-    })
-}
-
+    }
+    )}
     });
 }
 
@@ -106,13 +97,3 @@ function  deleteSongs(el){
         }
     });
 }
-
-
-
-// function buttonClickFunction() {
-//     document.getElementById("addBtn").addEventListener("click");
-//     var li = document.createElement("li");
-//     var text = document.getElementById("textfield").value;
-//     li.appendChild(document.createTextNode(text));
-//     document.getElementById("todolist").appendChild(li);
-// }
