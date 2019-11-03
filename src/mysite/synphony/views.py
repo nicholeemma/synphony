@@ -4,12 +4,31 @@ from django.shortcuts import redirect
 # from django.http import HttpResponse
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
+from .models import Studio, Music, Syner, Like, Participant, Comment, History
 
 
 def index(request):
+    # content = {}
+    # content["show"] = ""
+
+    path = request.path
+    token = path.split('/')
+
+    token = str(token[-1])
+    #error_message = token
+    cur_studio = Studio.objects.get(link=token)
+    # cur_playlist = cur_studio.playlist
+    music_list = []
+    music_list_des = []
+    for s_music in cur_studio.music.all():
+        music_list.append(s_music.id)
+        music_list_des.append(s_music.description)
+    musics = Music.objects.all().filter(id__in=music_list)
+
     if request.method == 'POST' and 'song-name-submit' in request.POST:
         return displaySongList(request)
-    return render(request, 'synphony/index.html')
+    return render(request, 'synphony/index.html', {"musics": musics})
+    # ,"show":error_message
 
 
 def displaySongList(request):

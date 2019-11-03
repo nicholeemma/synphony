@@ -23,12 +23,12 @@ class Syner(models.Model):
     liked_music = models.ManyToManyField(Music)
 
 
-class Playlist(models.Model):
+# class Playlist(models.Model):
 
-    name = models.CharField(max_length=30)
-    music = models.ManyToManyField(Music)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_on = models.DateTimeField(auto_now_add=True)
+#     name = models.CharField(max_length=30)
+#     music = models.ManyToManyField(Music)
+#     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+#     created_on = models.DateTimeField(auto_now_add=True)
 
 
 class Like(models.Model):
@@ -41,7 +41,7 @@ class Studio(models.Model):
 
     name = models.CharField(max_length=30)
     # participants = models.ManyToManyField(Participant)
-    # music = models.ManyToManyField(Music) -> dont need since playlist exists
+    music = models.ManyToManyField(Music) 
     # record whether the studio is active or not
     status = models.BooleanField(default=True)
     # constraint will be set in form.py cannot be larger than 10
@@ -51,7 +51,7 @@ class Studio(models.Model):
     host = models.ForeignKey(User, on_delete=models.CASCADE)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(blank=True)
-    playlist = models.OneToOneField(Playlist, on_delete=models.CASCADE)
+    # playlist = models.OneToOneField(Playlist, on_delete=models.CASCADE)
 
 
 class Participant(models.Model):

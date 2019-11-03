@@ -12,18 +12,21 @@ class MusicAdmin(admin.ModelAdmin):
 class SynerAdmin(admin.ModelAdmin):
     list_display = ("user",  "liked_music_")
     def liked_music_(self, obj):
-        return "\n".join([s.name for s in obj.name.all()])
+        return "\n".join([s.name for s in obj.all()])
 
-class PlaylistAdmin(admin.ModelAdmin):
-    list_display = ("name", "music_", "created_by", "created_on")
-    def music_(self, obj):
-        return "\n".join([s.name for s in obj.music.all()])
+# class PlaylistAdmin(admin.ModelAdmin):
+#     list_display = ("name", "music_", "created_by", "created_on")
+#     def music_(self, obj):
+#         return "\n".join([s.name for s in obj.music.all()])
 
 
 class StudioAdmin(admin.ModelAdmin):
-    list_display = ("name","status","headcount","link","host", "start_time","end_time","play_list_")
-    def play_list_(self, obj):
-        return str(obj.id)
+    list_display = ("name","status","headcount","link","host", "start_time","end_time","music_")
+    def music_(self, obj):
+        return "\n".join([s.name for s in obj.music.all()])
+    # def play_list_(self, obj):
+    #     return str(obj.id)
+    #     ,"play_list_"
 
 class ParticipantAdmin(admin.ModelAdmin):
     list_display = ("participant_user_",  "role","studio_")
@@ -44,7 +47,7 @@ class HistoryAdmin(admin.ModelAdmin):
     
 admin.site.register(models.Music, MusicAdmin)
 admin.site.register(models.Syner, SynerAdmin)
-admin.site.register(models.Playlist, PlaylistAdmin)
+# admin.site.register(models.Playlist, PlaylistAdmin)
 admin.site.register(models.Studio, StudioAdmin)
 admin.site.register(models.Participant, ParticipantAdmin)
 admin.site.register(models.Comment, CommentAdmin)
