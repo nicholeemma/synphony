@@ -1,4 +1,8 @@
 {% extends 'synphony/base.html' %}
+{% block extrajs %}
+  {% load static %}
+    <script src="{% static 'js/addSongs.js' %}"></script>
+{% endblock extrajs%}
 {% block title %}Studio{% endblock title%}
 {% block main %}
 <form action=/synphony/adgjlsfhk/getSongs/ method = "POST">
@@ -9,7 +13,7 @@
 <!-- Below is the search result -->
 <div class="search-box-result-wrapper">
     {% for song in list %}
-    <li>{{song.name}}, by: {{song.ar}}  <button id="{{song.name}}" onclick=addSongs(this.value) name="song-name-add" type="submit" value="{{song.id}}"/>Add</button></li>
+    <li>{{song.name}}, by: {{song.ar}} <button id="{{song.id}}" onclick=addSongs(this.value) name="song-name-add" type="submit" value="{{song.id}}">Add</button></li>
     {% endfor %}
 </div>
 <!-- Audio -->
@@ -31,7 +35,6 @@
         </td>
         <td>{{music.name}}</td>
             <td>{{music.description}}</td>
-            
             <td>
                 <button class="btn deleteBtn" data-id="{music.id}">Delete</button>
                 <button class="btn updateBtn" data-id="{music.id}">Update</button>
@@ -42,7 +45,4 @@
 </tbody>
 </table>
 {% endblock main%}
-{% block extrajs %}
-  {% load static %}
-    <script src="{% static 'js/addSongs.js' %}"></script>
-{% endblock extrajs%}
+

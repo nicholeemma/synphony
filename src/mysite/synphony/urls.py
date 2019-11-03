@@ -5,8 +5,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    re_path(r'adgjlsfhk', views.index, name='index'),  # hard coded sharable link
     re_path(r'adgjlsfhk/getSongs', views.displaySongList, name='displaySongList'),
+    re_path(r'adgjlsfhk/addSongs', views.addSongsToStudio, name='addSongs'),
+    re_path(r'adgjlsfhk', views.index, name='index'),  # hard coded sharable link
 ]
 
 if settings.DEBUG:
