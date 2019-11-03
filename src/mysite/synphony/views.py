@@ -12,12 +12,12 @@ def index(request):
     # content["show"] = ""
 
     path = request.path
-    token = path.split('/')
-
-    token = str(token[-1])
-    #error_message = token
+    path_list = path.split('/')
+    token_index = path_list.index('synphony') + 1
+    token = str(path_list[token_index])
+    print(token)
+    # TODO: redirect user to some page if studio does not exist
     cur_studio = Studio.objects.get(link=token)
-    # cur_playlist = cur_studio.playlist
     music_list = []
     music_list_des = []
     for s_music in cur_studio.music.all():
@@ -57,8 +57,9 @@ def displaySongList(request):
         list.append(dic)
     return render(request, 'synphony/index.html', {'list': list})
 
-
 # display the playlist for an active studio
+
+
 def showStudio(request):
     pass
 
@@ -66,6 +67,7 @@ def showStudio(request):
 
 
 def addSongsToStudio(request):
+    print("haha you are in add songs views.py!")
     music_form = MusicForm(request)
     rsp = dict()
     if(music_form.isValid()):
@@ -75,6 +77,7 @@ def addSongsToStudio(request):
         studio = Studio.objects.get(link=token)
         studio.music.add(music)
         rsp['music'] = model_to_dict(music)
+        print(rsp)
     else:
         rsp['error'] = "form not valid!"
     return JsonResponse(rsp)
