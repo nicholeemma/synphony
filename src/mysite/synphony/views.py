@@ -5,7 +5,11 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from .models import Studio, Music, Syner, Like, Participant, Comment, History
-from .forms import MusicForm
+from .forms import MusicForm, CreateStudioForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
 def getRoomHashLink(path):
@@ -13,6 +17,52 @@ def getRoomHashLink(path):
     token_index = path_list.index('synphony') + 1
     token = str(path_list[token_index])
     return token
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('index')
+    else:        
+        form = UserCreationForm()
+    context = {'form': form}
+    return render(request, 'synphony/signup.html', context)
+
+def user_login(request):
+    if request.method == 'POST':
+        # authentication to be added later
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        return redirect('index')
+    else:
+        form = AuthenticationForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'synphony/login.html', context)
+
+def user_logout(request):
+    logout(request)
+    return render(request, 'synphony/logout.html')
+
+@login_required
+def studio_view(request):
+    if request.method == 'POST':
+        form = CreateStudioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    else:
+        form = CreateStudioForm()
+    context = {'form': form}
+    return render(request, 'synphony/create_studio.html', context) 
 
 
 def index(request):

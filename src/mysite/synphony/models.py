@@ -13,6 +13,10 @@ class Music(models.Model):
     lyrics = models.TextField(max_length=255, blank=True)
     liked_user = models.ManyToManyField(User)
 
+    def __str__(self):
+        return self.name
+
+
 # The goal is to record the liked music of a certain user
 # We should implement abstract user, liked_music should be an attribute of it, as we don't know to do that
 # For now, we just extend the user here
@@ -50,7 +54,7 @@ class Studio(models.Model):
     link = models.CharField(max_length=30)
     host = models.ForeignKey(User, on_delete=models.CASCADE)
     start_time = models.DateTimeField(auto_now_add=True)
-    end_time = models.DateTimeField(blank=True)
+    end_time = models.DateTimeField(auto_now_add=True)
     # playlist = models.OneToOneField(Playlist, on_delete=models.CASCADE)
 
 

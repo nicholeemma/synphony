@@ -8,7 +8,11 @@ urlpatterns = [
     # re_path(r'adgjlsfhk/getSongs', views.displaySongList, name='displaySongList'),
     re_path(r'adgjlsfhk/addSongs', views.addSongsToStudio, name='addSongs'),
     re_path(r'adgjlsfhk/deleteSongs', views.deleteSongsFromPlayList, name='deleteSongs'),
-    re_path(r'adgjlsfhk', views.index, name='index'),  # hard coded sharable link
+    re_path(r'adgjlsfhk', views.index, name='index'), # hard coded sharable link
+    re_path(r'signup', views.signup, name='signup'),
+    re_path(r'login', views.user_login, name='login'),
+    re_path(r'logout', views.user_logout, name='logout'),
+    re_path(r'studio', views.studio_view, name='studio')
 ]
 
 if settings.DEBUG:
