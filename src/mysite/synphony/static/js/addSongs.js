@@ -27,19 +27,11 @@ function addSongs(val) {
     var object = document.getElementById(val);
     var song_info = object.parentElement.textContent;
     var name = song_info.split(',')[0];
-<<<<<<< HEAD
-    var description = song_info.split(',')[1].slice(0, -5);
-    var data = {};
-    data[name] = name;
-    data[description] = description;
-    data[url] = musicUrl;
-=======
     var description = song_info.split(',')[1].slice(0, -3);
     var data = {};
     data['name'] = name;
     data['description'] = description;
     data['url'] = musicUrl;
->>>>>>> 2297b7dae530997407bb73062899c3cec9fd0db8
     console.log("data to be sent to server: " + data)
     // //create a new source for media type and append to audio
     // var source = document.createElement("SOURCE");
@@ -54,7 +46,7 @@ function addSongs(val) {
         type:  'post',
         dataType:  'json',
         data: data,
-        success: function  (response) {
+        success: function (response) {
         //TODO if response only contains error -> display song cannot be added!
         let rows =  '';
 //       Object.keys(response).forEach(function (key){

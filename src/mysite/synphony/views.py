@@ -68,13 +68,8 @@ def showStudio(request):
 
 
 def addSongsToStudio(request):
-    print("haha you are in add songs views.py!")
-<<<<<<< HEAD
-    music_form = MusicForm(request)
-=======
-    print(request.POST)
+   
     music_form = MusicForm(request.POST)
->>>>>>> 2297b7dae530997407bb73062899c3cec9fd0db8
     rsp = dict()
     if(music_form.is_valid()):
         music = music_form.save()
@@ -86,10 +81,7 @@ def addSongsToStudio(request):
         print(rsp)
     else:
         rsp['error'] = "form not valid!"
-<<<<<<< HEAD
-=======
         print("forms not valid!")
->>>>>>> 2297b7dae530997407bb73062899c3cec9fd0db8
     return JsonResponse(rsp)
 
 
