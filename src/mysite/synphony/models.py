@@ -1,3 +1,4 @@
+
 from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
@@ -43,7 +44,7 @@ class Studio(models.Model):
     link = models.CharField(max_length = 16)
     host = models.ForeignKey(User, on_delete=models.CASCADE)
     start_time = models.DateTimeField(auto_now_add=True)
-    end_time = models.DateTimeField(blank=True)
+    end_time = models.DateTimeField(auto_now_add=True)
     # playlist = models.OneToOneField(Playlist, on_delete=models.CASCADE)
 
 

@@ -5,6 +5,7 @@
 {% endblock extrajs%}
 {% block title %}Studio{% endblock title%}
 {% block main %}
+<div class="col-10">
 <form  method = "POST">
     {% csrf_token %}
     <input id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
@@ -46,5 +47,6 @@
         <!-- {{show}} -->
 </tbody>
 </table>
-{% endblock main%}
+</div>
+{% endblock main %}
 

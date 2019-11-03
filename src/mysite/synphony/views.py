@@ -5,20 +5,22 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from .models import Studio, Music, Syner, Participant, Comment, History
-from .forms import MusicForm
+from .forms import MusicForm, CreateStudioForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 def index(request, key = ""):
 	# content = {}
 	# content["show"] = ""
-
 	try:
 		cur_studio = Studio.objects.get(link__exact = key)
 	except:
 		# TODO: redirect user to some page if studio does not exist
 		print("Studio does not exist!")
 		return render(request, 'synphony/index.html')
-
-	music_list = []
+  music_list = []
 	music_list_des = []
 	for s_music in cur_studio.music.all():
 		music_list.append(s_music.id)
@@ -31,6 +33,52 @@ def index(request, key = ""):
 	ctx = {"musics": musics, "list": list, "user" : request.user}
 	return render(request, 'synphony/index.html', ctx)
 	# ,"show":error_message
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('index')
+    else:        
+        form = UserCreationForm()
+    context = {'form': form}
+    return render(request, 'synphony/signup.html', context)
+
+def user_login(request):
+    if request.method == 'POST':
+        # authentication to be added later
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        return redirect('index')
+    else:
+        form = AuthenticationForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'synphony/login.html', context)
+
+def user_logout(request):
+    logout(request)
+    return render(request, 'synphony/logout.html')
+
+@login_required
+def studio_view(request):
+    if request.method == 'POST':
+        form = CreateStudioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    else:
+        form = CreateStudioForm()
+    context = {'form': form}
+    return render(request, 'synphony/create_studio.html', context) 
 
 
 def displaySongList(request):
