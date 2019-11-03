@@ -62,7 +62,6 @@ def displaySongList(request):
         list.append(dic)
     return list
 
-
 # display the playlist for an active studio
 
 

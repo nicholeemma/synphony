@@ -39,7 +39,7 @@ function addSongs(val) {
         type:  'post',
         dataType:  'json',
         data: data,
-        success: function  (response) {
+        success: function (response) {
         //TODO if response only contains error -> display song cannot be added!
         let rows =  '';
 //       Object.keys(response).forEach(function (key){
