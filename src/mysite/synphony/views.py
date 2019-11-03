@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from .models import Studio, Music, Syner, Like, Participant, Comment, History, StudioLink
+from .forms import MusicForm
 
 
 def index(request, key = ""):
@@ -71,7 +72,7 @@ def addSongsToStudio(request):
     print("haha you are in add songs views.py!")
     music_form = MusicForm(request)
     rsp = dict()
-    if(music_form.isValid()):
+    if(music_form.is_valid()):
         music = music_form.save()
         # get studio hashed token
         token = request.path.split('/')[-2]  # path = synphony/adgjlsfhk/addSongs
