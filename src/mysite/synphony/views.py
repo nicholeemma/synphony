@@ -7,7 +7,6 @@ from django.forms.models import model_to_dict
 from .models import Studio, Music, Syner, Like, Participant, Comment, History
 from .forms import MusicForm
 
-
 def index(request, key = ""):
 	# content = {}
 	# content["show"] = ""
@@ -25,7 +24,6 @@ def index(request, key = ""):
 		music_list.append(s_music.id)
 		music_list_des.append(s_music.description)
 	musics = Music.objects.all().filter(id__in=music_list)
-
 	list = []
 	if request.method == 'POST' and 'song-name-submit' in request.POST:
 		list = displaySongList(request)
@@ -59,32 +57,25 @@ def displaySongList(request):
 		list.append(dic)
 	return list
 
+
 # display the playlist for an active studio
-
-
 def showStudio(request):
 	pass
 
 # add a song to the playlist for an active studio
 def addSongsToStudio(request, key = ""):
-	print("haha you are in add songs views.py!")
 	#print(request.POST)
+	rsp = dict()
 
 	try:
 		studio = Studio.objects.get(link__exact = key)
 	except:
-		# TODO: redirect user to some page if studio does not exist
-		print("Studio does not exist!")
-		rsp['error'] = "form not valid!"
+		rsp['error'] = "Studio not found!"
 		return JsonResponse(rsp)
 
 	music_form = MusicForm(request.POST)
-	rsp = dict()
 	if(music_form.is_valid()):
 		music = music_form.save()
-		# get studio hashed token
-		token = request.path.split('/')[-2]  # path = synphony/adgjlsfhk/addSongs
-		studio = Studio.objects.get(link=token)
 		studio.music.add(music)
 		rsp['music'] = model_to_dict(music)
 		print(rsp)
@@ -95,7 +86,22 @@ def addSongsToStudio(request, key = ""):
 
 
 # remove a song from the playlist for an active studio
+def deleteSongsFromPlayList(request, key = ""):
 
+	rsp = dict()
+	try:
+		cur_studio = Studio.objects.get(link__exact = key)
+	except:
+		rsp['error'] = "Studio not found!"
+		return JsonResponse(rsp)
 
-def removeSongsFromPlayList(request):
-	pass
+	music_id = request.POST.get('id')
+	# check if music_id has corresponding music
+	music_set = Music.objects.filter(pk=music_id)
+	if music_set.count() > 0:
+		music = Music.objects.get(pk=music_id)
+		# check if music in cur_studio
+		if cur_studio.music.filter(pk=music_id).count() > 0:
+			cur_studio.music.remove(music)
+	
+	return JsonResponse(rsp)

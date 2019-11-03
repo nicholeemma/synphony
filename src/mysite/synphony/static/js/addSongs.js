@@ -33,20 +33,13 @@ function addSongs(val) {
     data['description'] = description;
     data['url'] = musicUrl;
     console.log("data to be sent to server: " + data)
-    // //create a new source for media type and append to audio
-    // var source = document.createElement("SOURCE");
-    // source.id = val;
-    // source.src = musicUrl;
-    // source.type = "audio/mpeg";
-    // var audio = document.getElementById("music-bar")
-    // audio.appendChild(source)
 
     $.ajax({
         url:  location.pathname.split("/")[2] + '/addSongs',
         type:  'post',
         dataType:  'json',
         data: data,
-        success: function  (response) {
+        success: function (response) {
         //TODO if response only contains error -> display song cannot be added!
         let rows =  '';
 //       Object.keys(response).forEach(function (key){
@@ -62,22 +55,22 @@ function addSongs(val) {
         rows += `
         <tr>
             <td>
-            <a><div class = "to_right"> </div></a >
+            <div class = "to_right" onclick=playMusic(this.id) id="${musicUrl}" value="${musicUrl}" > </div>
             </td>
             <td>${name}</td>
             <td>${description}</td>
             <td>
-                <button class="btn deleteBtn" data-id="${id}">Delete</button>
-                <button class="btn updateBtn" data-id="${id}">Update</button>
+                <button class="btn deleteBtn" data-id="${id}">Remove</button>
             </td>
         </tr>`;
  //   });
-    $('#myTable > tbody').append(rows);}
-    // $('.deleteBtn').each((i, elm) => {
-    //     $(elm).on("click",  (e) => {
-    //         deleteSongs($(elm))
-    //     })
-    // })
+    $('#myTable > tbody').append(rows);
+    $('.deleteBtn').each((i, elm) => {
+        $(elm).on("click",  (e) => {
+            deleteSongs ($(elm))
+        })
+    }
+    )}
     });
 }
 
@@ -89,11 +82,18 @@ function Get(yourUrl){
 }
 
 
-
-// function buttonClickFunction() {
-//     document.getElementById("addBtn").addEventListener("click");
-//     var li = document.createElement("li");
-//     var text = document.getElementById("textfield").value;
-//     li.appendChild(document.createTextNode(text));
-//     document.getElementById("todolist").appendChild(li);
-// }
+function  deleteSongs(el){
+    console.log('delete song js triggered!');
+    musicId  =  $(el).data('id')
+    data = {'id': musicId};
+    console.log('music id: ' + musicId);
+    $.ajax({
+        url:  location.pathname.split("/")[2] + '/deleteSongs',
+        type:  'post',
+        dataType:  'json',
+        data: data,
+        success:  function (data) {
+            $(el).parents()[1].remove()
+        }
+    });
+}

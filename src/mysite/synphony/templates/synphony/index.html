@@ -18,8 +18,7 @@
 </div>
 <!-- Audio -->
 <audio controls autoplay controller class="audio" id="music-bar">
-    <source  type="audio/mpeg">
-        <source src="" type="audio/mpeg">
+        <source id="audiosrc" src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3" type="audio/mpeg">
           Your browser does not support the audio element.
 </audio>
 
@@ -31,13 +30,13 @@
     {% for music in musics %}
     <tr>
         <td>
-        <a><div class = "to_right"> </div></a>
+        <div class = "to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div>
         </td>
+
         <td>{{music.name}}</td>
             <td>{{music.description}}</td>
             <td>
-                <button class="btn deleteBtn" data-id="{music.id}">Delete</button>
-                <button class="btn updateBtn" data-id="{music.id}">Update</button>
+                <button class="btn deleteBtn" data-id="{{music.id}}" onclick=deleteSongs(this) >Remove</button>
             </td>
         </tr>
         {% endfor %}
