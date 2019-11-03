@@ -55,7 +55,7 @@ function addSongs(val) {
         rows += `
         <tr>
             <td>
-            <a><div class = "to_right"> </div></a >
+            <div class = "to_right" onclick=playMusic(this.id) id="${musicUrl}" value="${musicUrl}" > </div>
             </td>
             <td>${name}</td>
             <td>${description}</td>
