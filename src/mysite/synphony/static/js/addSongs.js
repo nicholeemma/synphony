@@ -42,7 +42,7 @@ function addSongs(val) {
     // audio.appendChild(source)
 
     $.ajax({
-        url:  '/synphony/adgjlsfhk/addSongs',
+        url:  'addSongs',
         type:  'post',
         dataType:  'json',
         data: data,

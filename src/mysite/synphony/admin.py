@@ -44,9 +44,6 @@ class HistoryAdmin(admin.ModelAdmin):
     list_display = ("user", "studio_")
     def studio_(self, obj):
         return str(obj.id)
-
-class StudioLinkAdmin(admin.ModelAdmin):
-    list_display = ("key", "studio")
     
 admin.site.register(models.Music, MusicAdmin)
 admin.site.register(models.Syner, SynerAdmin)
@@ -55,4 +52,3 @@ admin.site.register(models.Studio, StudioAdmin)
 admin.site.register(models.Participant, ParticipantAdmin)
 admin.site.register(models.Comment, CommentAdmin)
 admin.site.register(models.History, HistoryAdmin)
-admin.site.register(models.StudioLink, StudioLinkAdmin)
