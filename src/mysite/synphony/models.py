@@ -20,7 +20,6 @@ class Music(models.Model):
 
 class Syner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    liked_music = models.ManyToManyField(Music)
 
 
 # class Playlist(models.Model):
@@ -29,12 +28,6 @@ class Syner(models.Model):
 #     music = models.ManyToManyField(Music)
 #     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 #     created_on = models.DateTimeField(auto_now_add=True)
-
-
-class Like(models.Model):
-
-    music = models.ForeignKey(Music, on_delete=models.CASCADE)
-    like_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Studio(models.Model):

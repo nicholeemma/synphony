@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 # from django.http import HttpResponse
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
-from .models import Studio, Music, Syner, Like, Participant, Comment, History
+from .models import Studio, Music, Syner, Participant, Comment, History
 from .forms import MusicForm
 
 def index(request, key = ""):
@@ -27,7 +27,9 @@ def index(request, key = ""):
 	list = []
 	if request.method == 'POST' and 'song-name-submit' in request.POST:
 		list = displaySongList(request)
-	return render(request, 'synphony/index.html', {"musics": musics, "list": list})
+
+	ctx = {"musics": musics, "list": list, "user" : request.user}
+	return render(request, 'synphony/index.html', ctx)
 	# ,"show":error_message
 
 
@@ -104,4 +106,40 @@ def deleteSongsFromPlayList(request, key = ""):
 		if cur_studio.music.filter(pk=music_id).count() > 0:
 			cur_studio.music.remove(music)
 	
+	return JsonResponse(rsp)
+
+
+# like a song from the playlist for an active studio
+def likeSongsFromPlayList(request, key = ""):
+
+	rsp = dict()
+
+	# check login status
+	if not request.user.is_authenticated:
+		rsp['error'] = "Please login to like music!"
+		return JsonResponse(rsp)
+
+	# check if studio exists
+	try:
+		cur_studio = Studio.objects.get(link__exact = key)
+	except:
+		rsp['error'] = "Studio not found!"
+		return JsonResponse(rsp)
+
+	# check if music in cur_studio
+	try:
+		music_id = request.POST.get('id')
+		music = cur_studio.music.get(pk = music_id)
+	except:
+		rsp['error'] = "Music not found in current studio!"
+		return JsonResponse(rsp)
+	
+	try:
+		# Unlike music
+		music.liked_user.get(id = request.user.id)
+		music.liked_user.remove(request.user)
+	except:
+		# Like music
+		music.liked_user.add(request.user)
+
 	return JsonResponse(rsp)

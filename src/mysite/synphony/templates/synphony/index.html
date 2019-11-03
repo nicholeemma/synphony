@@ -38,6 +38,9 @@
             <td>
                 <button class="btn deleteBtn" data-id="{{music.id}}" onclick=deleteSongs(this) >Remove</button>
             </td>
+			<td>
+                <button class="btn likeBtn" data-id="{{music.id}}" onclick=likeSongs(this) >{% if user in music.liked_user.all %}Unlike{% else %}Like{% endif %}</button>
+			</td>
         </tr>
         {% endfor %}
         <!-- {{show}} -->

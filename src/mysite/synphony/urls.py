@@ -9,6 +9,7 @@ urlpatterns = [
     url("^(?P<key>[a-f0-9]{16})$", views.index, name = "index"),
     url("^(?P<key>[a-f0-9]{16})/addSongs$", views.addSongsToStudio, name = "addSongs"),
 	url("^(?P<key>[a-f0-9]{16})/deleteSongs$", views.deleteSongsFromPlayList, name = "deleteSongs"),
+	url("^(?P<key>[a-f0-9]{16})/likeSongs$", views.likeSongsFromPlayList, name = "likeSongs"),
 ]
 
 if settings.DEBUG:
