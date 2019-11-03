@@ -1,0 +1,7 @@
+.to_right {
+    width: 0;
+    height: 0;
+    border-left: 10px solid #cccf;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}

@@ -30,6 +30,9 @@
     {% csrf_token %}
     {% for music in musics %}
     <tr>
+        <td>
+        <a><div class = "to_right"> </div></a>
+        </td>
         <td>{{music.name}}</td>
             <td>{{music.description}}</td>
             <td>
