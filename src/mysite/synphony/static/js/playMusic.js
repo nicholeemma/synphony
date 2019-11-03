@@ -5,5 +5,6 @@ function playMusic(val) {
      console.log(audio_source);
      console.log(audio);
     audio_source.src = val.toString();
+    audio.load();//PAY ATTENTION!
     audio.play();
   }
