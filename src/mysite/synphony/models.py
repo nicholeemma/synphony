@@ -14,6 +14,9 @@ class Music(models.Model):
     lyrics = models.TextField(max_length=255, blank=True)
     liked_user = models.ManyToManyField(User)
 
+    def __str__(self):
+        return self.name
+
 # The goal is to record the liked music of a certain user
 # We should implement abstract user, liked_music should be an attribute of it, as we don't know to do that
 # For now, we just extend the user here
