@@ -19,7 +19,6 @@ class CreateStudioForm(forms.ModelForm):
             'name',
             'music',
             'status',
-            'link',
             'host'
         ]
         

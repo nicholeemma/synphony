@@ -8,6 +8,10 @@ from .models import Studio, Music, Syner, Participant, Comment, History
 from .forms import MusicForm, CreateStudioForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+<<<<<<< Updated upstream
+=======
+import hashlib
+>>>>>>> Stashed changes
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.http import HttpResponseRedirect, HttpResponse
 
@@ -32,6 +36,7 @@ def index(request, key=""):
     ctx = {"musics": musics, "list": list, "user": request.user}
     return render(request, 'synphony/index.html', ctx)
 
+<<<<<<< Updated upstream
 
 def signup(request):
     if request.method == 'POST':
@@ -47,9 +52,53 @@ def signup(request):
         form = UserCreationForm()
     context = {'form': form}
     return render(request, 'synphony/signup.html', context)
+=======
+def index(request, key = ""):
+	# content = {}
+	# content["show"] = ""
+	try:
+		cur_studio = Studio.objects.get(link__exact = key)
+	except:
+		# TODO: redirect user to some page if studio does not exist
+		print("Studio does not exist!")
+		return render(request, 'synphony/index.html')
+	music_list = []
+	music_list_des = []
+	for s_music in cur_studio.music.all():
+		music_list.append(s_music.id)
+		music_list_des.append(s_music.description)
+	musics = Music.objects.all().filter(id__in=music_list)
+	list = []
+	if request.method == 'POST' and 'song-name-submit' in request.POST:
+		list = displaySongList(request)
+
+	ctx = {"musics": musics, "list": list, "user" : request.user}
+	return render(request, 'synphony/index.html', ctx)
+	# ,"show":error_message
+
+def signup(request):
+	if request.user.is_authenticated:
+		return redirect('login')
+	if request.method == 'POST':
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			username = request.POST.get('username')
+			password = request.POST.get('password')
+			print(username, password)
+			user = authenticate(username=username, password=form['password2'])
+			print(user)
+			login(request, user)
+			return redirect('login')
+	else:        
+		form = UserCreationForm()
+	context = {'form': form}
+	return render(request, 'synphony/signup.html', context)
+>>>>>>> Stashed changes
 
 
 def user_login(request):
+<<<<<<< Updated upstream
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password1')
@@ -67,23 +116,39 @@ def user_login(request):
         context = {'form': form}
         return render(request, 'synphony/login.html', context)
 
+=======
+	context = {'form': AuthenticationForm()}
+	if request.method == 'POST':
+		# authentication to be added later
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+		user = authenticate(username=username, password=password)
+		login(request, user)
+		return render(request, 'synphony/login.html', context)
+	
+	return render(request, 'synphony/login.html', context)
+>>>>>>> Stashed changes
 
 def user_logout(request):
-    logout(request)
-    return render(request, 'synphony/logout.html')
+	logout(request)
+	return render(request, 'synphony/logout.html')
 
 
 @login_required
 def studio_view(request):
-    if request.method == 'POST':
-        form = CreateStudioForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return render(request, 'synphony/create_studio.html', context)
-    else:
-        form = CreateStudioForm()
-    context = {'form': form}
-    return render(request, 'synphony/create_studio.html', context)
+	if request.method == 'POST':
+		form = CreateStudioForm(request.POST)
+		if form.is_valid():
+			#form.save()
+			link = hashlib.md5(str(dict(form))).hexdigest()[:16]
+			name, music, status, host = form['name'], form['music'], form['status'], form['host']
+			newStudio = Studio(name = name, status = status, link = link, host = host)
+			newStudio.save()
+			return redirect(reverse('index',args = (link)))
+	else:
+		form = CreateStudioForm()
+	context = {'form': form}
+	return render(request, 'synphony/create_studio.html', context) 
 
 
 def displaySongList(request):
