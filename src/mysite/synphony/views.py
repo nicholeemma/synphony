@@ -38,28 +38,52 @@ def index(request):
 
 def displaySongList(request):
     print(request.path)
-    title = request.POST.get('song-name')
-    # TODO currently, only search songs by title
-    # search songs using third-party API of Netease Music
-    # use song title to call api
-    URL = "https://api.imjad.cn/cloudmusic/?type=search&search_type=1&s=" + title
-    r = requests.get(url=URL)
-    data = r.json()
-    # if not found -> API will return the following
-    #{"result":{"songCount":0},"code":200}
 
-    # process json -> dic list of Songs to be displayed to client
-    # i.e. name, id, author
+# # Commented out since search API unusable
+#     title = request.POST.get('song-name')
+#     # TODO currently, only search songs by title
+#     # search songs using third-party API of Netease Music
+#     # use song title to call api
+#     URL = "https://api.imjad.cn/cloudmusic/?type=search&search_type=100&s=" + title
+#     r = requests.get(url=URL)
+#     data = r.json()
+#     print(data)
+#     # if not found -> API will return the following
+#     #{"result":{"songCount":0},"code":200}
+
+#     # process json -> dic list of Songs to be displayed to client
+#     # i.e. name, id, author
+#     list = []
+#     for i in data['result']['songs']:
+#         dic = {}
+#         dic['name'] = i['name']
+#         dic['id'] = i['id']
+#         dic['ar'] = ""
+#         for j in i['ar']:
+#             dic['ar'] += j['name'] + "/ "
+#         dic['ar'] = dic['ar'][0: -2];  # remove last "/ "
+#         list.append(dic)
     list = []
-    for i in data['result']['songs']:
-        dic = {}
-        dic['name'] = i['name']
-        dic['id'] = i['id']
-        dic['ar'] = ""
-        for j in i['ar']:
-            dic['ar'] += j['name'] + "/ "
-        dic['ar'] = dic['ar'][0: -2];  # remove last "/ "
-        list.append(dic)
+    dic_1 = {}
+    dic_1['name'] = '近く远い斜め色の空'
+    dic_1['ar'] = 'DDBY'
+    dic_1['id'] = '715681'
+    list.append(dic_1)
+    dic_2 = {}
+    dic_2['name'] = '淡々泡々'
+    dic_2['ar'] = 'Foxtail-Grass Studio'
+    dic_2['id'] = '27669786'
+    list.append(dic_2)
+    dic_3 = {}
+    dic_3['name'] = 'ティコ'
+    dic_3['ar'] = '押尾コータロー'
+    dic_3['id'] = '22822613'
+    list.append(dic_3)
+    dic_4 = {}
+    dic_4['name'] = '信仰は存活の為に~Give Me Full of Your Tears'
+    dic_4['ar'] = '九条咲夜'
+    dic_4['id'] = '252479'
+    list.append(dic_4)
     return list
 
 # display the playlist for an active studio
