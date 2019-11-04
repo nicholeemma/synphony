@@ -36,36 +36,37 @@ def index(request, key=""):
 	return render(request, 'synphony/index.html', ctx)
 
 
-def signup(request):
-	if request.method == 'POST':
-		form = UserCreationForm(request.POST)
-		if form.is_valid():
-			form.save()
-			username = request.POST.get('username')
-			password = request.POST.get('password')
-			user = authenticate(username=username, password=password)
-			login(request, user)
-			return redirect('index')
-	else:
-		form = UserCreationForm()
-	context = {'form': form}
-	return render(request, 'synphony/signup.html', context)
+# def signup(request):
+# 	if request.method == 'POST':
+# 		form = UserCreationForm(request.POST)
+# 		if form.is_valid():
+# 			form.save()
+# 			username = request.POST.get('username')
+# 			password = request.POST.get('password')
+# 			user = authenticate(username=username, password=password)
+# 			login(request, user)
+# 			return redirect('index')
+# 	else:
+# 		form = UserCreationForm()
+# 	context = {'form': form}
+# 	return render(request, 'synphony/signup.html', context)
 
 
 def signup(request):
 	if request.user.is_authenticated:
-		return redirect('login')
+		url = 'http://127.0.0.1:8000/synphony/0123456789abcdef'
+		return redirect(url)
 	if request.method == 'POST':
 		form = UserCreationForm(request.POST)
 		if form.is_valid():
 			form.save()
 			username = request.POST.get('username')
-			password = request.POST.get('password')
-			print(username, password)
-			user = authenticate(username=username, password=form['password2'])
+			password = request.POST.get('password1')
+			user = authenticate(username=username, password=password)
 			print(user)
 			login(request, user)
-			return redirect('login')
+			url = 'http://127.0.0.1:8000/synphony/0123456789abcdef'
+			return redirect(url)
 	else:        
 		form = UserCreationForm()
 	context = {'form': form}
