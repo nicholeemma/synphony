@@ -16,6 +16,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.join(BASE_DIR,'synphony')
 
+LOGIN_REDIRECT_URL = 'synphony/index.html'
+LOGOUT_REDIRECT_URL = 'synphony/login.html'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -28,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 # Application definition
 
 INSTALLED_APPS = [

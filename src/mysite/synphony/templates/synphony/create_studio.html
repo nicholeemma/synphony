@@ -1,0 +1,8 @@
+{% extends 'synphony/base.html' %}
+{% block title %}Create a studio{% endblock title %}
+{% block main %}
+    <form method="POST"> {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Create"><hr>
+    </form>
+{% endblock %}
