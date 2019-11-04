@@ -35,7 +35,7 @@ function addSongs(val) {
     console.log("data to be sent to server: " + data)
 
     $.ajax({
-        url:  '/synphony/adgjlsfhk/addSongs',
+        url:  location.pathname.split("/")[2] + '/addSongs',
         type:  'post',
         dataType:  'json',
         data: data,
@@ -62,6 +62,9 @@ function addSongs(val) {
             <td>
                 <button class="btn deleteBtn" data-id="${id}">Remove</button>
             </td>
+			<td>
+				<button class="btn likeBtn" data-id="${id}" onclick=likeSongs(this) >Like</button>
+			</td>
         </tr>`;
  //   });
     $('#myTable > tbody').append(rows);
@@ -88,12 +91,32 @@ function  deleteSongs(el){
     data = {'id': musicId};
     console.log('music id: ' + musicId);
     $.ajax({
-        url:  `/synphony/adgjlsfhk/deleteSongs`,
+        url:  location.pathname.split("/")[2] + '/deleteSongs',
         type:  'post',
         dataType:  'json',
         data: data,
         success:  function (data) {
             $(el).parents()[1].remove()
+        }
+    });
+}
+
+function  likeSongs(el){
+    console.log('like song js triggered!');
+    musicId  =  $(el).data('id')
+    data = {'id': musicId};
+    console.log('music id: ' + musicId);
+    $.ajax({
+        url:  location.pathname.split("/")[2] + '/likeSongs',
+        type:  'post',
+        dataType:  'json',
+        data: data,
+        success:  function (response) {
+			var textBtn = 'Like'
+            if($(el).html() === 'Like' && !(response.hasOwnProperty('error'))) {
+				textBtn = 'Unlike'
+			}
+			$(el).html(textBtn)
         }
     });
 }

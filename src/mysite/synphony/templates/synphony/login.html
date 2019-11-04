@@ -1,0 +1,10 @@
+{% extends 'synphony/base.html' %}
+{% block title %}SignIn for synphony{% endblock title %}
+{% block main %}
+    <form method="POST"> {% csrf_token %}
+            Username: {{ form.username }}<br><br>
+            Password: {{ form.password1 }}<br><br>
+        <a href="/synphony/0123456789abcdef"><input type="submit" value="Login"></a><br><br>
+        <h7>Don't have an account yet? <a href="{% url 'signup' %}"> Sign up.</a></h7>
+    </form>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'synphony/base.html' %}
+{% block title %}Signup for synphony{% endblock title %}
+{% block main %}
+    <form class="site-form" method="POST">{% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
