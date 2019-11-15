@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 # from django.http import HttpResponse
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
-from .models import Studio, Music, Syner, Participant, Comment, History
+from .models import Studio, Music, Participant, Comment, History
 from .forms import MusicForm, CreateStudioForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
