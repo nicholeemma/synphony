@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 import requests
 from django.shortcuts import redirect
@@ -13,6 +14,14 @@ import random
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+import unicodedata
+import sys
+
+import io
+sys.stdout.reconfigure(encoding='utf-8')
+# sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding = 'utf-8')
+
+# sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding = 'utf-8')
 
 
 def index(request, key=""):
@@ -130,7 +139,14 @@ def displaySongList(request):
     # use song title to call api
     URL = "http://localhost:3000/search?keywords=" + title
     r = requests.get(url=URL)
+    print(r.encoding)
+    print(r.headers['content-type'])
+    
+    print(r)
     data = r.json()
+    # data
+    # data = sdata, "utf-8", errors="ignore")
+    
     print(data)
     # if not found -> API will return the following
     #{"result":{"songCount":0},"code":200}
@@ -145,7 +161,7 @@ def displaySongList(request):
         dic['ar'] = ""
         for j in i['artists']:
             dic['ar'] += j['name'] + "/ "
-        dic['ar'] = dic['ar'][0: -2];  # remove last "/ "
+        dic['ar'] = dic['ar'][0: -2]  # remove last "/ "
         list.append(dic)
     # list = []
     # dic_1 = {}
