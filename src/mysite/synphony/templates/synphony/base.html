@@ -24,7 +24,7 @@
   <ul class="ul-base">
     {% if not request.user.is_anonymous %}
     <li class="navbar"><a href="{% url 'logout' %}">Logout</a></li>
-    <li class="navbar"><a href="#">{{request.user}}</a></li>
+    <li class="navbar"><a href="#"><b>{{request.user}}</b></a></li>
     <li class="navbar"><a href="{% url 'studio' %}">Create Studio</a></li>
     {% else %}
     <li class="navbar"><a href="{% url 'login' %}">Login</a></li>
@@ -34,7 +34,7 @@
 </head>
 
 <body>
-  <h1 class='app-name bouncing'>Synphony</h1>
+  <h1 class="app-name element">Synphony</h1>
       {% block main %}
 
       {% endblock %}
@@ -54,7 +54,7 @@
 
 {% block footer %}
 <footer>
-  <div class="footer text-center">
+  <div class="footer text-center element">
     <h6>©
       <script>
         document.write(new Date().getFullYear())

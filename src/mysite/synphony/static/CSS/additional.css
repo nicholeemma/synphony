@@ -29,7 +29,7 @@
     bottom: 0;
     height: 2em;
     width: 100%;
-    background-color: black;
+    background-color:#383838;
     color: white;
     text-align: center;
   }
@@ -37,7 +37,7 @@
   .app-name{
     color: white;
     padding: 8px;
-    background-color: black;
+    background-color:#383838;
     font-family: cursive;
   }
 
@@ -60,12 +60,12 @@
   }
 
   .element {
-    animation: pulse 4s infinite;
+    animation: pulse 3s infinite alternate both;
   }
   
   @keyframes pulse {
     0% {
-      background-color: lightblue;
+      background-color: gray;
     }
     100% {
       background-color: black;

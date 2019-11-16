@@ -55,8 +55,7 @@ def index(request, key=""):
 
 def signup(request):
     if request.user.is_authenticated:
-        url = 'http://127.0.0.1:8000/synphony/0123456789abcdef'
-        return redirect(url)
+        return render(request, 'synphony/homepage.html')
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -66,8 +65,7 @@ def signup(request):
             user = authenticate(username=username, password=password)
             print(user)
             login(request, user)
-            url = 'http://127.0.0.1:8000/synphony/0123456789abcdef'
-            return redirect(url)
+            return redirect(reverse('home'))
     else:
         form = UserCreationForm()
     context = {'form': form}
@@ -87,7 +85,7 @@ def user_login(request):
             return HttpResponse("Invalid login details given")
     else:
         if request.user.is_authenticated:
-            return render(request, 'synphony/homepage.html')
+            return redirect(reverse('home'))
         else:
             form = UserCreationForm()
             context = {'form': form}
