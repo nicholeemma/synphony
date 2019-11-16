@@ -22,8 +22,8 @@ class Music(models.Model):
 # For now, we just extend the user here
 
 
-class Syner(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+# class Syner(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 # class Playlist(models.Model):
@@ -38,7 +38,7 @@ class Studio(models.Model):
 
     name = models.CharField(max_length=30)
     # participants = models.ManyToManyField(Participant)
-    music = models.ManyToManyField(Music) 
+    music = models.ManyToManyField(Music)
     # record whether the studio is active or not
     status = models.BooleanField(default=True)
     # constraint will be set in form.py cannot be larger than 10

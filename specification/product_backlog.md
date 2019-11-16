@@ -61,11 +61,11 @@ A complete list of all functionality (i.e., the actions) of your project, and an
 |                                          | P2       | 2        | 1 | <Nice to have> shuffle/Loop/Single loop songs                | Studio Page     | -       |
 |                                          | P3       | 1        | - | <Nice to have>customise the capacity(max number of participants) of the studio |  |  Alan        |
 |                                          | P3       | 1        | - | <Nice to have>set the lifetime for a studio (e.g. 2 hours)   |    |  Alan        |
-| **Participating a Studio (Participant)** | P1       | 8     |        | participate in a studio and listen to music in synchronization |  |  Alan        |
-| **Studio**                               | P1       | 1        |        | Display list of users in the studio                          |                           | Suqi        |
-|                                          | P1       | 1        |        | Display songs added in the studio                            |                             |  Suqi        |
+| **Participating a Studio (Participant)** | P1       | 8     | 2 | participate in a studio and listen to music in synchronization |  |  Alan        |
+| **Studio**                               | P1       | 1        | 2 | Display list of users in the studio                          |                           | Suqi        |
+|                                          | P1       | 1        | 1 | Display songs added in the studio                            |                             |  Suqi        |
 |                                          | P1       | 2       | 1 | "like" a song in a studio                                    | Studio Page                         |  Suqi    |
-|                                          | P2       | 5        |        | send real-time comments in studio                            |                             |  Suqi        |
+|                                          | P2       | 5        | 2 | send real-time comments in studio                            |                             |  Suqi        |
 |                                          | P3       | 1        | - | <Nice to have> Display lyrics                                |                                 |  Suqi        |
-| **All Users**                            | P2       | 1        |        | Remove liked songs                                           |                                            | Jiayue      |
-|                                          | P1       | 1        |        | View studio history (either as host or as participant)       | History Page | Wenjing     |
+| **All Users**                            | P2       | 1        | 1 | Remove liked songs                                           |                                            | Jiayue      |
+|                                          | P1       | 1        | 2 | View studio history (either as host or as participant)       | History Page | Wenjing     |

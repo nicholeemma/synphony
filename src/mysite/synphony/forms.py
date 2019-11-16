@@ -16,9 +16,7 @@ class CreateStudioForm(forms.ModelForm):
     class Meta:
         model = Studio
         fields = [
-            'name',
-            'music',
-            'status',
-            'host'
+            'name'
         ]
+        
         
