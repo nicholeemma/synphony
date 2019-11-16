@@ -2,14 +2,21 @@
 {% block extrajs %}
   {% load static %}
     <script src="{% static 'js/addSongs.js' %}"></script>
+    <style type="text/css">
+        body {
+            background-image: url('{% static "media/homepage.jpg" %}');
+            background-repeat: no-repeat;
+            background-size: 1450px 690px;
+        }
+    </style>
 {% endblock extrajs%}
 {% block title %}Studio{% endblock title%}
 {% block main %}
-<div class="col-10">
+<div class="container pt-5">
 <form  method = "POST">
     {% csrf_token %}
-    <input id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
-    <button id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
+    <input id="song-name" class="form-control" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
+    <button id="song-name-submit" class="btn btn-dark" name="song-name-submit" type="submit"/>Get</button>
 </form>
 <!-- Below is the search result -->
 <div class="search-box-result-wrapper">
@@ -18,7 +25,7 @@
     {% endfor %}
 </div>
 <!-- Audio -->
-<audio controls autoplay controller class="audio" id="music-bar">
+<audio controls autoplay controller class="audio audio-control" id="music-bar">
         <source id="audiosrc" src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3" type="audio/mpeg">
           Your browser does not support the audio element.
 </audio>

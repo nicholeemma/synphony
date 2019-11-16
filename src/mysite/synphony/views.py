@@ -73,25 +73,31 @@ def signup(request):
     context = {'form': form}
     return render(request, 'synphony/signup.html', context)
 
-
 def user_login(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password1')
+    user = authenticate(request, username=username, password=password)
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password1')
         try:
-            user = authenticate(request, username=username, password=password)
             login(request, user)
-            url = 'http://127.0.0.1:8000/synphony/0123456789abcdef'
-            return redirect(url)
+            return render(request, 'synphony/homepage.html')
         except:
             print("Someone tried to login and failed.")
             print("They used username: {} and password: {}".format(username, password))
             return HttpResponse("Invalid login details given")
     else:
-        form = UserCreationForm()
-        context = {'form': form}
-        return render(request, 'synphony/login.html', context)
+        if request.user.is_authenticated:
+            return render(request, 'synphony/homepage.html')
+        else:
+            form = UserCreationForm()
+            context = {'form': form}
+            return render(request, 'synphony/login.html', context)
 
+def home_page(request):
+    if request.user.is_authenticated:
+        return render(request, 'synphony/homepage.html')
+    else:
+        return render(request, 'synphony/login.html')
 
 def user_logout(request):
     logout(request)
@@ -107,12 +113,11 @@ def studio_view(request):
             link = hashlib.md5(hashcode).hexdigest()[:16]
             newStudio = Studio(
                 name=form.cleaned_data['name'],
-                status=form.cleaned_data['status'],
                 link=link,
-                host=form.cleaned_data['host']
+                host=request.user
             )
             newStudio.save()
-            newStudio.music.add(*(list(form.cleaned_data['music'])))
+            # newStudio.music.add(*(list(form.cleaned_data['music'])))
             return redirect(reverse('index', args=[link]))
     else:
         form = CreateStudioForm()
