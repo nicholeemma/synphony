@@ -13,6 +13,7 @@ import random
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
 
 def index(request, key=""):
@@ -71,18 +72,26 @@ def signup(request):
     context = {'form': form}
     return render(request, 'synphony/signup.html', context)
 
+
 def user_login(request):
     username = request.POST.get('username')
     password = request.POST.get('password1')
     user = authenticate(request, username=username, password=password)
+    errors = {}
     if request.method == 'POST':
         try:
             login(request, user)
             return render(request, 'synphony/homepage.html')
         except:
             print("Someone tried to login and failed.")
-            print("They used username: {} and password: {}".format(username, password))
-            return HttpResponse("Invalid login details given")
+            print("They used username: {} and password: {}".format(
+                username, password))
+            form = UserCreationForm()
+            context = {
+                'form': form,
+                'errors': 'Invalid login credentials, please try again!'
+            }
+            return render(request, 'synphony/login.html', context)
     else:
         if request.user.is_authenticated:
             return redirect(reverse('home'))
@@ -91,11 +100,13 @@ def user_login(request):
             context = {'form': form}
             return render(request, 'synphony/login.html', context)
 
+
 def home_page(request):
     if request.user.is_authenticated:
         return render(request, 'synphony/homepage.html')
     else:
         return render(request, 'synphony/login.html')
+
 
 def user_logout(request):
     logout(request)
@@ -107,7 +118,8 @@ def studio_view(request):
     if request.method == 'POST':
         form = CreateStudioForm(request.POST)
         if form.is_valid():
-            hashcode = (str(form.cleaned_data) + str(random.random())).encode('utf-8')
+            hashcode = (str(form.cleaned_data) +
+                        str(random.random())).encode('utf-8')
             link = hashlib.md5(hashcode).hexdigest()[:16]
             newStudio = Studio(
                 name=form.cleaned_data['name'],
@@ -136,7 +148,7 @@ def displaySongList(request):
     data = r.json()
     print(data)
     # if not found -> API will return the following
-    #{"result":{"songCount":0},"code":200}
+    # {"result":{"songCount":0},"code":200}
 
     # process json -> dic list of Songs to be displayed to client
     # i.e. name, id, author
@@ -148,7 +160,7 @@ def displaySongList(request):
         dic['ar'] = ""
         for j in i['artists']:
             dic['ar'] += j['name'] + "/ "
-        dic['ar'] = dic['ar'][0: -2];  # remove last "/ "
+        dic['ar'] = dic['ar'][0: -2]  # remove last "/ "
         list.append(dic)
     # list = []
     # dic_1 = {}
