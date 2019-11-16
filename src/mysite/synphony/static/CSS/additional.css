@@ -28,6 +28,7 @@
     left: 0;
     bottom: 0;
     height: 2em;
+    margin-top: 3em;
     width: 100%;
     background-color:#383838;
     color: white;
@@ -91,4 +92,8 @@
 
   .img.background {
     filter: drop-shadow(8px 8px 10px gray);
+  }
+
+  .table-data{
+    background-color: whitesmoke;
   }

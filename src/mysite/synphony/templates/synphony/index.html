@@ -1,59 +1,64 @@
 {% extends 'synphony/base.html' %}
 {% block extrajs %}
-  {% load static %}
-    <script src="{% static 'js/addSongs.js' %}"></script>
-    <style type="text/css">
-        body {
-            background-image: url('{% static "media/homepage.jpg" %}');
-            background-repeat: no-repeat;
-            background-size: 1450px 690px;
-        }
-    </style>
+{% load static %}
+<script src="{% static 'js/addSongs.js' %}"></script>
+<style type="text/css">
+    body {
+        background-image: url('{% static "media/homepage.jpg" %}');
+        background-size: 1450px 690px;
+    }
+</style>
 {% endblock extrajs%}
 {% block title %}Studio{% endblock title%}
 {% block main %}
 <div class="container pt-5">
-<form  method = "POST">
-    {% csrf_token %}
-    <input id="song-name" class="form-control" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
-    <button id="song-name-submit" class="btn btn-dark" name="song-name-submit" type="submit"/>Get</button>
-</form>
-<!-- Below is the search result -->
-<div class="search-box-result-wrapper">
-    {% for song in list %}
-    <li>{{song.name}}, by: {{song.ar}} <button id="{{song.id}}" onclick=addSongs(this.value) name="song-name-add" type="submit" value="{{song.id}}">Add</button></li>
-    {% endfor %}
-</div>
-<!-- Audio -->
-<audio controls autoplay controller class="audio audio-control" id="music-bar">
-        <source id="audiosrc" src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3" type="audio/mpeg">
-          Your browser does not support the audio element.
-</audio>
+    <!-- Audio -->
 
-<!-- Below is the playlist of the studio -->
-<table  class="table table-bordered"  id="myTable">
-<tbody>
-    <!-- NEED TO CHANGE BY NICOLE -->
-    {% csrf_token %}
-    {% for music in musics %}
-    <tr>
-        <td>
-        <div class = "to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div>
-        </td>
+    <audio controls autoplay controller class="audio audio-control" id="music-bar">
+        <source id="audiosrc"
+            src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3"
+            type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <!-- Below is the playlist of the studio -->
+    <table class="table table-bordered table-data" id="myTable">
+        <tbody>
+            <!-- NEED TO CHANGE BY NICOLE -->
+            {% csrf_token %}
+            {% for music in musics %}
+            <tr>
+                <td>
+                    <div class="to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div>
+                </td>
 
-        <td>{{music.name}}</td>
-            <td>{{music.description}}</td>
-            <td>
-                <button class="btn deleteBtn" data-id="{{music.id}}" onclick=deleteSongs(this) >Remove</button>
-            </td>
-			<td>
-                <button class="btn likeBtn" data-id="{{music.id}}" onclick=likeSongs(this) >{% if user in music.liked_user.all %}Unlike{% else %}Like{% endif %}</button>
-			</td>
-        </tr>
+                <td>{{music.name}}</td>
+                <td>{{music.description}}</td>
+                <td>
+                    <button class="btn deleteBtn" data-id="{{music.id}}" onclick=deleteSongs(this)>Remove</button>
+                </td>
+                <td>
+                    <button class="btn likeBtn" data-id="{{music.id}}"
+                        onclick=likeSongs(this)>{% if user in music.liked_user.all %}Unlike{% else %}Like{% endif %}</button>
+                </td>
+            </tr>
+            {% endfor %}
+            <!-- {{show}} -->
+        </tbody>
+    </table>
+    <form method="POST">
+        {% csrf_token %}
+        <input id="song-name" class="form-control" name="song-name" type="text" size="100"
+            placeholder="Search by typing song titles" required><br />
+        <button id="song-name-submit" class="btn btn-dark" name="song-name-submit" type="submit" />Get</button>
+    </form>
+    <!-- Below is the search result -->
+    <div class="search-box-result-wrapper table-data">
+        {% for song in list %}
+        <li>{{song.name}}, by: {{song.ar}}
+            <button id="{{song.id}}" class="btn btn-dark" onclick=addSongs(this.value) name="song-name-add"
+                type="submit" value="{{song.id}}">Add</button></li>
         {% endfor %}
-        <!-- {{show}} -->
-</tbody>
-</table>
+    </div>
+
 </div>
 {% endblock main %}
-
