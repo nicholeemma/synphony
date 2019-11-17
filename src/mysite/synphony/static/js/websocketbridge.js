@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 	var isHost = $("#music-bar").attr("data-isHost")
 
-	if(isHost === "True") { process_host(webSocket); }
+	if(isHost === "True") { process_host(); }
 
 });
 
@@ -30,42 +30,42 @@ function start_playing(cur) {
 }
 
 
-function process_host(websock){
+function process_host(){
 
 	$("#music-bar").bind("seeked", function() {
 		var cur_time = $("#music-bar")[0].currentTime;
-		websock.send(JSON.stringify({
+		webSocket.send(JSON.stringify({
 			'msg_type' : 'seeked_time', 'msg_content': cur_time
 		}));
 	});
 
 	$("#music-bar").bind("loadstart", function() {
 		var cur_src = $("#audiosrc").attr("src");
-		websock.send(JSON.stringify({
+		webSocket.send(JSON.stringify({
 			'msg_type' : 'loadstart_src', 'msg_content': cur_src
 		}));
 	});
 
 	$("#music-bar").bind("pause", function() {
-		websock.send(JSON.stringify({
+		webSocket.send(JSON.stringify({
 			'msg_type' : 'play_status', 'msg_content': 'pause'
 		}));
 	});
 
 	$("#music-bar").bind("playing", function() {
-		websock.send(JSON.stringify({
+		webSocket.send(JSON.stringify({
 			'msg_type' : 'play_status', 'msg_content': 'play'
 		}));
 	});
 
 	$("#music-bar").bind("volumechange", function() {
 		var volume = $("#music-bar")[0].volume;
-		websock.send(JSON.stringify({
+		webSocket.send(JSON.stringify({
 			'msg_type' : 'volume_change', 'msg_content': volume
 		}));
 	});
 
-	websock.onmessage = function(e) {
+	webSocket.onmessage = function(e) {
 
 		var data = JSON.parse(e.data);
 		var msg_type = data['msg_type'];
@@ -77,7 +77,7 @@ function process_host(websock){
 			var cur_time = $("#music-bar")[0].currentTime;
 			var cur_src = $("#audiosrc").attr("src");
 
-			websock.send(JSON.stringify({
+			webSocket.send(JSON.stringify({
 				'msg_type' : 'sync_all_response', 
 				'msg_content': {
 					'volume' : volume,
@@ -91,15 +91,15 @@ function process_host(websock){
 	}
 }
 
-function process_participant(websock){
+function process_participant(){
 
 	
-	if (webSocket.readyState === 1) {
+	if (webSocket.readyState === WebSocket.OPEN) {
 		webSocket.send(JSON.stringify(
 			{ 'msg_type' : 'sync_all_request', 'msg_content': 'None' }));
 	}
 
-	websock.onmessage = function(e) {
+	webSocket.onmessage = function(e) {
 
 		var data = JSON.parse(e.data);
 		var msg_type = data['msg_type'];
@@ -144,7 +144,7 @@ function process_participant(websock){
 				$("#music-bar")[0].paused = is_paused;
 			}
 
-		} else if (msg_type === 'stop_studio') {
+		} else if (msg_type === 'close_studio' && webSocket.readyState === WebSocket.OPEN) {
 
 			document.getElementById('music-bar').pause();
 			document.getElementById('music-bar').muted = true;
@@ -152,7 +152,7 @@ function process_participant(websock){
 			$('#start-btn').html("The studio has been closed.");
 			document.getElementById('start-btn').disabled = true;
 
-			websock.close();
+			webSocket.close();
 
 		}
 	};
@@ -162,15 +162,19 @@ function close_studio() {
 
 	var isHost = $("#music-bar").attr("data-isHost")
 
-	if(isHost === "True") { 
+	if(isHost === "True" && webSocket.readyState === WebSocket.OPEN) { 
 
-		$('#close-btn').html("You closed this studio.");
+		document.getElementById('music-bar').pause();
+		document.getElementById('music-bar').muted = true;
+
+		$('#close-btn').html("The studio has been closed.");
 		document.getElementById('close-btn').disabled = true;
 
 		webSocket.send(JSON.stringify({
-			'msg_type' : 'stop_studio', 'msg_content': "None"
+			'msg_type' : 'close_studio', 'msg_content': "None"
 		}));
-	}
 
-	webSocket.close();
+		webSocket.close();
+
+	}	
 }
