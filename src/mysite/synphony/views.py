@@ -14,10 +14,33 @@ import random
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+import unicodedata
+import sys
+
+import io
+
+sys.stdout.reconfigure(encoding='utf-8')
+# sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding = 'utf-8')
+
+# sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding = 'utf-8')
 from django.utils.safestring import mark_safe
 import json
 
+from django.shortcuts import render
 
+def test(request):
+    return render(request, 'synphony/test.html', {
+        'menu_data': {
+            'example': 13,
+
+        },
+    })
+def view_history(request):
+    comments = Comment.objects.filter(user_name=request.user) 
+    
+    studios = Studio.objects.filter(host=request.user)
+    musics = request.user.music_set.all()
+    return render(request,"synphony/view_history.html",{"comments":comments,"studios":studios,"musics":musics}) 
 def index(request, key=""):
 
     try:

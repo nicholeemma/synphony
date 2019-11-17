@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'django_react_templatetags',
+    # for react
+    # 'rest_framework',
+    # 'webpack_loader',
 ]
 
 MIDDLEWARE = [
@@ -60,12 +64,15 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
+        # for react
+        # 'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                 'django_react_templatetags.context_processors.react_context_processor',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
