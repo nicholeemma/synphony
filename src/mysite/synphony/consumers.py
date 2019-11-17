@@ -1,5 +1,6 @@
-# chat/consumers.py
+
 from channels.generic.websocket import WebsocketConsumer
+from channels.consumer import AsyncConsumer
 import json
 
 class ChatConsumer(WebsocketConsumer):
@@ -16,3 +17,16 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             'message': message
         }))
+
+
+class EchoConsumer(AsyncConsumer):
+    async def websocket_connect(self, event):
+        await self.send({
+            "type": "websocket.accept"
+        })
+    
+    async def websocket_recieve(self, event):
+        await self.send({
+            "type": "websocket.send",
+            "text": event["text"]
+        })
