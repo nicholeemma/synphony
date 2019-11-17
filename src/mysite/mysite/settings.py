@@ -14,7 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROJECT_ROOT = os.path.join(BASE_DIR,'synphony')
+PROJECT_ROOT = os.path.join(BASE_DIR, 'synphony')
 
 LOGIN_REDIRECT_URL = 'synphony/index.html'
 LOGOUT_REDIRECT_URL = 'synphony/login.html'
@@ -81,7 +81,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 ASGI_APPLICATION = "mysite.routing.application"  # Django Channel
-
+# Channels
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],  # redis configured at port 6379
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases

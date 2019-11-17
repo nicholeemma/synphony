@@ -23,6 +23,8 @@ sys.stdout.reconfigure(encoding='utf-8')
 # sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding = 'utf-8')
 
 # sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding = 'utf-8')
+from django.utils.safestring import mark_safe
+import json
 
 from django.shortcuts import render
 
@@ -57,23 +59,19 @@ def index(request, key=""):
     if request.method == 'POST' and 'song-name-submit' in request.POST:
         list = displaySongList(request)
 
-    ctx = {"musics": musics, "list": list, "user": request.user}
+    # # acquire the current studio
+    # if request.method == "POST":
+    #     if "postComment" in request.POST:
+    #         commentcontent = request.POST["commentinput"].strip()
+    #         commentuser = request.user
+    #         new_comment = Comment(user_name=commentuser, text=commentcontent, commented_on=cur_studio)
+    #         new_comment.save()
+    # cur_studio = Studio.objects.get(link__exact=key)
+    # comments = Comment.objects.filter(commented_on=cur_studio).order_by("created_on")
 
-    
-    # acquire the current studio
-    
-    
-    if request.method == "POST":
-        if "postComment" in request.POST:
-            commentcontent = request.POST["commentinput"].strip()
-            commentuser = request.user
-            new_comment = Comment(user_name=commentuser, text=commentcontent, commented_on=cur_studio)
-            new_comment.save()
-    cur_studio = Studio.objects.get(link__exact=key)
-    comments = Comment.objects.filter(commented_on=cur_studio).order_by("created_on")
-    # comments = Comment.objects.all() 
-    ctx = {"musics": musics, "list": list, "user": request.user, "comments":comments}
-    
+    comments = Comment.objects.all()
+    ctx = {"musics": musics, "list": list, "user": request.user,
+           'key_json': mark_safe(json.dumps(key)), "comments": comments}
     return render(request, 'synphony/index.html', ctx)
 
 
@@ -111,6 +109,7 @@ def signup(request):
     context = {'form': form}
     return render(request, 'synphony/signup.html', context)
 
+
 def user_login(request):
     username = request.POST.get('username')
     password = request.POST.get('password1')
@@ -131,11 +130,13 @@ def user_login(request):
             context = {'form': form}
             return render(request, 'synphony/login.html', context)
 
+
 def home_page(request):
     if request.user.is_authenticated:
         return render(request, 'synphony/homepage.html')
     else:
         return render(request, 'synphony/login.html')
+
 
 def user_logout(request):
     logout(request)
@@ -175,12 +176,12 @@ def displaySongList(request):
     r = requests.get(url=URL)
     print(r.encoding)
     print(r.headers['content-type'])
-    
+
     print(r)
     data = r.json()
     # data
     # data = sdata, "utf-8", errors="ignore")
-    
+
     print(data)
     # if not found -> API will return the following
     #{"result":{"songCount":0},"code":200}
@@ -226,7 +227,6 @@ def showStudio(request):
     pass
 
 # add a song to the playlist for an active studio
-
 
 
 def addSongsToStudio(request, key=""):
