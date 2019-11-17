@@ -13,6 +13,8 @@ import random
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.utils.safestring import mark_safe
+import json
 
 
 def index(request, key=""):
@@ -33,7 +35,7 @@ def index(request, key=""):
     if request.method == 'POST' and 'song-name-submit' in request.POST:
         list = displaySongList(request)
 
-    ctx = {"musics": musics, "list": list, "user": request.user}
+    ctx = {"musics": musics, "list": list, "user": request.user, 'key_json': mark_safe(json.dumps(key))}
     return render(request, 'synphony/index.html', ctx)
 
 
