@@ -40,7 +40,7 @@ class SyncConsumer(AsyncWebsocketConsumer):
 		self.studio_name = self.scope['url_route']['kwargs']['key']
 		self.studio_group_name = 'studio_%s' % self.studio_name
 
-		# Join room group
+		# Join studio group
 		await self.channel_layer.group_add(
 			self.studio_group_name,
 			self.channel_name
@@ -49,7 +49,7 @@ class SyncConsumer(AsyncWebsocketConsumer):
 		await self.accept()
 
 	async def disconnect(self, close_code):
-		# Leave room group
+		# Leave studio group
 		await self.channel_layer.group_discard(
 			self.studio_group_name,
 			self.channel_name
@@ -61,9 +61,7 @@ class SyncConsumer(AsyncWebsocketConsumer):
 		msg_type = text_data_json['msg_type']
 		msg_content = text_data_json['msg_content']
 		
-		print(msg_type)
-
-		# Send message to room group
+		# Send message to studio group
 		await self.channel_layer.group_send(
 			self.studio_group_name,
 			{
@@ -73,7 +71,7 @@ class SyncConsumer(AsyncWebsocketConsumer):
 			}
 		)
 
-	# Receive message from room group
+	# Receive message from studio group
 	async def sync_message(self, event):
 		msg_type = event['msg_type']
 		msg_content = event['msg_content']

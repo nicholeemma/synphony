@@ -1,23 +1,6 @@
 
 var webSocket = new WebSocket('ws://' + window.location.host + '/ws' + window.location.pathname);
 
-webSocket.onclose = function(e) { 
-
-	var isHost = $("#music-bar").attr("data-isHost")
-
-	if(isHost === "True") { 
-		websock.send(JSON.stringify({
-			'msg_type' : 'stop_studio', 'msg_content': "None"
-		}));
-	} else if (isHost === "False") {
-		console.log('Websocket closed'); 
-		document.getElementById('music-bar').pause();
-		document.getElementById('music-bar').muted = true;
-		document.getElementById('start-btn').disabled = true;
-		document.getElementById('start-btn').html = "The studio has been closed.";
-	}
-
-};
 
 $(document).ready(function(){
 
@@ -163,8 +146,31 @@ function process_participant(websock){
 
 		} else if (msg_type === 'stop_studio') {
 
+			document.getElementById('music-bar').pause();
+			document.getElementById('music-bar').muted = true;
+
+			$('#start-btn').html("The studio has been closed.");
+			document.getElementById('start-btn').disabled = true;
+
 			websock.close();
 
 		}
 	};
+}
+
+function close_studio() {
+
+	var isHost = $("#music-bar").attr("data-isHost")
+
+	if(isHost === "True") { 
+
+		$('#close-btn').html("You closed this studio.");
+		document.getElementById('close-btn').disabled = true;
+
+		webSocket.send(JSON.stringify({
+			'msg_type' : 'stop_studio', 'msg_content': "None"
+		}));
+	}
+
+	webSocket.close();
 }
