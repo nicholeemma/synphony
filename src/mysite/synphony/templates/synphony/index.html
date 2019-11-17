@@ -14,23 +14,49 @@
 </style>
 <div class="container pt-5">
     <!-- Audio -->
+{% endblock extrajs%}
+{% block title %}Studio{% endblock title%}
+{% block main %}
 
-    <audio controls autoplay controller class="audio audio-control" id="music-bar">
-        <source id="audiosrc"
-            src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3"
-            type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    <!-- Below is the playlist of the studio -->
-    <table class="table table-bordered table-data" id="myTable">
-        <tbody>
-            <!-- NEED TO CHANGE BY NICOLE -->
-            {% csrf_token %}
-            {% for music in musics %}
-            <tr>
-                <td>
-                    <div class="to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div>
-                </td>
+
+
+<div class="col-8">
+<form  method = "POST">
+    {% csrf_token %}
+    <button style="float: right; width: 7%;"id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
+
+    <input style="width:90%;"id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
+
+</form>
+<!-- Below is the search result -->
+<div class="search-box-result-wrapper" style="height:20%; overflow-y: scroll;">
+    {% for song in list %}
+    <button style="float: right; margin-right: 5%; "id="{{song.id}}" onclick=addSongs(this.value) name="song-name-add" type="submit" value="{{song.id}}">
+            Add
+        </button>
+        <li style="margin-bottom: 1%;">{{song.name}}, by: {{song.ar}}
+
+    </li>
+    {% endfor %}
+</div>
+<br>
+<!-- Audio -->
+<audio controls autoplay controller class="audio" id="music-bar" style="width: 100%;margin-bottom: 4%;">
+        <source id="audiosrc" src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+</audio>
+
+
+<!-- Below is the playlist of the studio -->
+<table  class="table table-bordered"  id="myTable">
+<tbody>
+    <!-- NEED TO CHANGE BY NICOLE -->
+    {% csrf_token %}
+    {% for music in musics %}
+    <tr>
+        <td>
+        <div class = "to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div>
+        </td>
 
                 <td>{{music.name}}</td>
                 <td>{{music.description}}</td>
@@ -46,31 +72,58 @@
             <!-- {{show}} -->
         </tbody>
     </table>
-    <form method="POST">
-        {% csrf_token %}
-        <input id="song-name" class="form-control" name="song-name" type="text" size="100"
-            placeholder="Search by typing song titles" required><br />
-        <button id="song-name-submit" class="btn btn-dark" name="song-name-submit" type="submit" />Get</button>
-    </form>
-    <!-- Below is the search result -->
-    <div class="search-box-result-wrapper table-data">
-        {% for song in list %}
-        <li>{{song.name}}, by: {{song.ar}}
-            <button id="{{song.id}}" class="btn btn-dark" onclick=addSongs(this.value) name="song-name-add"
-                type="submit" value="{{song.id}}">Add</button></li>
-        {% endfor %}
-    </div>
-
+  </div>
+  <div id="commenthere" style="float: right; height:50%; border-left: 50px;" class="col-4">
+        <div id="commentcontent" style="width: 100%; overflow-y: scroll;">
+        </div>
+        <br>
+        <textarea id = "commentinput" style="width: 100%;" name="commentinput">
+        </textarea>
+        <br>
+        <button id="postComment" name="postComment" style="width: 100%;">post</button>
 </div>
 
+{% endblock main %}
+<!-- <script src="{% static 'js/webSocket.js' %}"></script> -->
 <script>
-    document.addEventListener('DOMContentLoaded', function(){
-        const websocketbridge = new channels.websocketbridge();
-        websocketbridge.connect('/ws');
-        websocketbridge.listen(action, stream => {
-            console.log("Response here: ", action, stream);
-        })
-        document.ws = websocketbridge; /* for debugging */
-    })
+    var key = {{ key_json }}; //studio hashed key
+   // open new sockect
+    var chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/synphony/' + key + '/');
+
+    // append comment history
+    chatSocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        var message = data['message'];
+        console.log("message received: " + message)
+        document.querySelector('#commentcontent').innerHTML += (message + '\n');
+    };
+
+    //disonnect
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    // post comment
+    document.querySelector('#commentinput').focus();
+    document.querySelector('#commentinput').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#postComment').click();
+        }
+    };
+
+    document.querySelector('#postComment').onclick = function(e) {
+        var messageInputDom = document.querySelector('#commentinput');
+        var message = messageInputDom.value;
+        var user = "{{user.username}}: ";
+        console.log(user)
+        chatSocket.send(JSON.stringify({
+            'message': user + message
+        }));
+
+        console.log(message + " sent!")
+        messageInputDom.value = '';
+    };
 </script>
 {% endblock main %}
