@@ -40,5 +40,24 @@
 
   .view_history_btn {
    width: 100%;
-   margin-bottom: 20px;
+   margin-bottom: 50px;
+  }
+  #studio {
+    visibility: hidden;
+    z-index: 1;
+  display: auto;
+  position: absolute;
+  }
+  #comment {
+    visibility: hidden;
+    z-index: 2;
+    /* color:red; */
+  display: auto;
+  position: absolute;
+  } 
+  #music {
+    visibility: hidden;
+    z-index: 3;
+  display: auto;
+  position: absolute;
   }

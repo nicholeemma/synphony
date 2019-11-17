@@ -2,17 +2,17 @@
 {% block title %}Create a studio{% endblock title %}
 {% block main %}
 <div class="row" class="table-margin-top">
-<div class="col s4">
+<div class="col s8">
    
-        <button style="width: 100%; margin-bottom: 10%;" onclick="viewStudio()">
+        <button class = "view_history_btn" onclick="viewStudio()">
             My Studio
         </button>
         <br>
-        <button style="width: 100%; margin-bottom: 10%;" onclick="viewComment()">
+        <button class = "view_history_btn" onclick="viewComment()">
             My Comments
         </button>
         <br>
-        <button style="width: 100%; margin-bottom: 10%;" onclick="viewMusic()">
+        <button class = "view_history_btn" onclick="viewMusic()">
             Liked Music
         </button>
    
@@ -68,7 +68,7 @@
                 {% for music in musics %}
                 <tr>
                 <td> {{music.name}}</td>
-                <td> {{music.url}}</td> 
+                <td> <a href = "{{music.url}}"></a>Link</td> 
                 <td> {{music.description}}</td>               
                 </tr>
                 {% endfor %}
