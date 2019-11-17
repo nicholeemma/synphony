@@ -72,7 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                 'django_react_templatetags.context_processors.react_context_processor',
+                # 'django_react_templatetags.context_processors.react_context_processor',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
