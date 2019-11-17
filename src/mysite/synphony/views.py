@@ -50,11 +50,13 @@ def index(request, key=""):
     
     if request.method == "POST":
         if "postComment" in request.POST:
-            commentcontent = request.POST["commentinput"]
+            commentcontent = request.POST["commentinput"].strip()
             commentuser = request.user
             new_comment = Comment(user_name=commentuser, text=commentcontent, commented_on=cur_studio)
             new_comment.save()
-    comments = Comment.objects.filter(commented_on=cur_studio).order_by("created_on") 
+    cur_studio = Studio.objects.get(link__exact=key)
+    comments = Comment.objects.filter(commented_on=cur_studio).order_by("created_on")
+    # comments = Comment.objects.all() 
     ctx = {"musics": musics, "list": list, "user": request.user, "comments":comments}
     
     return render(request, 'synphony/index.html', ctx)
