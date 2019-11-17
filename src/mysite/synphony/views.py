@@ -36,7 +36,19 @@ def index(request, key=""):
     if request.method == 'POST' and 'song-name-submit' in request.POST:
         list = displaySongList(request)
 
-    ctx = {"musics": musics, "list": list, "user": request.user, 'key_json': mark_safe(json.dumps(key))}
+    # # acquire the current studio
+    # if request.method == "POST":
+    #     if "postComment" in request.POST:
+    #         commentcontent = request.POST["commentinput"].strip()
+    #         commentuser = request.user
+    #         new_comment = Comment(user_name=commentuser, text=commentcontent, commented_on=cur_studio)
+    #         new_comment.save()
+    # cur_studio = Studio.objects.get(link__exact=key)
+    # comments = Comment.objects.filter(commented_on=cur_studio).order_by("created_on")
+
+    comments = Comment.objects.all()
+    ctx = {"musics": musics, "list": list, "user": request.user,
+           'key_json': mark_safe(json.dumps(key)), "comments": comments}
     return render(request, 'synphony/index.html', ctx)
 
 
