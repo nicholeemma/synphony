@@ -1,5 +1,8 @@
 # synphony/consumers.py
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.db import database_sync_to_async
+from .models import Studio, Music, Participant, Comment, History
+from django.contrib.auth.models import User
 import json
 
 
@@ -27,6 +30,8 @@ class StudioConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        self.message = message
+        print(message)
 
         # Send message to room group
         await self.channel_layer.group_send(
@@ -36,6 +41,19 @@ class StudioConsumer(AsyncWebsocketConsumer):
                 'message': message
             }
         )
+
+        await self.store_comment()
+
+    @database_sync_to_async
+    def store_comment(self):
+        # acquire the current studio
+        cur_studio = Studio.objects.get(link__exact=self.key)
+        commentcontent = self.message
+        user_name = self.message.split(':', 2)[0]
+        commentuser = User.objects.get(username__exact=user_name)
+        new_comment = Comment(user_name=commentuser, text=commentcontent, commented_on=cur_studio)
+        new_comment.save()
+        print("comment saved!")
 
     # Receive message from room group
     async def chat_message(self, event):

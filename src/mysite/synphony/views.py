@@ -28,21 +28,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 from django.utils.safestring import mark_safe
 import json
 
-from django.shortcuts import render
 
-def test(request):
-    return render(request, 'synphony/test.html', {
-        'menu_data': {
-            'example': 13,
-
-        },
-    })
-def view_history(request):
-    comments = Comment.objects.filter(user_name=request.user) 
-    
-    studios = Studio.objects.filter(host=request.user)
-    musics = request.user.music_set.all()
-    return render(request,"synphony/view_history.html",{"comments":comments,"studios":studios,"musics":musics}) 
 def index(request, key=""):
 
     try:
@@ -60,16 +46,6 @@ def index(request, key=""):
     list = []
     if request.method == 'POST' and 'song-name-submit' in request.POST:
         list = displaySongList(request)
-
-    # # acquire the current studio
-    # if request.method == "POST":
-    #     if "postComment" in request.POST:
-    #         commentcontent = request.POST["commentinput"].strip()
-    #         commentuser = request.user
-    #         new_comment = Comment(user_name=commentuser, text=commentcontent, commented_on=cur_studio)
-    #         new_comment.save()
-    # cur_studio = Studio.objects.get(link__exact=key)
-    # comments = Comment.objects.filter(commented_on=cur_studio).order_by("created_on")
 
     comments = Comment.objects.all()
     ctx = {"musics": musics, "list": list, "user": request.user,
