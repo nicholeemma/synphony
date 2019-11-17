@@ -1,10 +1,42 @@
 {% extends 'synphony/base.html' %}
 {% block title %}SignIn for synphony{% endblock title %}
 {% block main %}
-    <form method="POST"> {% csrf_token %}
-            Username: {{ form.username }}<br><br>
-            Password: {{ form.password1 }}<br><br>
-        <a href="/synphony/0123456789abcdef"><input type="submit" value="Login"></a><br><br>
-        <h7>Don't have an account yet? <a href="{% url 'signup' %}"> Sign up.</a></h7>
-    </form>
+{% load static %}
+{% block loginnav %}
+{% endblock %}
+<style type="text/css">
+    body {
+        background-image: url('{% static "media/login.jpg" %}');
+        background-repeat: no-repeat;
+        background-size: 1450px 690px;
+    }
+</style>
+<div class="container pt-3">
+    <div class="row justify-content-sm-center">
+        <div class="card border-info text-center">
+
+            <div class="card-header">
+                Sign in to continue
+            </div>
+            <form method="POST" class="form-signin"> {% csrf_token %}
+                <div class="card-body">
+                    Username:{{ form.username }}<br><br>
+                    Password: {{ form.password1 }}<br><br>
+                    <a href="/synphony/0123456789abcdef"><input type="submit" class="btn btn-dark "
+                            value="Login"></a><br><br>
+                    <h7>Don't have an account yet? <a href="{% url 'signup' %}" class="alert-link "> Sign up.</a></h7>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="back side"><span class='dot'></span></div>
+    <div class="left side"><span class='dot'></span></div>
+    <div class="right side"><span class='dot'></span></div>
+    <div class="top side"><span class='dot'></span></div>
+    <div class="bottom side"><span class='dot'></span></div>
+    <div class="front side"><span class='dot'></span></div>
+</div>
+
 {% endblock %}

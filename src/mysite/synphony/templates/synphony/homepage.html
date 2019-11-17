@@ -1,0 +1,12 @@
+{% extends 'synphony/base.html' %}
+{% block extrajs %}
+{% load static %}
+<style type="text/css">
+    body {
+        background-image: url('{% static "media/homepage.jpg" %}');
+        background-repeat: no-repeat;
+        background-size: 1450px 690px;
+    }
+</style>
+{% endblock extrajs%}
+{% block title %}Studio{% endblock title%}

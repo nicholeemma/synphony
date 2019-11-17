@@ -3,11 +3,11 @@
 Logout
 {% endblock %}
 {% block main %}
-    <form method="POST" class="container">
-        <h6>You have been logged out </h6>
-        {% csrf_token %}
-        <p>Click<a href="{% url 'login' %}"> here</a> to login again.</p>
+<div class="container pt-5">
+    <form method="POST">
+        <h4>You have been logged out!</h6>
+        {% csrf_token %}<hr>
+        <p>Click<a href="{% url 'login' %}" class="alert-link"> here</a> to login again.</p>
     </form>
-{% endblock %}
-{% block footer %}
+</div>
 {% endblock %}
