@@ -43,6 +43,20 @@ def index(request, key=""):
         list = displaySongList(request)
 
     ctx = {"musics": musics, "list": list, "user": request.user}
+
+    
+    # acquire the current studio
+    
+    
+    if request.method == "POST":
+        if "postComment" in request.POST:
+            commentcontent = request.POST["commentinput"]
+            commentuser = request.user
+            new_comment = Comment(user_name=commentuser, text=commentcontent, commented_on=cur_studio)
+            new_comment.save()
+    comments = Comment.objects.filter(commented_on=cur_studio).order_by("created_on") 
+    ctx = {"musics": musics, "list": list, "user": request.user, "comments":comments}
+    
     return render(request, 'synphony/index.html', ctx)
 
 
@@ -195,6 +209,7 @@ def showStudio(request):
     pass
 
 # add a song to the playlist for an active studio
+
 
 
 def addSongsToStudio(request, key=""):

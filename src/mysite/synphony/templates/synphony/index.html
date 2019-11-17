@@ -12,6 +12,27 @@
 {% block title %}Studio{% endblock title%}
 {% block main %}
 
+<div id="commenthere" style="float: right; border-left: 50px;" class="col-4">
+        {% csrf_token %}
+        <form action="#" method="POST">
+                {% csrf_token %}
+        <textarea id="commentcontent" style="width: 100%;height:50%; overflow-y: scroll;">
+               
+                {% for comment in comments %}
+                <p>{{comment.text}}</p>
+                <p>{{comment.user_name.username}}</p>
+                {% endfor %}
+        </textarea>
+        <br>
+        {% csrf_token %}
+        <textarea id = "commentinput" style="width: 100%;height:10%;" name="commentinput">
+            
+        </textarea>
+        <br>
+        <button id="postComment" name="postComment" style="width: 100%;height:2%;">post</button>
+        </form>
+</div>
+
 <div class="col-8">
 <form  method = "POST">
     {% csrf_token %}
@@ -24,10 +45,9 @@
     {% for song in list %}
     <button style="float: right; margin-right: 5%; "id="{{song.id}}" onclick=addSongs(this.value) name="song-name-add" type="submit" value="{{song.id}}">
             Add
-        </button>
+    </button>
         <li style="margin-bottom: 1%;">{{song.name}}, by: {{song.ar}} 
-        
-    </li>
+        </li>
     {% endfor %}
 </div>
 <br>
@@ -63,37 +83,8 @@
             <!-- {{show}} -->
         </tbody>
     </table>
-    <form method="POST">
-        {% csrf_token %}
-        <input id="song-name" class="form-control" name="song-name" type="text" size="100"
-            placeholder="Search by typing song titles" required><br />
-        <button id="song-name-submit" class="btn btn-dark" name="song-name-submit" type="submit" />Get</button>
-    </form>
-    <!-- Below is the search result -->
-    <div class="search-box-result-wrapper table-data">
-        {% for song in list %}
-        <li>{{song.name}}, by: {{song.ar}}
-            <button id="{{song.id}}" class="btn btn-dark" onclick=addSongs(this.value) name="song-name-add"
-                type="submit" value="{{song.id}}">Add</button></li>
-        {% endfor %}
-        <!-- {{show}} -->
-</tbody>
-</table>
-</div>
-<div id="commenthere" style="float: right; border-left: 50px;" class="col-4">
-    <form action="#" method="POST">
-    <textarea id="commentcontent" style="width: 100%;height:50%; overflow-y: scroll;">
+   
+  
 
-    </textarea>
-    <br>
-<textarea id = "commentinput" style="width: 100%;height:10%;">
-
-</textarea>
-<br>
-<button name="postComment" style="width: 100%;height:2%;">post</button>
-</form>
-</div>
 {% endblock main %}
 
-</div>
-{% endblock main %}
