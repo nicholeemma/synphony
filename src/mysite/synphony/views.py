@@ -15,27 +15,30 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.core.exceptions import ValidationError
 
-
+@login_required
 def index(request, key=""):
 
-    try:
-        cur_studio = Studio.objects.get(link__exact=key)
-    except:
-        print("Studio does not exist!")
-        return redirect(reverse('index', args=["0123456789abcdef"]))
+	ctx = dict()
 
-    music_list, music_list_des = [], []
-    for s_music in cur_studio.music.all():
-        music_list.append(s_music.id)
-        music_list_des.append(s_music.description)
-    musics = Music.objects.filter(id__in=music_list)
+	try:
+		cur_studio = Studio.objects.get(link__exact=key)
+		ctx['isHost'] = (cur_studio.host.id == request.user.id)
+	except:
+		print("Studio does not exist!")
+		return redirect(reverse('index', args=["0123456789abcdef"]))
 
-    list = []
-    if request.method == 'POST' and 'song-name-submit' in request.POST:
-        list = displaySongList(request)
+	music_list, music_list_des = [], []
+	for s_music in cur_studio.music.all():
+		music_list.append(s_music.id)
+		music_list_des.append(s_music.description)
+	musics = Music.objects.filter(id__in=music_list)
 
-    ctx = {"musics": musics, "list": list, "user": request.user}
-    return render(request, 'synphony/index.html', ctx)
+	list = []
+	if request.method == 'POST' and 'song-name-submit' in request.POST:
+		list = displaySongList(request)
+
+	ctx.update({"musics": musics, "list": list, "user": request.user})
+	return render(request, 'synphony/index.html', ctx)
 
 
 # def signup(request):
@@ -55,219 +58,219 @@ def index(request, key=""):
 
 
 def signup(request):
-    if request.user.is_authenticated:
-        return render(request, 'synphony/homepage.html')
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = request.POST.get('username')
-            password = request.POST.get('password1')
-            user = authenticate(username=username, password=password)
-            print(user)
-            login(request, user)
-            return redirect(reverse('home'))
-    else:
-        form = UserCreationForm()
-    context = {'form': form}
-    return render(request, 'synphony/signup.html', context)
+	if request.user.is_authenticated:
+		return render(request, 'synphony/homepage.html')
+	if request.method == 'POST':
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			username = request.POST.get('username')
+			password = request.POST.get('password1')
+			user = authenticate(username=username, password=password)
+			print(user)
+			login(request, user)
+			return redirect(reverse('home'))
+	else:
+		form = UserCreationForm()
+	context = {'form': form}
+	return render(request, 'synphony/signup.html', context)
 
 
 def user_login(request):
-    username = request.POST.get('username')
-    password = request.POST.get('password1')
-    user = authenticate(request, username=username, password=password)
-    errors = {}
-    if request.method == 'POST':
-        try:
-            login(request, user)
-            return render(request, 'synphony/homepage.html')
-        except:
-            print("Someone tried to login and failed.")
-            print("They used username: {} and password: {}".format(
-                username, password))
-            form = UserCreationForm()
-            context = {
-                'form': form,
-                'errors': 'Invalid login credentials, please try again!'
-            }
-            return render(request, 'synphony/login.html', context)
-    else:
-        if request.user.is_authenticated:
-            return redirect(reverse('home'))
-        else:
-            form = UserCreationForm()
-            context = {'form': form}
-            return render(request, 'synphony/login.html', context)
+	username = request.POST.get('username')
+	password = request.POST.get('password1')
+	user = authenticate(request, username=username, password=password)
+	errors = {}
+	if request.method == 'POST':
+		try:
+			login(request, user)
+			return render(request, 'synphony/homepage.html')
+		except:
+			print("Someone tried to login and failed.")
+			print("They used username: {} and password: {}".format(
+				username, password))
+			form = UserCreationForm()
+			context = {
+				'form': form,
+				'errors': 'Invalid login credentials, please try again!'
+			}
+			return render(request, 'synphony/login.html', context)
+	else:
+		if request.user.is_authenticated:
+			return redirect(reverse('home'))
+		else:
+			form = UserCreationForm()
+			context = {'form': form}
+			return render(request, 'synphony/login.html', context)
 
 
 def home_page(request):
-    if request.user.is_authenticated:
-        return render(request, 'synphony/homepage.html')
-    else:
-        return render(request, 'synphony/login.html')
+	if request.user.is_authenticated:
+		return render(request, 'synphony/homepage.html')
+	else:
+		return render(request, 'synphony/login.html')
 
 
 def user_logout(request):
-    logout(request)
-    return render(request, 'synphony/logout.html')
+	logout(request)
+	return render(request, 'synphony/logout.html')
 
 
 @login_required
 def studio_view(request):
-    if request.method == 'POST':
-        form = CreateStudioForm(request.POST)
-        if form.is_valid():
-            hashcode = (str(form.cleaned_data) +
-                        str(random.random())).encode('utf-8')
-            link = hashlib.md5(hashcode).hexdigest()[:16]
-            newStudio = Studio(
-                name=form.cleaned_data['name'],
-                link=link,
-                host=request.user
-            )
-            newStudio.save()
-            # newStudio.music.add(*(list(form.cleaned_data['music'])))
-            return redirect(reverse('index', args=[link]))
-    else:
-        form = CreateStudioForm()
-    context = {'form': form}
-    return render(request, 'synphony/create_studio.html', context)
+	if request.method == 'POST':
+		form = CreateStudioForm(request.POST)
+		if form.is_valid():
+			hashcode = (str(form.cleaned_data) +
+						str(random.random())).encode('utf-8')
+			link = hashlib.md5(hashcode).hexdigest()[:16]
+			newStudio = Studio(
+				name=form.cleaned_data['name'],
+				link=link,
+				host=request.user
+			)
+			newStudio.save()
+			# newStudio.music.add(*(list(form.cleaned_data['music'])))
+			return redirect(reverse('index', args=[link]))
+	else:
+		form = CreateStudioForm()
+	context = {'form': form}
+	return render(request, 'synphony/create_studio.html', context)
 
 
 def displaySongList(request):
-    print(request.path)
+	print(request.path)
 
 # Commented out since search API unusable
-    title = request.POST.get('song-name')
-    # TODO currently, only search songs by title
-    # search songs using third-party API of Netease Music
-    # use song title to call api
-    URL = "http://localhost:3000/search?keywords=" + title
-    r = requests.get(url=URL)
-    data = r.json()
-    print(data)
-    # if not found -> API will return the following
-    # {"result":{"songCount":0},"code":200}
+	title = request.POST.get('song-name')
+	# TODO currently, only search songs by title
+	# search songs using third-party API of Netease Music
+	# use song title to call api
+	URL = "http://localhost:3000/search?keywords=" + title
+	r = requests.get(url=URL)
+	data = r.json()
+	print(data)
+	# if not found -> API will return the following
+	# {"result":{"songCount":0},"code":200}
 
-    # process json -> dic list of Songs to be displayed to client
-    # i.e. name, id, author
-    list = []
-    for i in data['result']['songs']:
-        dic = {}
-        dic['name'] = i['name']
-        dic['id'] = i['id']
-        dic['ar'] = ""
-        for j in i['artists']:
-            dic['ar'] += j['name'] + "/ "
-        dic['ar'] = dic['ar'][0: -2]  # remove last "/ "
-        list.append(dic)
-    # list = []
-    # dic_1 = {}
-    # dic_1['name'] = '近く远い斜め色の空'
-    # dic_1['ar'] = 'DDBY'
-    # dic_1['id'] = '715681'
-    # list.append(dic_1)
-    # dic_2 = {}
-    # dic_2['name'] = '淡々泡々'
-    # dic_2['ar'] = 'Foxtail-Grass Studio'
-    # dic_2['id'] = '27669786'
-    # list.append(dic_2)
-    # dic_3 = {}
-    # dic_3['name'] = 'ティコ'
-    # dic_3['ar'] = '押尾コータロー'
-    # dic_3['id'] = '22822613'
-    # list.append(dic_3)
-    # dic_4 = {}
-    # dic_4['name'] = '信仰は存活の為に~Give Me Full of Your Tears'
-    # dic_4['ar'] = '九条咲夜'
-    # dic_4['id'] = '252479'
-    # list.append(dic_4)
-    return list
+	# process json -> dic list of Songs to be displayed to client
+	# i.e. name, id, author
+	list = []
+	for i in data['result']['songs']:
+		dic = {}
+		dic['name'] = i['name']
+		dic['id'] = i['id']
+		dic['ar'] = ""
+		for j in i['artists']:
+			dic['ar'] += j['name'] + "/ "
+		dic['ar'] = dic['ar'][0: -2]  # remove last "/ "
+		list.append(dic)
+	# list = []
+	# dic_1 = {}
+	# dic_1['name'] = '近く远い斜め色の空'
+	# dic_1['ar'] = 'DDBY'
+	# dic_1['id'] = '715681'
+	# list.append(dic_1)
+	# dic_2 = {}
+	# dic_2['name'] = '淡々泡々'
+	# dic_2['ar'] = 'Foxtail-Grass Studio'
+	# dic_2['id'] = '27669786'
+	# list.append(dic_2)
+	# dic_3 = {}
+	# dic_3['name'] = 'ティコ'
+	# dic_3['ar'] = '押尾コータロー'
+	# dic_3['id'] = '22822613'
+	# list.append(dic_3)
+	# dic_4 = {}
+	# dic_4['name'] = '信仰は存活の為に~Give Me Full of Your Tears'
+	# dic_4['ar'] = '九条咲夜'
+	# dic_4['id'] = '252479'
+	# list.append(dic_4)
+	return list
 
 
 # display the playlist for an active studio
 def showStudio(request):
-    pass
+	pass
 
 # add a song to the playlist for an active studio
 
 
 def addSongsToStudio(request, key=""):
-    # print(request.POST)
-    rsp = dict()
+	# print(request.POST)
+	rsp = dict()
 
-    try:
-        studio = Studio.objects.get(link__exact=key)
-    except:
-        rsp['error'] = "Studio not found!"
-        return JsonResponse(rsp)
+	try:
+		studio = Studio.objects.get(link__exact=key)
+	except:
+		rsp['error'] = "Studio not found!"
+		return JsonResponse(rsp)
 
-    music_form = MusicForm(request.POST)
-    if(music_form.is_valid()):
-        music = music_form.save()
-        studio.music.add(music)
-        rsp['music'] = model_to_dict(music)
-        print(rsp)
-    else:
-        rsp['error'] = "form not valid!"
-        print("forms not valid!")
-    return JsonResponse(rsp)
+	music_form = MusicForm(request.POST)
+	if(music_form.is_valid()):
+		music = music_form.save()
+		studio.music.add(music)
+		rsp['music'] = model_to_dict(music)
+		print(rsp)
+	else:
+		rsp['error'] = "form not valid!"
+		print("forms not valid!")
+	return JsonResponse(rsp)
 
 
 # remove a song from the playlist for an active studio
 def deleteSongsFromPlayList(request, key=""):
 
-    rsp = dict()
-    try:
-        cur_studio = Studio.objects.get(link__exact=key)
-    except:
-        rsp['error'] = "Studio not found!"
-        return JsonResponse(rsp)
+	rsp = dict()
+	try:
+		cur_studio = Studio.objects.get(link__exact=key)
+	except:
+		rsp['error'] = "Studio not found!"
+		return JsonResponse(rsp)
 
-    music_id = request.POST.get('id')
-    # check if music_id has corresponding music
-    music_set = Music.objects.filter(pk=music_id)
-    if music_set.count() > 0:
-        music = Music.objects.get(pk=music_id)
-        # check if music in cur_studio
-        if cur_studio.music.filter(pk=music_id).count() > 0:
-            cur_studio.music.remove(music)
+	music_id = request.POST.get('id')
+	# check if music_id has corresponding music
+	music_set = Music.objects.filter(pk=music_id)
+	if music_set.count() > 0:
+		music = Music.objects.get(pk=music_id)
+		# check if music in cur_studio
+		if cur_studio.music.filter(pk=music_id).count() > 0:
+			cur_studio.music.remove(music)
 
-    return JsonResponse(rsp)
+	return JsonResponse(rsp)
 
 
 # like a song from the playlist for an active studio
 def likeSongsFromPlayList(request, key=""):
 
-    rsp = dict()
+	rsp = dict()
 
-    # check login status
-    if not request.user.is_authenticated:
-        rsp['error'] = "Please login to like music!"
-        return JsonResponse(rsp)
+	# check login status
+	if not request.user.is_authenticated:
+		rsp['error'] = "Please login to like music!"
+		return JsonResponse(rsp)
 
-    # check if studio exists
-    try:
-        cur_studio = Studio.objects.get(link__exact=key)
-    except:
-        rsp['error'] = "Studio not found!"
-        return JsonResponse(rsp)
+	# check if studio exists
+	try:
+		cur_studio = Studio.objects.get(link__exact=key)
+	except:
+		rsp['error'] = "Studio not found!"
+		return JsonResponse(rsp)
 
-    # check if music in cur_studio
-    try:
-        music_id = request.POST.get('id')
-        music = cur_studio.music.get(pk=music_id)
-    except:
-        rsp['error'] = "Music not found in current studio!"
-        return JsonResponse(rsp)
+	# check if music in cur_studio
+	try:
+		music_id = request.POST.get('id')
+		music = cur_studio.music.get(pk=music_id)
+	except:
+		rsp['error'] = "Music not found in current studio!"
+		return JsonResponse(rsp)
 
-    try:
-        # Unlike music
-        music.liked_user.get(id=request.user.id)
-        music.liked_user.remove(request.user)
-    except:
-        # Like music
-        music.liked_user.add(request.user)
+	try:
+		# Unlike music
+		music.liked_user.get(id=request.user.id)
+		music.liked_user.remove(request.user)
+	except:
+		# Like music
+		music.liked_user.add(request.user)
 
-    return JsonResponse(rsp)
+	return JsonResponse(rsp)
