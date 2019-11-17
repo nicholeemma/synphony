@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 import requests
 from django.shortcuts import redirect
@@ -57,8 +58,7 @@ def index(request, key=""):
 
 def signup(request):
     if request.user.is_authenticated:
-        url = 'http://127.0.0.1:8000/synphony/0123456789abcdef'
-        return redirect(url)
+        return render(request, 'synphony/homepage.html')
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -68,8 +68,7 @@ def signup(request):
             user = authenticate(username=username, password=password)
             print(user)
             login(request, user)
-            url = 'http://127.0.0.1:8000/synphony/0123456789abcdef'
-            return redirect(url)
+            return redirect(reverse('home'))
     else:
         form = UserCreationForm()
     context = {'form': form}
@@ -77,22 +76,31 @@ def signup(request):
 
 
 def user_login(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password1')
+    user = authenticate(request, username=username, password=password)
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password1')
         try:
-            user = authenticate(request, username=username, password=password)
             login(request, user)
-            url = 'http://127.0.0.1:8000/synphony/0123456789abcdef'
-            return redirect(url)
+            return render(request, 'synphony/homepage.html')
         except:
             print("Someone tried to login and failed.")
             print("They used username: {} and password: {}".format(username, password))
             return HttpResponse("Invalid login details given")
     else:
-        form = UserCreationForm()
-        context = {'form': form}
-        return render(request, 'synphony/login.html', context)
+        if request.user.is_authenticated:
+            return redirect(reverse('home'))
+        else:
+            form = UserCreationForm()
+            context = {'form': form}
+            return render(request, 'synphony/login.html', context)
+
+
+def home_page(request):
+    if request.user.is_authenticated:
+        return render(request, 'synphony/homepage.html')
+    else:
+        return render(request, 'synphony/login.html')
 
 
 def user_logout(request):
@@ -109,12 +117,11 @@ def studio_view(request):
             link = hashlib.md5(hashcode).hexdigest()[:16]
             newStudio = Studio(
                 name=form.cleaned_data['name'],
-                status=form.cleaned_data['status'],
                 link=link,
-                host=form.cleaned_data['host']
+                host=request.user
             )
             newStudio.save()
-            newStudio.music.add(*(list(form.cleaned_data['music'])))
+            # newStudio.music.add(*(list(form.cleaned_data['music'])))
             return redirect(reverse('index', args=[link]))
     else:
         form = CreateStudioForm()
@@ -132,7 +139,14 @@ def displaySongList(request):
     # use song title to call api
     URL = "http://localhost:3000/search?keywords=" + title
     r = requests.get(url=URL)
+    print(r.encoding)
+    print(r.headers['content-type'])
+
+    print(r)
     data = r.json()
+    # data
+    # data = sdata, "utf-8", errors="ignore")
+
     print(data)
     # if not found -> API will return the following
     #{"result":{"songCount":0},"code":200}
@@ -147,7 +161,7 @@ def displaySongList(request):
         dic['ar'] = ""
         for j in i['artists']:
             dic['ar'] += j['name'] + "/ "
-        dic['ar'] = dic['ar'][0: -2];  # remove last "/ "
+        dic['ar'] = dic['ar'][0: -2]  # remove last "/ "
         list.append(dic)
     # list = []
     # dic_1 = {}
