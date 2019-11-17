@@ -1,29 +1,27 @@
-<!DOCTYPE html>
+import React,{Component} from react;
+// import '/CSS/additional.css'
+class App extends Component {
+    render() {
+        return (
+            <div className="App">
+                <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    {% load static %}
-    <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.min.css' %}"  media="screen"/>
-    <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen"/>
-     
-    <link type="text/css" rel="stylesheet" href="{% static 'css/additional.css' %}"  />
   {% block js %}
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
-  <!-- <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
-  -->{% endblock %} 
+
+  {% endblock %}
   {% load static %}
   <script type="text/javascript" src="{% static 'js/playMusic.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/viewHistory.js' %}"></script>
   {% block extrajs %}
   {% endblock %}
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+ 
   <title>{% block title %}Synphony{% endblock title %}</title>
   {% load static %}
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -68,3 +66,8 @@
 {% endblock %}
 
 </html>
+            </div>
+        );
+    }
+}
+export default App;
