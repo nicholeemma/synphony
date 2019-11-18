@@ -18,19 +18,23 @@
 {% if isHost %}
 <form  method = "POST">
     {% csrf_token %}
-    <button style="float: right; width: 7%;"id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
+    <button class="btn btn-dark" style="float: right; width: 7%;"id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
 
     <input style="width:90%;"id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
 
 </form>
 <!-- Below is the search result -->
-<div class="search-box-result-wrapper" style="height:20%; overflow-y: scroll;">
+<div class="search-box-result-wrapper" style="height:20%; overflow-y: scroll; margin-top: 3%;">
     {% for song in list %}
-    <button style="float: right; margin-right: 5%; " onclick=addSongs(this.value) name="song-name-add" type="submit" value="{{song.id}}">
-      Add
-    </button>
-    <li style="margin-bottom: 1%;" id="{{song.id}}">{{song.name}}, by: {{song.ar}}</li>
-    {% endfor %}
+	<div class="row m-1">
+		<div class="col-10">
+			<li id="{{song.id}}">{{song.name}}, by: {{song.ar}} </li>
+		</div>
+		<div class="col-2">
+			<button class="btn btn-dark" style="float: right; " onclick=addSongs(this.value) name="song-name-add" type="submit" value="{{song.id}}"> Add </button>
+		</div>
+    </div>
+	{% endfor %}
 </div>
 <br>
 {% endif %}
@@ -52,28 +56,31 @@
 
 
 <!-- Below is the playlist of the studio -->
-<table  class="table table-bordered"  id="myTable">
+<table  class="table table-bordered"  id="myTable" style="color: white;">
 	<tbody>
-		<!-- NEED TO CHANGE BY NICOLE -->
-		{% csrf_token %}
-		{% for music in musics %}
-		<tr>
-			{% if isHost %}
-			<td> <div class = "to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div> </td>
-			{% endif %}
-			<td>{{music.name}}</td>
-			<td>{{music.description}}</td>
-			{% if isHost %}
-			<td>
-				<button class="btn deleteBtn" data-id="{{music.id}}" onclick=deleteSongs(this)>Remove</button>
-			</td>
-			{% endif %}
-			<td>
-				<button class="btn likeBtn" data-id="{{music.id}}"
-					onclick=likeSongs(this)>{% if user in music.liked_user.all %}Unlike{% else %}Like{% endif %}</button>
-			</td>
-		</tr>
-		{% endfor %}
+	<!-- NEED TO CHANGE BY NICOLE -->
+	{% csrf_token %}
+	{% for music in musics %}
+	<tr>
+		{% if isHost %}
+		<td> <div class = "to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div> </td>
+		{% endif %}
+
+		<td>{{music.name}}</td>
+		<td>{{music.description}}</td>
+
+		{% if isHost %}
+		<td>
+			<button class="btn btn-dark" data-id="{{music.id}}" onclick=deleteSongs(this)>Remove</button>
+		</td>
+		{% endif %}
+
+		<td>
+			<button class="btn btn-dark"  data-id="{{music.id}}"
+				onclick=likeSongs(this)>{% if user in music.liked_user.all %}Unlike{% else %}Like{% endif %}</button>
+		</td>
+	</tr>
+	{% endfor %}
 		<!-- {{show}} -->
 	</tbody>
 </table>
@@ -86,7 +93,7 @@
         <textarea id = "commentinput" style="width: 100%;" name="commentinput">
         </textarea>
         <br>
-        <button id="postComment" name="postComment" style="width: 100%;">post</button>
+        <button class="btn btn-dark" id="postComment" name="postComment" style="width: 100%;">post</button>
 </div>
 <!-- <script src="{% static 'js/webSocket.js' %}"></script> -->
 <script>

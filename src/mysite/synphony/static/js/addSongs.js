@@ -60,10 +60,10 @@ function addSongs(val) {
             <td>${name}</td>
             <td>${description}</td>
             <td>
-                <button class="btn deleteBtn" data-id="${id}">Remove</button>
+                <button class="btn btn-dark" data-id="${id}">Remove</button>
             </td>
 			<td>
-				<button class="btn likeBtn" data-id="${id}" onclick=likeSongs(this) >Like</button>
+				<button class="btn btn-dark" data-id="${id}" onclick=likeSongs(this) >Like</button>
 			</td>
         </tr>`;
  //   });

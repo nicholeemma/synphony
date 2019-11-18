@@ -226,7 +226,6 @@ def addSongsToStudio(request, key=""):
 		return JsonResponse(rsp)
 
 	music_form = MusicForm(request.POST)
-	print(request.POST)
 	if(music_form.is_valid()):
 		music = music_form.save()
 		studio.music.add(music)

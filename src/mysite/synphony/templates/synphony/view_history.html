@@ -12,15 +12,18 @@
 </style>
 <div class="col-4">
    
-        <button class = "view_history_btn" onclick="viewStudio()">
+        <button class="btn btn-dark" style="width: 100%;
+        margin-bottom: 50px;" onclick="viewStudio()">
             My Studio
         </button>
         <br>
-        <button class = "view_history_btn" onclick="viewComment()">
+        <button class="btn btn-dark" style="width: 100%;
+        margin-bottom: 50px;"  onclick="viewComment()">
             My Comments
         </button>
         <br>
-        <button class = "view_history_btn" onclick="viewMusic()">
+        <button class="btn btn-dark" style="width: 100%;
+        margin-bottom: 50px;"  onclick="viewMusic()">
             Liked Music
         </button>
    
@@ -29,11 +32,11 @@
         <div id="studio">
         <table>
         <tr>
-            <th>NAME</th>
-            <th>STATUS</th>
-            <th>LINK</th>
-            <th>START_TIME</th>
-            <th>END_START</th>
+            <th style="width: 15%;">NAME</th>
+            <th style="width: 15%;">STATUS</th>
+            <th style="width: 15%;">LINK</th>
+            <th style="width: 15%;">START_TIME</th>
+            <th style="width: 15%;">END_START</th>
         </tr>
             {% for studio in studios %}
             <tr>
@@ -50,8 +53,8 @@
         <div id="comment">
             <table>
                 <tr>
-                        <th>TEXT</th>
-                        <th>STUDIO</th>
+                        <th >TEXT</th>
+                        <th >STUDIO</th>
                         
                 </tr>
                 
@@ -68,15 +71,15 @@
             <table>
                 <tr>
                         
-                        <th>NAME</th>
-                        <th>URL</th>
-                        <th>DESCRIPTION</th>
+                        <th style="width: 30%;">NAME</th>
+                        <th style="width: 30%;">URL</th>
+                        <th style="width: 30%;">DESCRIPTION</th>
                 </tr>
 
                 {% for music in musics %}
                 <tr>
                 <td> {{music.name}}</td>
-                <td> <a href = "{{music.url}}"></a>Link</td> 
+                <td> <a href="{{music.url}}"></a>Link</td> 
                 <td> {{music.description}}</td>               
                 </tr>
                 {% endfor %}
