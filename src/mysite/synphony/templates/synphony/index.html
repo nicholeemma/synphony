@@ -16,15 +16,15 @@
 <div class="col-8">
 <form  method = "POST">
     {% csrf_token %}
-    <button style="float: right; width: 7%;"id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
+    <button class="btn btn-dark" style="float: right; width: 7%;"id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
 
     <input style="width:90%;"id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
 
 </form>
 <!-- Below is the search result -->
-<div class="search-box-result-wrapper" style="height:20%; overflow-y: scroll;">
+<div class="search-box-result-wrapper" style="height:20%; overflow-y: scroll; margin-top: 3%;">
     {% for song in list %}
-    <button style="float: right; margin-right: 5%; "id="{{song.id}}" onclick=addSongs(this.value) name="song-name-add" type="submit" value="{{song.id}}">
+    <button class="btn btn-dark" style="float: right; margin-right: 5%; height:30px"id="{{song.id}}" onclick=addSongs(this.value) name="song-name-add" type="submit" value="{{song.id}}">
             Add
         </button>
         <li style="margin-bottom: 1%;">{{song.name}}, by: {{song.ar}}
@@ -41,7 +41,7 @@
 
 
 <!-- Below is the playlist of the studio -->
-<table  class="table table-bordered"  id="myTable">
+<table  class="table table-bordered"  id="myTable" style="color: white;">
 <tbody>
     <!-- NEED TO CHANGE BY NICOLE -->
     {% csrf_token %}
@@ -54,10 +54,10 @@
                 <td>{{music.name}}</td>
                 <td>{{music.description}}</td>
                 <td>
-                    <button class="btn deleteBtn" data-id="{{music.id}}" onclick=deleteSongs(this)>Remove</button>
+                    <button class="btn btn-dark" data-id="{{music.id}}" onclick=deleteSongs(this)>Remove</button>
                 </td>
                 <td>
-                    <button class="btn likeBtn" data-id="{{music.id}}"
+                    <button class="btn btn-dark"  data-id="{{music.id}}"
                         onclick=likeSongs(this)>{% if user in music.liked_user.all %}Unlike{% else %}Like{% endif %}</button>
                 </td>
             </tr>
@@ -73,7 +73,7 @@
         <textarea id = "commentinput" style="width: 100%;" name="commentinput">
         </textarea>
         <br>
-        <button id="postComment" name="postComment" style="width: 100%;">post</button>
+        <button class="btn btn-dark" id="postComment" name="postComment" style="width: 100%;">post</button>
 </div>
 <!-- <script src="{% static 'js/webSocket.js' %}"></script> -->
 <script>
