@@ -16,6 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.join(BASE_DIR, 'synphony')
 
+LOGIN_URL = "/synphony/login"
 LOGIN_REDIRECT_URL = 'synphony/index.html'
 LOGOUT_REDIRECT_URL = 'synphony/login.html'
 
@@ -28,7 +29,7 @@ SECRET_KEY = 'm*s3k&i$b&4p*9gr*mbm$(v03=k%n1t2ko#18c=r439w&o=r1q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost"]
 
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 # Application definition
@@ -81,6 +82,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 ASGI_APPLICATION = "mysite.routing.application"  # Django Channel
+
 # Channels
 CHANNEL_LAYERS = {
     'default': {
