@@ -14,15 +14,10 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
-<<<<<<< HEAD
-# sys.stdout.reconfigure(encoding='utf-8')
 
-
-=======
 #sys.stdout.reconfigure(encoding='utf-8')
 
 @login_required
->>>>>>> ac0d3a8702775f66a35dca0b6bfbc055882bd2d9
 def index(request, key=""):
 
 	ctx = dict()
@@ -148,10 +143,7 @@ def studio_view(request):
     context = {'form': form}
     return render(request, 'synphony/create_studio.html', context)
 
-<<<<<<< HEAD
 
-=======
->>>>>>> ac0d3a8702775f66a35dca0b6bfbc055882bd2d9
 def view_history(request):
     comments = Comment.objects.filter(user_name=request.user)
 
