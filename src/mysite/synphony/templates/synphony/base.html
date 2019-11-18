@@ -35,6 +35,7 @@
     <li class="navbar"><a href="{% url 'logout' %}">Logout</a></li>
     <li class="navbar"><a href="#"><b>{{request.user}}</b></a></li>
     <li class="navbar"><a href="{% url 'studio' %}">Create Studio</a></li>
+    <li class="navbar"><a href="{% url 'view_history' %}">View History</a></li>
     {% else %}
     {% block loginnav %}
     <li class="navbar"><a href="{% url 'login' %}">Login</a></li>
