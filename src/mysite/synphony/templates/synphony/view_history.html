@@ -1,0 +1,80 @@
+{% extends 'synphony/base.html' %}
+{% block title %}Create a studio{% endblock title %}
+{% block main %}
+<div class="row" class="table-margin-top">
+<div class="col s8">
+   
+        <button class = "view_history_btn" onclick="viewStudio()">
+            My Studio
+        </button>
+        <br>
+        <button class = "view_history_btn" onclick="viewComment()">
+            My Comments
+        </button>
+        <br>
+        <button class = "view_history_btn" onclick="viewMusic()">
+            Liked Music
+        </button>
+   
+</div>
+<div class="col s8">
+        <div id="studio">
+        <table>
+        <tr>
+            <th>NAME</th>
+            <th>STATUS</th>
+            <th>LINK</th>
+            <th>START_TIME</th>
+            <th>END_START</th>
+        </tr>
+            {% for studio in studios %}
+            <tr>
+            <td> {{studio.name}}</td>
+            <td> {{studio.status}}</td>
+            <td> {{studio.link}} </td>
+            <td> {{studio.start_time}}</td>
+            <td> {{studio.end_time}}</td>
+        </tr>
+            {% endfor %}
+        
+        </table>
+        </div>
+        <div id="comment">
+            <table>
+                <tr>
+                        <th>TEXT</th>
+                        <th>STUDIO</th>
+                        
+                </tr>
+                
+                {% for comment in comments %}
+                <tr>
+                <td> {{comment.text}}</td>
+                <td> {{comment.commented_on.name}}</td>                
+                </tr>
+                {% endfor %}
+            
+        </table>
+        </div>
+        <div id="music">
+            <table>
+                <tr>
+                        
+                        <th>NAME</th>
+                        <th>URL</th>
+                        <th>DESCRIPTION</th>
+                </tr>
+
+                {% for music in musics %}
+                <tr>
+                <td> {{music.name}}</td>
+                <td> <a href = "{{music.url}}"></a>Link</td> 
+                <td> {{music.description}}</td>               
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+</div>
+</div>
+    
+{% endblock %}

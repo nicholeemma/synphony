@@ -4,14 +4,23 @@
 <head>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% load static %}
+    <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.min.css' %}"  media="screen"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen"/>
+
+    <link type="text/css" rel="stylesheet" href="{% static 'CSS/additional.css' %}"  />
   {% block js %}
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
-
-  {% endblock %}
+  <!-- <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+  -->{% endblock %}
   {% load static %}
   <script type="text/javascript" src="{% static 'js/playMusic.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/viewHistory.js' %}"></script>
   {% block extrajs %}
   {% endblock %}
   <meta charset="utf-8">
@@ -36,8 +45,10 @@
 </head>
 
 <body>
-  <h1 class="app-name element">Synphony</h1>
-      {% block main %}
+  <h1 class='text-center'>Synphony</h1>
+  <div class="container d-flex h-100">
+    <div class="row justify-content-center" style="width: 100%;">
+        {% block main %}
 
       {% endblock %}
     </div>

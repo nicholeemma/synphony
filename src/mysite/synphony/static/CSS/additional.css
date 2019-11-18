@@ -30,12 +30,20 @@
     height: 2em;
     margin-top: 3em;
     width: 100%;
+    height: 2.5rem;  
     background-color:#383838;
     color: white;
     text-align: center;
+            /* Footer height */
   }
+  /* #commentcontent {
+    width: 200px;
+    height: 200px;
+  } */
+ 
+   
 
-  .app-name{
+  /* .app-name{
     color: white;
     padding: 8px;
     background-color:#383838;
@@ -84,11 +92,11 @@
   .audio-control{
     border: solid 5px;
     white-space: normal;
-    /* padding: 5em; */
-    border-radius: 2em;
+    padding: 5em; */
+   /* border-radius: 2em;
     margin-left: -1em;
     margin-top: 1em;
-  }
+  }  */
 
   .img.background {
     filter: drop-shadow(8px 8px 10px gray);
@@ -96,4 +104,31 @@
 
   .table-data{
     background-color: whitesmoke;
+  } 
+    /* height: 2.5rem;             */
+    /* Footer height */
+  /* } */
+
+  .view_history_btn {
+   width: 100%;
+   margin-bottom: 50px;
+  }
+  #studio {
+    visibility: hidden;
+    z-index: 1;
+  display: auto;
+  position: absolute;
+  }
+  #comment {
+    visibility: hidden;
+    z-index: 2;
+    /* color:red; */
+  display: auto;
+  position: absolute;
+  } 
+  #music {
+    visibility: hidden;
+    z-index: 3;
+  display: auto;
+  position: absolute;
   }

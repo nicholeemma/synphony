@@ -1,5 +1,6 @@
+
 from django.shortcuts import render
-import requests
+import requests, hashlib, random, json
 from django.shortcuts import redirect
 # from django.http import HttpResponse
 from django.http import JsonResponse
@@ -8,12 +9,10 @@ from .models import Studio, Music, Participant, Comment, History
 from .forms import MusicForm, CreateStudioForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-import hashlib
-import random
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-from django.core.exceptions import ValidationError
+from django.utils.safestring import mark_safe
 
 @login_required
 def index(request, key=""):
@@ -25,7 +24,7 @@ def index(request, key=""):
 		ctx['isHost'] = (cur_studio.host.id == request.user.id)
 	except:
 		print("Studio does not exist!")
-		return redirect(reverse('index', args=["0123456789abcdef"]))
+		return redirect(reverse('home'))
 
 	music_list, music_list_des = [], []
 	for s_music in cur_studio.music.all():
@@ -37,9 +36,10 @@ def index(request, key=""):
 	if request.method == 'POST' and 'song-name-submit' in request.POST:
 		list = displaySongList(request)
 
-	ctx.update({"musics": musics, "list": list, "user": request.user})
+	comments = Comment.objects.all()
+	ctx.update({"musics": musics, "list": list, "user": request.user,
+		   'key_json': mark_safe(json.dumps(key)), "comments": comments})
 	return render(request, 'synphony/index.html', ctx)
-
 
 # def signup(request):
 #   if request.method == 'POST':
@@ -76,6 +76,7 @@ def signup(request):
 	return render(request, 'synphony/signup.html', context)
 
 
+
 def user_login(request):
 	username = request.POST.get('username')
 	password = request.POST.get('password1')
@@ -104,11 +105,13 @@ def user_login(request):
 			return render(request, 'synphony/login.html', context)
 
 
+
 def home_page(request):
 	if request.user.is_authenticated:
 		return render(request, 'synphony/homepage.html')
 	else:
 		return render(request, 'synphony/login.html')
+
 
 
 def user_logout(request):
@@ -148,10 +151,17 @@ def displaySongList(request):
 	# use song title to call api
 	URL = "http://localhost:3000/search?keywords=" + title
 	r = requests.get(url=URL)
+	print(r.encoding)
+	print(r.headers['content-type'])
+
+	print(r)
 	data = r.json()
+	# data
+	# data = sdata, "utf-8", errors="ignore")
+
 	print(data)
 	# if not found -> API will return the following
-	# {"result":{"songCount":0},"code":200}
+	#{"result":{"songCount":0},"code":200}
 
 	# process json -> dic list of Songs to be displayed to client
 	# i.e. name, id, author
@@ -211,9 +221,9 @@ def addSongsToStudio(request, key=""):
 		music = music_form.save()
 		studio.music.add(music)
 		rsp['music'] = model_to_dict(music)
-		print(rsp)
 	else:
 		rsp['error'] = "form not valid!"
+		print(music_form.errors)
 		print("forms not valid!")
 	return JsonResponse(rsp)
 

@@ -25,7 +25,7 @@ function addSongs(val) {
         // 0: "Hello"
         // 1: " by: 王霏霏（Fei）/ 王嘉尔  Add"
     var object = document.getElementById(val);
-    var song_info = object.parentElement.textContent;
+    var song_info = object.textContent;
     var name = song_info.split(',')[0];
     var description = song_info.split(',')[1].slice(0, -3);
     var data = {};

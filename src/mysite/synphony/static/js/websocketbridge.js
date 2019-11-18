@@ -1,5 +1,5 @@
 
-var webSocket = new WebSocket('ws://' + window.location.host + '/ws' + window.location.pathname);
+var webSocket = new WebSocket('ws://' + window.location.host + '/ws/sync' + window.location.pathname);
 
 
 $(document).ready(function(){
