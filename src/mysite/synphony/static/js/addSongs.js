@@ -25,9 +25,9 @@ function addSongs(val) {
         // 0: "Hello"
         // 1: " by: 王霏霏（Fei）/ 王嘉尔  Add"
     var object = document.getElementById(val);
-    var song_info = object.parentElement.textContent;
+    var song_info = object.textContent;
     var name = song_info.split(',')[0];
-    var description = song_info.split(',')[1].slice(0, -3);
+    var description = song_info.split(',')[1];
     var data = {};
     data['name'] = name;
     data['description'] = description;
@@ -60,10 +60,10 @@ function addSongs(val) {
             <td>${name}</td>
             <td>${description}</td>
             <td>
-                <button class="btn deleteBtn" data-id="${id}">Remove</button>
+                <button class="btn btn-dark" data-id="${id}">Remove</button>
             </td>
 			<td>
-				<button class="btn likeBtn" data-id="${id}" onclick=likeSongs(this) >Like</button>
+				<button class="btn btn-dark" data-id="${id}" onclick=likeSongs(this) >Like</button>
 			</td>
         </tr>`;
  //   });

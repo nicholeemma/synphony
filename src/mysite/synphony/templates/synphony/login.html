@@ -4,6 +4,7 @@
 {% load static %}
 {% block loginnav %}
 {% endblock %}
+
 <style type="text/css">
     body {
         background-image: url('{% static "media/login.jpg" %}');
@@ -24,6 +25,9 @@
                     Password: {{ form.password1 }}<br><br>
                     <a href="/synphony/0123456789abcdef"><input type="submit" class="btn btn-dark "
                             value="Login"></a><br><br>
+                    {% if errors %}
+                    <div class="alert alert-warning" role="alert"><b>{{errors}}</b></div>
+                    {% endif %}
                     <h7>Don't have an account yet? <a href="{% url 'signup' %}" class="alert-link "> Sign up.</a></h7>
                 </div>
             </form>
