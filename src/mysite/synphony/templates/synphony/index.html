@@ -66,6 +66,13 @@
         </tbody>
     </table>
   </div>
+  <div class="participants">
+    {% if participants %}
+    {% for p in participants %}
+        {{p.participant_user.username}}
+    {% endfor %}
+    {% endif %}
+  </div>
   <div id="commenthere" style="float: right; height:50%; border-left: 50px;" class="col-4">
         <div id="commentcontent" style="width: 100%; overflow-y: scroll;">
         </div>
@@ -82,14 +89,19 @@
     var chatSocket = new WebSocket(
         'ws://' + window.location.host +
         '/ws/synphony/' + key + '/');
-
+    
+    chatSocket.onopen = (e) =>{
+        console.log("ee", e);
+    }
     // append comment history
     chatSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
+        console.log("here with ", e);
         var message = data['message'];
         console.log("message received: " + message)
         document.querySelector('#commentcontent').innerHTML += (message + '\n');
     };
+
 
     //disonnect
     chatSocket.onclose = function(e) {

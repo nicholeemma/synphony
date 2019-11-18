@@ -18,7 +18,7 @@ from django.utils.safestring import mark_safe
 import json
 import sys
 
-sys.stdout.reconfigure(encoding='utf-8')
+# sys.stdout.reconfigure(encoding='utf-8')
 def index(request, key=""):
 
     try:
@@ -38,8 +38,9 @@ def index(request, key=""):
         list = displaySongList(request)
 
     comments = Comment.objects.all()
+    participants = Participant.objects.filter(studio=cur_studio)
     ctx = {"musics": musics, "list": list, "user": request.user,
-           'key_json': mark_safe(json.dumps(key)), "comments": comments}
+           'key_json': mark_safe(json.dumps(key)), "comments": comments, "participants": participants}
     return render(request, 'synphony/index.html', ctx)
 
 

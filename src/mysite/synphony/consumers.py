@@ -7,16 +7,19 @@ import json
 
 
 class StudioConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
+    async def connect(self, event=''):
         self.key = self.scope['url_route']['kwargs']['key']
         self.studio_group_name = '%s' % self.key
+         # login the user to this session.
+        # save the session (if the session backend does not access the db you can use `sync_to_async`)
+        
         # Join room group
         # await is used to call asynchronous functions that perform I/O.
         await self.channel_layer.group_add(
             self.studio_group_name,
             self.channel_name
         )
-
+        await self.store_participant()
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -38,7 +41,8 @@ class StudioConsumer(AsyncWebsocketConsumer):
             self.studio_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message,
+                'user': self.scope["user"]
             }
         )
 
@@ -54,6 +58,20 @@ class StudioConsumer(AsyncWebsocketConsumer):
         new_comment = Comment(user_name=commentuser, text=commentcontent, commented_on=cur_studio)
         new_comment.save()
         print("comment saved!")
+
+    @database_sync_to_async
+    def store_participant(self):
+        # acquire the current studio
+        cur_studio = Studio.objects.get(link=self.key)
+        print(cur_studio)
+        user_name = self.scope["user"]
+        cur_user = User.objects.get(username=user_name)
+        print(Participant.objects.filter(participant_user=cur_user))
+        print(Participant.objects.filter(participant_user=cur_user, studio=cur_studio))
+        # if (Participant.objects.filter(participant_user=cur_user) not in Participant.objects.filter(participant_user=cur_user, studio=cur_studio)) or (Participant.objects.filter(participant_user=cur_user, studio=cur_studio) is None):
+        new_p = Participant(participant_user=cur_user, studio=cur_studio)
+        new_p.save()
+        print("p saved!")
 
     # Receive message from room group
     async def chat_message(self, event):
