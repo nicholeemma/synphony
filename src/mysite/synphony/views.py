@@ -18,7 +18,9 @@ from django.utils.safestring import mark_safe
 import json
 import sys
 
-sys.stdout.reconfigure(encoding='utf-8')
+# sys.stdout.reconfigure(encoding='utf-8')
+
+
 def index(request, key=""):
 
     try:
@@ -130,12 +132,15 @@ def studio_view(request):
         form = CreateStudioForm()
     context = {'form': form}
     return render(request, 'synphony/create_studio.html', context)
+
+
 def view_history(request):
-    comments = Comment.objects.filter(user_name=request.user) 
-    
+    comments = Comment.objects.filter(user_name=request.user)
+
     studios = Studio.objects.filter(host=request.user)
     musics = request.user.music_set.all()
-    return render(request,"synphony/view_history.html",{"comments":comments,"studios":studios,"musics":musics}) 
+    return render(request, "synphony/view_history.html", {"comments": comments, "studios": studios, "musics": musics})
+
 
 def displaySongList(request):
     print(request.path)
