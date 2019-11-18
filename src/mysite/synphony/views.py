@@ -1,6 +1,6 @@
 
 from django.shortcuts import render
-import requests, hashlib, random, json
+import requests, hashlib, random, json, sys
 from django.shortcuts import redirect
 # from django.http import HttpResponse
 from django.http import JsonResponse
@@ -13,6 +13,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+
+#sys.stdout.reconfigure(encoding='utf-8')
 
 @login_required
 def index(request, key=""):
@@ -121,24 +123,31 @@ def user_logout(request):
 
 @login_required
 def studio_view(request):
-	if request.method == 'POST':
-		form = CreateStudioForm(request.POST)
-		if form.is_valid():
-			hashcode = (str(form.cleaned_data) +
-						str(random.random())).encode('utf-8')
-			link = hashlib.md5(hashcode).hexdigest()[:16]
-			newStudio = Studio(
-				name=form.cleaned_data['name'],
-				link=link,
-				host=request.user
-			)
-			newStudio.save()
-			# newStudio.music.add(*(list(form.cleaned_data['music'])))
-			return redirect(reverse('index', args=[link]))
-	else:
-		form = CreateStudioForm()
-	context = {'form': form}
-	return render(request, 'synphony/create_studio.html', context)
+
+    if request.method == 'POST':
+        form = CreateStudioForm(request.POST)
+        if form.is_valid():
+            hashcode = (str(form.cleaned_data) + str(random.random())).encode('utf-8')
+            link = hashlib.md5(hashcode).hexdigest()[:16]
+            newStudio = Studio(
+                name=form.cleaned_data['name'],
+                link=link,
+                host=request.user
+            )
+            newStudio.save()
+            # newStudio.music.add(*(list(form.cleaned_data['music'])))
+            return redirect(reverse('index', args=[link]))
+    else:
+        form = CreateStudioForm()
+    context = {'form': form}
+    return render(request, 'synphony/create_studio.html', context)
+
+def view_history(request):
+    comments = Comment.objects.filter(user_name=request.user) 
+    
+    studios = Studio.objects.filter(host=request.user)
+    musics = request.user.music_set.all()
+    return render(request,"synphony/view_history.html",{"comments":comments,"studios":studios,"musics":musics}) 
 
 
 def displaySongList(request):
@@ -217,6 +226,7 @@ def addSongsToStudio(request, key=""):
 		return JsonResponse(rsp)
 
 	music_form = MusicForm(request.POST)
+	print(request.POST)
 	if(music_form.is_valid()):
 		music = music_form.save()
 		studio.music.add(music)

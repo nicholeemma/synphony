@@ -16,6 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.join(BASE_DIR, 'synphony')
 
+LOGIN_URL = "/synphony/login"
 LOGIN_REDIRECT_URL = 'synphony/index.html'
 LOGOUT_REDIRECT_URL = 'synphony/login.html'
 

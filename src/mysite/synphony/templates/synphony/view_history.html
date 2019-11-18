@@ -1,8 +1,16 @@
 {% extends 'synphony/base.html' %}
-{% block title %}Create a studio{% endblock title %}
+
+{% block title %}View history{% endblock title%}
+{% load static %}
 {% block main %}
-<div class="row" class="table-margin-top">
-<div class="col s8">
+<style type="text/css">
+    body {
+        background-image: url('{% static "media/homepage.jpg" %}');
+        background-repeat: no-repeat;
+        background-size: 1450px 690px;
+    }
+</style>
+<div class="col-4">
    
         <button class = "view_history_btn" onclick="viewStudio()">
             My Studio
@@ -17,7 +25,7 @@
         </button>
    
 </div>
-<div class="col s8">
+<div class="col-8" style="color: white;">
         <div id="studio">
         <table>
         <tr>
@@ -75,6 +83,6 @@
             </table>
         </div>
 </div>
-</div>
+
     
 {% endblock %}

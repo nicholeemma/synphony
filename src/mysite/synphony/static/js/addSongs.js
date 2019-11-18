@@ -27,7 +27,7 @@ function addSongs(val) {
     var object = document.getElementById(val);
     var song_info = object.textContent;
     var name = song_info.split(',')[0];
-    var description = song_info.split(',')[1].slice(0, -3);
+    var description = song_info.split(',')[1];
     var data = {};
     data['name'] = name;
     data['description'] = description;
