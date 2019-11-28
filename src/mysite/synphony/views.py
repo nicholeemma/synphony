@@ -15,12 +15,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 import sys
 
-<<<<<<< HEAD
 sys.stdout.reconfigure(encoding='utf-8')
-=======
-
-#sys.stdout.reconfigure(encoding='utf-8')
->>>>>>> 7e2960bda745edf3c073799cda58af8a0733fad1
 
 @login_required
 def index(request, key=""):
@@ -129,23 +124,30 @@ def user_logout(request):
 
 @login_required
 def studio_view(request):
-
+    error = ""
     if request.method == 'POST':
-        form = CreateStudioForm(request.POST)
-        if form.is_valid():
-            hashcode = (str(form.cleaned_data) + str(random.random())).encode('utf-8')
-            link = hashlib.md5(hashcode).hexdigest()[:16]
-            newStudio = Studio(
-                name=form.cleaned_data['name'],
-                link=link,
-                host=request.user
-            )
-            newStudio.save()
-            # newStudio.music.add(*(list(form.cleaned_data['music'])))
-            return redirect(reverse('index', args=[link]))
+		# Check exisiting studio
+        studio = Studio.objects.filter(host=request.user,status=True)
+        if len(studio)>1:
+            form = CreateStudioForm()
+            error = "You can only one active studio"
+            print("you can only have one")
+        elif len(studio)==1:
+            form = CreateStudioForm(request.POST)
+            if form.is_valid():
+                hashcode = (str(form.cleaned_data) + str(random.random())).encode('utf-8')
+                link = hashlib.md5(hashcode).hexdigest()[:16]
+                newStudio = Studio(
+					name=form.cleaned_data['name'],
+					link=link,
+					host=request.user
+				)
+                newStudio.save()
+				# newStudio.music.add(*(list(form.cleaned_data['music'])))
+                return redirect(reverse('index', args=[link]))
     else:
         form = CreateStudioForm()
-    context = {'form': form}
+    context = {'form': form,'error':error}
     return render(request, 'synphony/create_studio.html', context)
 
 
@@ -209,7 +211,7 @@ def displaySongList(request):
 	# dic_3['id'] = '22822613'
 	# list.append(dic_3)
 	# dic_4 = {}
-	# dic_4['name'] = '信仰は存活の為に~Give Me Full of Your Tears'
+	# dic_4['name'] = '~Give Me Full of Your Tears'
 	# dic_4['ar'] = '九条咲夜'
 	# dic_4['id'] = '252479'
 	# list.append(dic_4)
