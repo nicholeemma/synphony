@@ -54,7 +54,9 @@
 <button type="button" class="btn btn-dark my-2" id="close-btn" onclick=close_studio(this)>Close</button>
 {% endif %}
 
-
+{% if not isHost %}
+<button type="button" class="btn btn-dark my-2" id="playall-btn" onclick=play_all(this)>Play all</button>
+{% endif %}
 <!-- Below is the playlist of the studio -->
 <table  class="table table-bordered"  id="myTable" style="color: white;">
 	<tbody>

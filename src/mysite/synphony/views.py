@@ -130,7 +130,7 @@ def studio_view(request):
         studio = Studio.objects.filter(host=request.user,status=True)
         if len(studio)>1:
             form = CreateStudioForm()
-            error = "You can only one active studio"
+            error = "You can only one active studio, go to history find your active studio"
             print("you can only have one")
         elif len(studio)==1:
             form = CreateStudioForm(request.POST)
@@ -156,6 +156,15 @@ def view_history(request):
 
     studios = Studio.objects.filter(host=request.user)
     musics = request.user.music_set.all()
+    if request.method == "POST":
+        if "jumpstudio" in request.POST:
+            # link = request.POST["activestudio"]
+            link=request.POST.get('jumpstudio')
+            print(link)
+            return redirect(reverse('index', args=[link]))
+            # active_studio = Studio.objects.get(link =link)
+            # if active_studio.status:
+            #     return redirect(reverse('index', args=[link]))
     return render(request, "synphony/view_history.html", {"comments": comments, "studios": studios, "musics": musics})
 
 
