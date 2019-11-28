@@ -2,6 +2,7 @@
 {% block extrajs %}
 {% load static %}
 <script src="{% static 'js/addSongs.js' %}"></script>
+<script src="{% static 'js/playMusic.js' %}"></script>
 <script src="{% static 'js/websocketbridge.js' %}" type="text/javascript"></script>
 <style type="text/css">
     body {
@@ -43,20 +44,27 @@
         <source id="audiosrc" src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3" type="audio/mpeg">
           Your browser does not support the audio element.
 </audio>-->
+<div id="musicaudio">
 <audio {% if isHost %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar">
 	<source id="audiosrc" src="" type="audio/mpeg">
 	Your browser does not support the audio element.
 </audio>
-
+</div>
 {% if not isHost %}
 <button type="button" class="btn btn-dark my-2" id="start-btn" onclick=start_playing(this)>Start</button>
 {% else %}
 <button type="button" class="btn btn-dark my-2" id="close-btn" onclick=close_studio(this)>Close</button>
 {% endif %}
 
-{% if not isHost %}
-<button type="button" class="btn btn-dark my-2" id="playall-btn" onclick=play_all(this)>Play all</button>
+{% if isHost %}
+<button type="button" class="btn btn-dark my-2" id="playall-btn" onclick="play_all()">Play all</button>
 {% endif %}
+
+{% csrf_token %}
+    {% for music in musics %}
+    <p class="musicurl">{{music.url}}</p>
+    {% endfor %}
+
 <!-- Below is the playlist of the studio -->
 <table  class="table table-bordered"  id="myTable" style="color: white;">
 	<tbody>

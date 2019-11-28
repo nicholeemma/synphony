@@ -30,8 +30,10 @@ def index(request, key=""):
 		return redirect(reverse('home'))
 
 	music_list, music_list_des = [], []
+	music_url_list =[]
 	for s_music in cur_studio.music.all():
 		music_list.append(s_music.id)
+		music_url_list.append(s_music.url)
 		music_list_des.append(s_music.description)
 	musics = Music.objects.filter(id__in=music_list)
 
@@ -40,7 +42,7 @@ def index(request, key=""):
 		list = displaySongList(request)
 
 	comments = Comment.objects.all()
-	ctx.update({"musics": musics, "list": list, "user": request.user,
+	ctx.update({"musics": musics, "list": list, "user": request.user, "music_url":music_url_list,
 		   'key_json': mark_safe(json.dumps(key)), "comments": comments})
 	return render(request, 'synphony/index.html', ctx)
 
