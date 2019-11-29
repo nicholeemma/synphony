@@ -12,10 +12,10 @@ $(document).ready(function(){
 
 
 function start_playing(cur) {
-
+	// "data-isHost" passed from view.py ctx
 	var isHost = $("#music-bar").attr("data-isHost")
 
-	if(isHost === "False") { 
+	if(isHost === "False") {
 
 		if ($(cur).html() === "Start"){
 			process_participant(webSocket);
@@ -25,7 +25,7 @@ function start_playing(cur) {
 			document.getElementById('music-bar').muted = true;
 			$(cur).html("Start");
 		}
-	 
+
 	}
 }
 
@@ -65,11 +65,12 @@ function process_host(){
 		}));
 	});
 
+	// listens to new participants who needs all audio info
 	webSocket.onmessage = function(e) {
 
 		var data = JSON.parse(e.data);
 		var msg_type = data['msg_type'];
-			
+
 		if (msg_type === 'sync_all_request')
 		{
 			var volume = $("#music-bar")[0].volume;
@@ -78,11 +79,11 @@ function process_host(){
 			var cur_src = $("#audiosrc").attr("src");
 
 			webSocket.send(JSON.stringify({
-				'msg_type' : 'sync_all_response', 
+				'msg_type' : 'sync_all_response',
 				'msg_content': {
 					'volume' : volume,
 					'is_paused' : is_paused,
-					'cur_time' : cur_time, 
+					'cur_time' : cur_time,
 					'cur_src' : cur_src
 				}
 			}));
@@ -93,7 +94,8 @@ function process_host(){
 
 function process_participant(){
 
-	
+
+	// send message to web socket: just open, need syn all audio info from host
 	if (webSocket.readyState === WebSocket.OPEN) {
 		webSocket.send(JSON.stringify(
 			{ 'msg_type' : 'sync_all_request', 'msg_content': 'None' }));
@@ -162,7 +164,7 @@ function close_studio() {
 
 	var isHost = $("#music-bar").attr("data-isHost")
 
-	if(isHost === "True" && webSocket.readyState === WebSocket.OPEN) { 
+	if(isHost === "True" && webSocket.readyState === WebSocket.OPEN) {
 
 		document.getElementById('music-bar').pause();
 		document.getElementById('music-bar').muted = true;
@@ -176,5 +178,5 @@ function close_studio() {
 
 		webSocket.close();
 
-	}	
+	}
 }

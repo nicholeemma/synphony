@@ -39,9 +39,9 @@ def index(request, key=""):
 	if request.method == 'POST' and 'song-name-submit' in request.POST:
 		list = displaySongList(request)
 
-	comments = Comment.objects.all()
+	# comments = Comment.objects.all()
 	ctx.update({"musics": musics, "list": list, "user": request.user,
-		   'key_json': mark_safe(json.dumps(key)), "comments": comments})
+		   'key_json': mark_safe(json.dumps(key))})
 	return render(request, 'synphony/index.html', ctx)
 
 # def signup(request):
@@ -217,29 +217,30 @@ def showStudio(request):
 
 # add a song to the playlist for an active studio
 
+# # commented out -> has migrated to websockets
+# def addSongsToStudio(request, key=""):
+# 	# print(request.POST)
+# 	rsp = dict()
 
-def addSongsToStudio(request, key=""):
-	# print(request.POST)
-	rsp = dict()
+# 	try:
+# 		studio = Studio.objects.get(link__exact=key)
+# 	except:
+# 		rsp['error'] = "Studio not found!"
+# 		return JsonResponse(rsp)
 
-	try:
-		studio = Studio.objects.get(link__exact=key)
-	except:
-		rsp['error'] = "Studio not found!"
-		return JsonResponse(rsp)
-
-	music_form = MusicForm(request.POST)
-	if(music_form.is_valid()):
-		music = music_form.save()
-		studio.music.add(music)
-		rsp['music'] = model_to_dict(music)
-	else:
-		rsp['error'] = "form not valid!"
-		print(music_form.errors)
-		print("forms not valid!")
-	return JsonResponse(rsp)
+# 	music_form = MusicForm(request.POST)
+# 	if(music_form.is_valid()):
+# 		music = music_form.save()
+# 		studio.music.add(music)
+# 		rsp['music'] = model_to_dict(music)
+# 	else:
+# 		rsp['error'] = "form not valid!"
+# 		print(music_form.errors)
+# 		print("forms not valid!")
+# 	return JsonResponse(rsp)
 
 
+# commented out -> has migrated to websockets
 # remove a song from the playlist for an active studio
 def deleteSongsFromPlayList(request, key=""):
 
