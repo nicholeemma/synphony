@@ -45,12 +45,7 @@
         <source id="audiosrc" src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3" type="audio/mpeg">
           Your browser does not support the audio element.
 </audio>-->
-<<<<<<< HEAD
-<div id="musicaudio">
-<audio {% if isHost %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar">
-=======
 <audio {% if isHost %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar", src="">
->>>>>>> d27fd48bc81d35191be3833e10a4271ec13b9b32
 	<source id="audiosrc" src="" type="audio/mpeg">
 	Your browser does not support the audio element.
 </audio>
@@ -60,24 +55,12 @@
 {% else %}
 <button type="button" class="btn btn-dark my-2" id="close-btn" onclick=close_studio(this)>Close</button>
 {% endif %}
-<<<<<<< HEAD
-
-{% if isHost %}
-<button type="button" class="btn btn-dark my-2" id="playall-btn" onclick="play_all()">Play all</button>
-{% endif %}
-
-{% csrf_token %}
-    {% for music in musics %}
-    <p class="musicurl">{{music.url}}</p>
-    {% endfor %}
-=======
 {% if isHost %}
 <button type="button" class="btn btn-dark my-2" id="playall-btn" value="loop" onclick="play_all(this.value)">Play all</button>
 {% endif %}
 {% if isHost %}
 <button type="button" class="btn btn-dark my-2" id="playall-btn" value="shuffle" onclick="play_all(this.value)">Shuffle all</button>
 {% endif %}
->>>>>>> d27fd48bc81d35191be3833e10a4271ec13b9b32
 
 <!-- Below is the playlist of the studio -->
 <table  class="table table-bordered"  id="myTable" style="color: white;">
