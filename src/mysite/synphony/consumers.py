@@ -35,9 +35,6 @@ class SyncConsumer(AsyncWebsocketConsumer):
         msg_type = text_data_json['msg_type']
         msg_content = text_data_json['msg_content']
 
-        print(msg_type)
-        print(msg_content)
-
         # Send message to studio group
         await self.channel_layer.group_send(
             self.studio_group_name,
@@ -52,9 +49,6 @@ class SyncConsumer(AsyncWebsocketConsumer):
     async def sync_message(self, event):
         msg_type = event['msg_type']
         msg_content = event['msg_content']
-
-        print(msg_type)
-        print(msg_content)
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({

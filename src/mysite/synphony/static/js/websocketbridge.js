@@ -40,7 +40,7 @@ function process_host_sync(){
 	});
 
 	$("#music-bar").bind("loadstart", function() {
-		var cur_src = $("#audiosrc").attr("src");
+		var cur_src = $("#music-bar").attr("src");
 		syncSocket.send(JSON.stringify({
 			'msg_type' : 'loadstart_src', 'msg_content': cur_src
 		}));
@@ -76,7 +76,7 @@ function process_host_sync(){
 			var volume = $("#music-bar")[0].volume;
 			var is_paused = $("#music-bar")[0].paused;
 			var cur_time = $("#music-bar")[0].currentTime;
-			var cur_src = $("#audiosrc").attr("src");
+			var cur_src = $("#music-bar").attr("src");
 
 			syncSocket.send(JSON.stringify({
 				'msg_type' : 'sync_all_response',
@@ -107,7 +107,7 @@ function process_participant_sync(){
 
 		if (msg_type === 'loadstart_src') {
 
-			$("#audiosrc").attr("src", msg_content);
+			$("#music-bar").attr("src", msg_content);
 			document.getElementById('music-bar').load();
 			document.getElementById('music-bar').play();
 
@@ -134,8 +134,8 @@ function process_participant_sync(){
 			var cur_time = msg_content['cur_time'];
 			var cur_src = msg_content['cur_src'];
 
-			if ($("#audiosrc").attr("src") !== cur_src) {
-				$("#audiosrc").attr("src", cur_src);
+			if ($("#music-bar").attr("src") !== cur_src) {
+				$("#music-bar").attr("src", cur_src);
 				document.getElementById('music-bar').load();
 				document.getElementById('music-bar').play();
 
