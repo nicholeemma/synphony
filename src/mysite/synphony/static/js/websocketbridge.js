@@ -1,12 +1,12 @@
 
-var webSocket = new WebSocket('ws://' + window.location.host + '/ws/sync' + window.location.pathname);
+var syncSocket = new WebSocket('ws://' + window.location.host + '/ws/sync' + window.location.pathname);
 
 
 $(document).ready(function(){
 
 	var isHost = $("#music-bar").attr("data-isHost")
 
-	if(isHost === "True") { process_host(); }
+	if(isHost === "True") { process_host_sync(); }
 
 });
 
@@ -18,7 +18,7 @@ function start_playing(cur) {
 	if(isHost === "False") {
 
 		if ($(cur).html() === "Start"){
-			process_participant(webSocket);
+			process_participant_sync(syncSocket);
 			document.getElementById('music-bar').muted = false;
 			$(cur).html("Stop");
 		} else if ($(cur).html() === "Stop") {
@@ -30,43 +30,43 @@ function start_playing(cur) {
 }
 
 
-function process_host(){
+function process_host_sync(){
 
 	$("#music-bar").bind("seeked", function() {
 		var cur_time = $("#music-bar")[0].currentTime;
-		webSocket.send(JSON.stringify({
+		syncSocket.send(JSON.stringify({
 			'msg_type' : 'seeked_time', 'msg_content': cur_time
 		}));
 	});
 
 	$("#music-bar").bind("loadstart", function() {
 		var cur_src = $("#audiosrc").attr("src");
-		webSocket.send(JSON.stringify({
+		syncSocket.send(JSON.stringify({
 			'msg_type' : 'loadstart_src', 'msg_content': cur_src
 		}));
 	});
 
 	$("#music-bar").bind("pause", function() {
-		webSocket.send(JSON.stringify({
+		syncSocket.send(JSON.stringify({
 			'msg_type' : 'play_status', 'msg_content': 'pause'
 		}));
 	});
 
 	$("#music-bar").bind("playing", function() {
-		webSocket.send(JSON.stringify({
+		syncSocket.send(JSON.stringify({
 			'msg_type' : 'play_status', 'msg_content': 'play'
 		}));
 	});
 
 	$("#music-bar").bind("volumechange", function() {
 		var volume = $("#music-bar")[0].volume;
-		webSocket.send(JSON.stringify({
+		syncSocket.send(JSON.stringify({
 			'msg_type' : 'volume_change', 'msg_content': volume
 		}));
 	});
 
 	// listens to new participants who needs all audio info
-	webSocket.onmessage = function(e) {
+	syncSocket.onmessage = function(e) {
 
 		var data = JSON.parse(e.data);
 		var msg_type = data['msg_type'];
@@ -78,7 +78,7 @@ function process_host(){
 			var cur_time = $("#music-bar")[0].currentTime;
 			var cur_src = $("#audiosrc").attr("src");
 
-			webSocket.send(JSON.stringify({
+			syncSocket.send(JSON.stringify({
 				'msg_type' : 'sync_all_response',
 				'msg_content': {
 					'volume' : volume,
@@ -91,20 +91,20 @@ function process_host(){
 	}
 }
 
-function process_participant(){
+function process_participant_sync(){
 
 	// send message to web socket: just open, need syn all audio info from host
-	if (webSocket.readyState === WebSocket.OPEN) {
-		webSocket.send(JSON.stringify(
+	if (syncSocket.readyState === WebSocket.OPEN) {
+		syncSocket.send(JSON.stringify(
 			{ 'msg_type' : 'sync_all_request', 'msg_content': 'None' }));
 	}
 
-	webSocket.onmessage = function(e) {
+	syncSocket.onmessage = function(e) {
 
 		var data = JSON.parse(e.data);
 		var msg_type = data['msg_type'];
 		var msg_content = data['msg_content'];
-
+		
 		if (msg_type === 'loadstart_src') {
 
 			$("#audiosrc").attr("src", msg_content);
@@ -144,7 +144,7 @@ function process_participant(){
 				$("#music-bar")[0].paused = is_paused;
 			}
 
-		} else if (msg_type === 'close_studio' && webSocket.readyState === WebSocket.OPEN) {
+		} else if (msg_type === 'close_studio' && syncSocket.readyState === WebSocket.OPEN) {
 
 			document.getElementById('music-bar').pause();
 			document.getElementById('music-bar').muted = true;
@@ -152,7 +152,7 @@ function process_participant(){
 			$('#start-btn').html("The studio has been closed.");
 			document.getElementById('start-btn').disabled = true;
 
-			webSocket.close();
+			syncSocket.close();
 
 		}
 	};
@@ -162,7 +162,7 @@ function close_studio() {
 
 	var isHost = $("#music-bar").attr("data-isHost")
 
-	if(isHost === "True" && webSocket.readyState === WebSocket.OPEN) {
+	if(isHost === "True" && syncSocket.readyState === WebSocket.OPEN) {
 
 		document.getElementById('music-bar').pause();
 		document.getElementById('music-bar').muted = true;
@@ -170,11 +170,11 @@ function close_studio() {
 		$('#close-btn').html("The studio has been closed.");
 		document.getElementById('close-btn').disabled = true;
 
-		webSocket.send(JSON.stringify({
+		syncSocket.send(JSON.stringify({
 			'msg_type' : 'close_studio', 'msg_content': "None"
 		}));
 
-		webSocket.close();
+		syncSocket.close();
 
 	}
 }
