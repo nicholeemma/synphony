@@ -20,9 +20,9 @@ function process_host(){
     //bind add songs
     //here the button is bind twice(somewhere, unbind them first)
     $("[name='song-name-add']").unbind("click").bind("click", function () {
-        var val = $(this)["0"].value
+        var song_id = $(this)["0"].value
         // get music file url
-        var url = "https://api.imjad.cn/cloudmusic/?type=song&id=" + val
+        var url = "https://api.imjad.cn/cloudmusic/?type=song&id=" + song_id
         var json_obj = JSON.parse(Get(url));
         var musicUrl = json_obj["data"][0]["url"];
 
@@ -30,7 +30,7 @@ function process_host(){
             //["Hello", " by: 王霏霏（Fei）/ 王嘉尔  Add"]
             // 0: "Hello"
             // 1: " by: 王霏霏（Fei）/ 王嘉尔  Add"
-        var object = document.getElementById(val);
+        var object = document.getElementById(song_id);
         var song_info = object.textContent;
         var name = song_info.split(',')[0];
         var description = song_info.split(',')[1];
@@ -43,9 +43,9 @@ function process_host(){
             'msg_type': 'add_song',
             'msg_content': data,
         }));
-
     })
-    //bind remove songs
+
+    //bind remove songs when page is opened
     $("[name='remove_song']").bind("click", function(){
         console.log('delete song js triggered!');
         var musicId  =  $(this)["0"].value;
@@ -57,6 +57,7 @@ function process_host(){
         }));
         $(this).parents()[1].remove();
     })
+
 
     webSocket.onmessage = function(e){
         var data = JSON.parse(e.data);
@@ -111,7 +112,23 @@ function process_participant(){
             }
 
         $('#myTable > tbody').append(rows);
+
+        if(isHost === "True"){
+            //bind remove song handlers again when a new song being added
+            $("[name='remove_song']").bind("click", function(){
+                console.log('delete song js triggered!');
+                var musicId  =  $(this)["0"].value;
+                var data = {'id': musicId};
+                console.log("remove songs sent!")
+                webSocket.send(JSON.stringify({
+                    'msg_type': 'remove_song',
+                    'msg_content': data,
+                }));
+                $(this).parents()[1].remove();
+            })
+            }
         }
+
         //remove songs
         if (msg_type === 'remove_song' && !('error' in msg_content ) ){
             var id = msg_content['id'];
