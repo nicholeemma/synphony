@@ -104,7 +104,7 @@ function process_participant_sync(){
 		var data = JSON.parse(e.data);
 		var msg_type = data['msg_type'];
 		var msg_content = data['msg_content'];
-		
+
 		if (msg_type === 'loadstart_src') {
 
 			$("#audiosrc").attr("src", msg_content);
