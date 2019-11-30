@@ -1,9 +1,10 @@
 {% extends 'synphony/base.html' %}
 {% block extrajs %}
 {% load static %}
-<script src="{% static 'js/addSongs.js' %}"></script>
-<script src="{% static 'js/playMusic.js' %}"></script>
+<script src="{% static 'js/song_operation.js' %}"></script>
 <script src="{% static 'js/websocketbridge.js' %}" type="text/javascript"></script>
+<!-- <script src="{% static 'js/comments.js' %}" type="text/javascript"></script> -->
+<script src="{% static 'js/playlistwebsocket.js' %}" type="text/javascript"></script>
 <style type="text/css">
     body {
         background-image: url('{% static "media/homepage.jpg" %}');
@@ -32,7 +33,7 @@
 			<li id="{{song.id}}">{{song.name}}, by: {{song.ar}} </li>
 		</div>
 		<div class="col-2">
-			<button class="btn btn-dark" style="float: right; " onclick=addSongs(this.value) name="song-name-add" type="submit" value="{{song.id}}"> Add </button>
+			<button class="btn btn-dark" style="float: right;" name="song-name-add"  value="{{song.id}}"> Add </button>
 		</div>
     </div>
 	{% endfor %}
@@ -44,8 +45,12 @@
         <source id="audiosrc" src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3" type="audio/mpeg">
           Your browser does not support the audio element.
 </audio>-->
+<<<<<<< HEAD
 <div id="musicaudio">
 <audio {% if isHost %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar">
+=======
+<audio {% if isHost %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar", src="">
+>>>>>>> d27fd48bc81d35191be3833e10a4271ec13b9b32
 	<source id="audiosrc" src="" type="audio/mpeg">
 	Your browser does not support the audio element.
 </audio>
@@ -55,6 +60,7 @@
 {% else %}
 <button type="button" class="btn btn-dark my-2" id="close-btn" onclick=close_studio(this)>Close</button>
 {% endif %}
+<<<<<<< HEAD
 
 {% if isHost %}
 <button type="button" class="btn btn-dark my-2" id="playall-btn" onclick="play_all()">Play all</button>
@@ -64,6 +70,14 @@
     {% for music in musics %}
     <p class="musicurl">{{music.url}}</p>
     {% endfor %}
+=======
+{% if isHost %}
+<button type="button" class="btn btn-dark my-2" id="playall-btn" value="loop" onclick="play_all(this.value)">Play all</button>
+{% endif %}
+{% if isHost %}
+<button type="button" class="btn btn-dark my-2" id="playall-btn" value="shuffle" onclick="play_all(this.value)">Shuffle all</button>
+{% endif %}
+>>>>>>> d27fd48bc81d35191be3833e10a4271ec13b9b32
 
 <!-- Below is the playlist of the studio -->
 <table  class="table table-bordered"  id="myTable" style="color: white;">
@@ -81,12 +95,12 @@
 
 		{% if isHost %}
 		<td>
-			<button class="btn btn-dark" data-id="{{music.id}}" onclick=deleteSongs(this)>Remove</button>
+			<button class="btn btn-dark"  name="remove_song" value="{{music.id}}" value="{{music.id}}" name="remove_song">Remove</button>
 		</td>
 		{% endif %}
 
 		<td>
-			<button class="btn btn-dark"  data-id="{{music.id}}"
+			<button class="btn btn-dark" name="song" value="{{music.id}}"  data-id="{{music.id}}"
 				onclick=likeSongs(this)>{% if user in music.liked_user.all %}Unlike{% else %}Like{% endif %}</button>
 		</td>
 	</tr>
@@ -105,7 +119,7 @@
         <br>
         <button class="btn btn-dark" id="postComment" name="postComment" style="width: 100%;">post</button>
 </div>
-<!-- <script src="{% static 'js/webSocket.js' %}"></script> -->
+
 <script>
     var key = {{ key_json }}; //studio hashed key
    // open new sockect
@@ -118,7 +132,7 @@
         var data = JSON.parse(e.data);
         var message = data['message'];
         console.log("message received: " + message)
-        document.querySelector('#commentcontent').innerHTML += (message + '\n');
+        document.querySelector('#commentcontent').innerHTML += (message +  "<br />");
     };
 
     //disonnect
