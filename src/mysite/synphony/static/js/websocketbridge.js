@@ -88,12 +88,10 @@ function process_host(){
 				}
 			}));
 		}
-
 	}
 }
 
 function process_participant(){
-
 
 	// send message to web socket: just open, need syn all audio info from host
 	if (webSocket.readyState === WebSocket.OPEN) {
