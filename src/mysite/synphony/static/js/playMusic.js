@@ -18,10 +18,12 @@ function playMusic(val) {
  
 function play_all(musicList){
   // location.reload()
-  var musicList=document.getElementsByClassName("musicurl")
+  // var musicList=document.getElementsByClassName("musicurl")
+  var musicList=document.getElementsByClassName("to_right")
   var musicurllist = []
   for (url of musicList) {
-    musicurllist.push(url.innerHTML)
+    // musicurllist.push(url.innerHTML)
+    musicurllist.push(url.getAttribute("value"))
   }
   console.log(musicurllist)
     var myAudio = document.getElementById('music-bar');
