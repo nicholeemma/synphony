@@ -28,7 +28,7 @@
         </button>
    
 </div>
-<div class="col-8" style="color: white;">
+<div class="col-8" style="color:black;">
         <div id="studio">
         <table>
         <tr>
@@ -42,7 +42,14 @@
             <tr>
             <td> {{studio.name}}</td>
             <td> {{studio.status}}</td>
-            <td> {{studio.link}} </td>
+            
+            <form method="POST">
+                   
+            <td>  {% csrf_token %} <button name="jumpstudio" type="submit" value= "{{studio.link}}">
+                <a name="activestudio" id="activestudio" value= "{{studio.link}}">{{studio.link}}</a>
+            </button>
+            </td>
+            </form>
             <td> {{studio.start_time}}</td>
             <td> {{studio.end_time}}</td>
         </tr>
