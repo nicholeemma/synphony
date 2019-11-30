@@ -1,3 +1,5 @@
+// not used for now. Included in App.js
+
 function playMusic(val) {
     var audio = document.getElementById('music-bar');
     var audio_source = document.getElementById('audiosrc');
