@@ -1,7 +1,7 @@
 {% extends 'synphony/base.html' %}
 {% block extrajs %}
 {% load static %}
-<script src="{% static 'js/addSongs.js' %}"></script>
+<script src="{% static 'js/song_operation.js' %}"></script>
 <script src="{% static 'js/websocketbridge.js' %}" type="text/javascript"></script>
 <!-- <script src="{% static 'js/comments.js' %}" type="text/javascript"></script> -->
 <script src="{% static 'js/playlistwebsocket.js' %}" type="text/javascript"></script>
@@ -33,7 +33,7 @@
 			<li id="{{song.id}}">{{song.name}}, by: {{song.ar}} </li>
 		</div>
 		<div class="col-2">
-			<button class="btn btn-dark" style="float: right;"  name="song-name-add"  value="{{song.id}}"> Add </button>
+			<button class="btn btn-dark" style="float: right;" name="song-name-add"  value="{{song.id}}"> Add </button>
 		</div>
     </div>
 	{% endfor %}
@@ -55,7 +55,12 @@
 {% else %}
 <button type="button" class="btn btn-dark my-2" id="close-btn" onclick=close_studio(this)>Close</button>
 {% endif %}
-
+{% if isHost %}
+<button type="button" class="btn btn-dark my-2" id="playall-btn" value="loop" onclick="play_all(this.value)">Play all</button>
+{% endif %}
+{% if isHost %}
+<button type="button" class="btn btn-dark my-2" id="playall-btn" value="shuffle" onclick="play_all(this.value)">Shuffle all</button>
+{% endif %}
 
 <!-- Below is the playlist of the studio -->
 <table  class="table table-bordered"  id="myTable" style="color: white;">
