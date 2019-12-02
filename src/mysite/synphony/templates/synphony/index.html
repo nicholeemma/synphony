@@ -15,96 +15,104 @@
 
 
 <div class="col-8">
-{% if isHost %}
-<form  method = "POST">
-    {% csrf_token %}
-    <button class="btn btn-dark" style="float: right; width: 7%;"id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
+    {% if isHost %}
+    <form method="POST">
+        {% csrf_token %}
+        <button class="btn btn-dark" style="float: right; width: 7%;" id="song-name-submit" name="song-name-submit"
+            type="submit" />Get</button>
 
-    <input style="width:90%;"id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
+        <input style="width:90%;" id="song-name" name="song-name" type="text" size="100"
+            placeholder="Search by typing song titles" required><br />
 
-</form>
-<!-- Below is the search result -->
-<div class="search-box-result-wrapper" style="height:20%; overflow-y: scroll; margin-top: 3%;">
-    {% for song in list %}
-	<div class="row m-1">
-		<div class="col-10">
-			<li id="{{song.id}}">{{song.name}}, by: {{song.ar}} </li>
-		</div>
-		<div class="col-2">
-			<button class="btn btn-dark" style="float: right; " onclick=addSongs(this.value) name="song-name-add" type="submit" value="{{song.id}}"> Add </button>
-		</div>
+    </form>
+    <!-- Below is the search result -->
+    <div class="search-box-result-wrapper" style="height:20%; overflow-y: scroll; margin-top: 3%;">
+        {% for song in list %}
+        <div class="row m-1">
+            <div class="col-10">
+                <li id="{{song.id}}">{{song.name}}, by: {{song.ar}} </li>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-dark" style="float: right; " onclick=addSongs(this.value) name="song-name-add"
+                    type="submit" value="{{song.id}}"> Add </button>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-	{% endfor %}
-</div>
-<br>
-{% endif %}
-<!-- Audio -->
-<!--<audio controls autoplay controller class="audio" id="music-bar" style="width: 100%;margin-bottom: 4%;">
+    <br>
+    {% endif %}
+    <!-- Audio -->
+    <!--<audio controls autoplay controller class="audio" id="music-bar" style="width: 100%;margin-bottom: 4%;">
         <source id="audiosrc" src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3" type="audio/mpeg">
           Your browser does not support the audio element.
 </audio>-->
-<audio {% if isHost %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar">
-	<source id="audiosrc" src="" type="audio/mpeg">
-	Your browser does not support the audio element.
-</audio>
+    <audio {% if isHost %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}"
+        id="music-bar">
+        <source id="audiosrc" src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
-{% if not isHost %}
-<button type="button" class="btn btn-dark my-2" id="start-btn" onclick=start_playing(this)>Start</button>
-{% else %}
-<button type="button" class="btn btn-dark my-2" id="close-btn" onclick=close_studio(this)>Close</button>
-{% endif %}
+    {% if not isHost %}
+    <button type="button" class="btn btn-dark my-2" id="start-btn" onclick=start_playing(this)>Start</button>
+    {% else %}
+    <button type="button" class="btn btn-dark my-2" id="close-btn" onclick=close_studio(this)>Close</button>
+    {% endif %}
 
 
-<!-- Below is the playlist of the studio -->
-<table  class="table table-bordered"  id="myTable" style="color: white;">
-	<tbody>
-	<!-- NEED TO CHANGE BY NICOLE -->
-	{% csrf_token %}
-	{% for music in musics %}
-	<tr>
-		{% if isHost %}
-		<td> <div class = "to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div> </td>
-		{% endif %}
+    <!-- Below is the playlist of the studio -->
+    <table class="table table-bordered" id="myTable" style="color: white;">
+        <tbody>
+            <!-- NEED TO CHANGE BY NICOLE -->
+            {% csrf_token %}
+            {% for music in musics %}
+            <tr>
+                {% if isHost %}
+                <td>
+                    <div class="to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div>
+                </td>
+                {% endif %}
 
-		<td>{{music.name}}</td>
-		<td>{{music.description}}</td>
+                <td>{{music.name}}</td>
+                <td>{{music.description}}</td>
 
-		{% if isHost %}
-		<td>
-			<button class="btn btn-dark" data-id="{{music.id}}" onclick=deleteSongs(this)>Remove</button>
-		</td>
-		{% endif %}
+                {% if isHost %}
+                <td>
+                    <button class="btn btn-dark" data-id="{{music.id}}" onclick=deleteSongs(this)>Remove</button>
+                </td>
+                {% endif %}
 
-		<td>
-			<button class="btn btn-dark"  data-id="{{music.id}}"
-				onclick=likeSongs(this)>{% if user in music.liked_user.all %}Unlike{% else %}Like{% endif %}</button>
-		</td>
-	</tr>
-	{% endfor %}
-		<!-- {{show}} -->
-	</tbody>
-</table>
+                <td>
+                    <button class="btn btn-dark" data-id="{{music.id}}"
+                        onclick=likeSongs(this)>{% if user in music.liked_user.all %}Unlike{% else %}Like{% endif %}</button>
+                </td>
+            </tr>
+            {% endfor %}
+            <!-- {{show}} -->
+        </tbody>
+    </table>
 
-  </div>
-  <div id="commenthere" style="float: right; height:50%; border-left: 50px;" class="col-4">
-        <div id="commentcontent" style="width: 100%; overflow-y: scroll;">
-        </div>
-        <br>
-        <textarea id = "commentinput" style="width: 100%;" name="commentinput">
+</div>
+<div id="commenthere" style="float: right; height:50%; border-left: 50px;" class="col-4">
+    <label id="timer" class="card" style="padding: 1em; float: right;"></label><br>
+    <div id="commentcontent" style="width: 100%; overflow-y: scroll;">
+    </div>
+    <br>
+    <textarea id="commentinput" style="width: 100%;" name="commentinput">
         </textarea>
-        <br>
-        <button class="btn btn-dark" id="postComment" name="postComment" style="width: 100%;">post</button>
+    <br>
+    <button class="btn btn-dark" id="postComment" name="postComment" style="width: 100%;">post</button>
 </div>
 <!-- <script src="{% static 'js/webSocket.js' %}"></script> -->
+
 <script>
     var key = {{ key_json }}; //studio hashed key
-   // open new sockect
+    // open new sockect
     var chatSocket = new WebSocket(
         'ws://' + window.location.host +
         '/ws/synphony/' + key + '/');
 
     // append comment history
-    chatSocket.onmessage = function(e) {
+    chatSocket.onmessage = function (e) {
         var data = JSON.parse(e.data);
         var message = data['message'];
         console.log("message received: " + message)
@@ -112,19 +120,19 @@
     };
 
     //disonnect
-    chatSocket.onclose = function(e) {
+    chatSocket.onclose = function (e) {
         console.error('Chat socket closed unexpectedly');
     };
 
     // post comment
     document.querySelector('#commentinput').focus();
-    document.querySelector('#commentinput').onkeyup = function(e) {
+    document.querySelector('#commentinput').onkeyup = function (e) {
         if (e.keyCode === 13) {  // enter, return
             document.querySelector('#postComment').click();
         }
     };
 
-    document.querySelector('#postComment').onclick = function(e) {
+    document.querySelector('#postComment').onclick = function (e) {
         var messageInputDom = document.querySelector('#commentinput');
         var message = messageInputDom.value;
         var user = "{{user.username}}: ";
@@ -136,6 +144,31 @@
         console.log(message + " sent!")
         messageInputDom.value = '';
     };
+
+    /* Alan - adding countdown timer for the studio */
+    var countDownDate = new Date();
+    var nextTime = countDownDate.setHours(countDownDate.getHours() + 2);
+    if(!localStorage.getItem('currentTime')){
+        window.localStorage.setItem('currentTime', nextTime);
+    }
+
+    var x = setInterval(function () {
+
+        var now = new Date().getTime();
+        var distance = window.localStorage.getItem('currentTime') - now;
+        console.log(distance);
+
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.getElementById("timer").innerHTML = hours + "h "
+            + minutes + "m " + seconds + "s ";
+        if (distance <= 0) {
+            clearInterval(x);
+            document.getElementById("close-btn").click();
+            window.localStorage.clear();
+        }
+    }, 1000);
+    /* Alan - countdown timer finished */
 </script>
 {% endblock main %}
-

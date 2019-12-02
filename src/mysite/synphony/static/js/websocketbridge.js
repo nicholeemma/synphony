@@ -159,6 +159,7 @@ function process_participant(){
 }
 
 function close_studio() {
+	alert("Studio is closing");
 
 	var isHost = $("#music-bar").attr("data-isHost")
 
