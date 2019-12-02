@@ -1,0 +1,22 @@
+{% extends 'synphony/base.html' %}
+{% block title %}Create a studio{% endblock title %}
+{% load static %}
+{% block main %}
+<style type="text/css">
+    body {
+        background-image: url('{% static "media/homepage.jpg" %}');
+        background-repeat: no-repeat;
+        background-size: 1450px 690px;
+    }
+</style>
+
+<form method="POST"> {% csrf_token %}
+    <div class="container pt-5">
+        <label class="app-label">Enter Studio name: </label>{{form.name}}<br>
+        <hr>
+        <input type="submit" class="btn btn-dark" value="Create">
+    </div>
+
+</form>
+<!-- <iframe src="https://giphy.com/embed/VnIoecjQ3caw8" width="300" height="300" frameBorder="20" class="giphy-embed"></iframe> -->
+{% endblock %}
