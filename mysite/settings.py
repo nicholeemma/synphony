@@ -98,8 +98,12 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['DBNAME_SYN'], 
+		'HOST': os.environ['DBHOST_SYN'], 
+		'USER': os.environ['DBUSER_SYN'], 
+		'PASSWORD': os.environ['DBPASS_SYN'], 
+		'OPTIONS': { 'sslmode':'require' }
     }
 }
 
@@ -147,5 +151,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Configure Django App for Heroku.
-# import django_heroku
-# django_heroku.settings(locals())
+import django_heroku
+django_heroku.settings(locals())
