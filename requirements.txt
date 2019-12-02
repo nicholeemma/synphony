@@ -1,3 +1,2 @@
-django
-WhiteNoise
+django==2.2.7
 psycopg2
