@@ -9,30 +9,46 @@
         background-size: 1450px 690px;
     }
 </style>
+{% if hasStudio %}
+<div class="container pt-5">
 
 <form method="POST"> {% csrf_token %}
-    Existing active studio
+        
+  <b>  Go to the Existing Active Studio </b>
+  <hr>
+    <br>
         {% for studio in studios %}
-        <button name="jumpstudio" type="submit" value= "{{studio.link}}">
+        <button class="btn btn-dark" name="jumpstudio" type="submit" value= "{{studio.link}}">
                 <a name="activestudio" id="activestudio" value= "{{studio.link}}">
                     {{studio.link}}
                 </a>
         </button>
         {% endfor %}
+       
+    <br>
+    <br>
+    <br>
 </form>
-        <form method="POST"> {% csrf_token %}
-    <div class="container pt-5">
+</div>
+{% endif %}
+{% if not hasStudio %}
+
+<div class="container pt-5">
+<form method="POST"> {% csrf_token %}
+    
         <label class="app-label">Enter Studio name: </label>{{form.name}}<br>
         <hr>
         <input type="submit" class="btn btn-dark" name ="createstudio"value="Create">
-    </div>
+   
     <br>
-    <div>
+    <p>
         <b>
         {{error}}
         </b>
-    </div>
+    </p> 
 
 </form>
+</div>
+{% endif %}
 <!-- <iframe src="https://giphy.com/embed/VnIoecjQ3caw8" width="300" height="300" frameBorder="20" class="giphy-embed"></iframe> -->
 {% endblock %}

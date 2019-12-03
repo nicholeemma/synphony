@@ -130,6 +130,7 @@ def user_logout(request):
 def studio_view(request):
     error = ""
     studios = Studio.objects.filter(host=request.user,status=True)
+    hasStudio = (len(studios)>=1)
     if request.method == 'POST':
 		# Check exisiting studio
         
@@ -158,7 +159,7 @@ def studio_view(request):
     else:
         form = CreateStudioForm()
     
-    context = {'form': form,'error':error,'studios':studios}
+    context = {'form': form,'error':error,'studios':studios,'hasStudio':hasStudio}
     return render(request, 'synphony/create_studio.html', context)
 
 
