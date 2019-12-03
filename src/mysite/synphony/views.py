@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 import sys
 
-sys.stdout.reconfigure(encoding='utf-8')
+# sys.stdout.reconfigure(encoding='utf-8')
 
 @login_required
 def index(request, key=""):
@@ -25,6 +25,9 @@ def index(request, key=""):
 	try:
 		cur_studio = Studio.objects.get(link__exact=key)
 		ctx['isHost'] = (cur_studio.host.id == request.user.id)
+		ctx['isActive'] = (cur_studio.status is True)
+		print(ctx['isHost'])
+		print(ctx['isActive'])
 	except:
 		print("Studio does not exist!")
 		return redirect(reverse('home'))
