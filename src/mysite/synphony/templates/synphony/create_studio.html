@@ -11,10 +11,20 @@
 </style>
 
 <form method="POST"> {% csrf_token %}
+    Existing active studio
+        {% for studio in studios %}
+        <button name="jumpstudio" type="submit" value= "{{studio.link}}">
+                <a name="activestudio" id="activestudio" value= "{{studio.link}}">
+                    {{studio.link}}
+                </a>
+        </button>
+        {% endfor %}
+</form>
+        <form method="POST"> {% csrf_token %}
     <div class="container pt-5">
         <label class="app-label">Enter Studio name: </label>{{form.name}}<br>
         <hr>
-        <input type="submit" class="btn btn-dark" value="Create">
+        <input type="submit" class="btn btn-dark" name ="createstudio"value="Create">
     </div>
     <br>
     <div>
