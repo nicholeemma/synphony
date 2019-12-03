@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 import sys
 
-sys.stdout.reconfigure(encoding='utf-8')
+# sys.stdout.reconfigure(encoding='utf-8')
 
 @login_required
 def index(request, key=""):
@@ -25,6 +25,9 @@ def index(request, key=""):
 	try:
 		cur_studio = Studio.objects.get(link__exact=key)
 		ctx['isHost'] = (cur_studio.host.id == request.user.id)
+		ctx['isActive'] = (cur_studio.status is True)
+		print(ctx['isHost'])
+		print(ctx['isActive'])
 	except:
 		print("Studio does not exist!")
 		return redirect(reverse('home'))
@@ -129,7 +132,7 @@ def user_logout(request):
 @login_required
 def studio_view(request):
     error = ""
-    
+
     if request.method == 'POST':
 		# Check exisiting studio
         studio = Studio.objects.filter(host=request.user,status=True)
@@ -152,7 +155,7 @@ def studio_view(request):
                 return redirect(reverse('index', args=[link]))
     else:
         form = CreateStudioForm()
-    
+
     context = {'form': form,'error':error}
     return render(request, 'synphony/create_studio.html', context)
 
