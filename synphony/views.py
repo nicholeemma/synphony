@@ -24,6 +24,8 @@ def index(request, key=""):
 
 	try:
 		cur_studio = Studio.objects.get(link__exact=key)
+		if not cur_studio.status:
+			return redirect(reverse('home'))
 		ctx['isHost'] = (cur_studio.host.id == request.user.id)
 	except:
 		print("Studio does not exist!")
@@ -296,5 +298,30 @@ def likeSongsFromPlayList(request, key=""):
 	except:
 		# Like music
 		music.liked_user.add(request.user)
+
+	return JsonResponse(rsp)
+
+
+
+def closeStudio(request, key=""):
+
+	rsp = dict()
+
+	# check login status
+	if not request.user.is_authenticated:
+		rsp['error'] = "Please login to close studio!"
+		return JsonResponse(rsp)
+
+	# check if studio exists
+	try:
+		cur_studio = Studio.objects.get(link__exact=key)
+		if not cur_studio.status:
+			rsp['error'] = "Studio already closed!"
+			return JsonResponse(rsp)
+		cur_studio.status = False
+		cur_studio.save()
+	except:
+		rsp['error'] = "Studio not found!"
+		return JsonResponse(rsp)
 
 	return JsonResponse(rsp)

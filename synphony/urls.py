@@ -10,6 +10,7 @@ urlpatterns = [
     # url("^(?P<key>[a-f0-9]{16})/addSongs$", views.addSongsToStudio, name="addSongs"),
     url("^(?P<key>[a-f0-9]{16})/deleteSongs$", views.deleteSongsFromPlayList, name="deleteSongs"),
     url("^(?P<key>[a-f0-9]{16})/likeSongs$", views.likeSongsFromPlayList, name="likeSongs"),
+	url("^(?P<key>[a-f0-9]{16})/closeStudio$", views.closeStudio, name="closeStudio"),
     re_path(r'signup', views.signup, name='signup'),
     re_path(r'login', views.user_login, name='login'),
     re_path(r'logout', views.user_logout, name='logout'),

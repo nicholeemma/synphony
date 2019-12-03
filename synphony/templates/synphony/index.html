@@ -55,11 +55,7 @@
 <button type="button" class="btn btn-dark my-2" id="start-btn" onclick=start_playing(this)>Start</button>
 {% else %}
 <button type="button" class="btn btn-dark my-2" id="close-btn" onclick=close_studio(this)>Close</button>
-{% endif %}
-{% if isHost %}
 <button type="button" class="btn btn-dark my-2" id="playall-btn" value="loop" onclick="play_all(this.value)">Play all</button>
-{% endif %}
-{% if isHost %}
 <button type="button" class="btn btn-dark my-2" id="playall-btn" value="shuffle" onclick="play_all(this.value)">Shuffle all</button>
 {% endif %}
 

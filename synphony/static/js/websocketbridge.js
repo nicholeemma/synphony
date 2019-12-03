@@ -11,6 +11,7 @@ $(document).ready(function(){
 });
 
 
+
 function start_playing(cur) {
 	// "data-isHost" passed from view.py ctx
 	var isHost = $("#music-bar").attr("data-isHost")
@@ -91,6 +92,7 @@ function process_host_sync(){
 	}
 }
 
+
 function process_participant_sync(){
 
 	// send message to web socket: just open, need syn all audio info from host
@@ -158,23 +160,36 @@ function process_participant_sync(){
 	};
 }
 
+
 function close_studio() {
 
 	var isHost = $("#music-bar").attr("data-isHost")
 
-	if(isHost === "True" && syncSocket.readyState === WebSocket.OPEN) {
+	if(!(isHost === "True" && syncSocket.readyState === WebSocket.OPEN)) { return; }
+	
+	$.ajax({
+		url:  location.pathname.split("/")[2] + '/closeStudio',
+		type:  'post',
+		dataType:  'json',
+		data: {},
+		success:  function (response) {
+			
+			if(response.hasOwnProperty('error')) { 
+				console.log(response.error);
+				return; 
+			}
+			
+			document.getElementById('music-bar').pause();
+			document.getElementById('music-bar').muted = true;
 
-		document.getElementById('music-bar').pause();
-		document.getElementById('music-bar').muted = true;
+			$('#close-btn').html("The studio has been closed.");
+			document.getElementById('close-btn').disabled = true;
 
-		$('#close-btn').html("The studio has been closed.");
-		document.getElementById('close-btn').disabled = true;
+			syncSocket.send(JSON.stringify({
+				'msg_type' : 'close_studio', 'msg_content': "None"
+			}));
 
-		syncSocket.send(JSON.stringify({
-			'msg_type' : 'close_studio', 'msg_content': "None"
-		}));
-
-		syncSocket.close();
-
-	}
+			syncSocket.close();
+		}
+	});
 }
