@@ -1,5 +1,5 @@
-
-var syncSocket = new WebSocket('wss://' + window.location.host + '/ws/sync' + window.location.pathname);
+var sync_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+var syncSocket = new ReconnectingWebSocket(sync_scheme + '://' + window.location.host + '/ws/sync' + window.location.pathname);
 
 
 $(document).ready(function(){
