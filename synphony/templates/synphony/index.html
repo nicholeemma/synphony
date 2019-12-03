@@ -108,7 +108,7 @@
     var key = {{ key_json }}; //studio hashed key
    // open new sockect
    
-   var chat_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var chat_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     var chatSocket = new ReconnectingWebSocket(
         chat_scheme + '://' + window.location.host +
         '/ws/synphony/' + key + '/');
