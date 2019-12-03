@@ -165,19 +165,18 @@ def studio_view(request):
 
 def view_history(request):
     comments = Comment.objects.filter(user_name=request.user)
-
     studios = Studio.objects.filter(host=request.user)
     musics = request.user.music_set.all()
+    hasStudio = (len(studios)>=1)
+    hasComment = (len(comments)>=1)
+    hasMusic = (len(musics)>=1)
     if request.method == "POST":
         if "jumpstudio" in request.POST:
-            # link = request.POST["activestudio"]
             link=request.POST.get('jumpstudio')
             print(link)
             return redirect(reverse('index', args=[link]))
-            # active_studio = Studio.objects.get(link =link)
-            # if active_studio.status:
-            #     return redirect(reverse('index', args=[link]))
-    return render(request, "synphony/view_history.html", {"comments": comments, "studios": studios, "musics": musics})
+    context = {"comments": comments, "studios": studios, "musics": musics,"hasStudio":hasStudio, "hasComment":hasComment, "hasMusic":hasMusic}
+    return render(request, "synphony/view_history.html", context)
 
 
 

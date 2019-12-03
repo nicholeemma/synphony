@@ -29,14 +29,16 @@
    
 </div>
 <div class="col-8" style="color:black;">
+        
         <div id="studio">
+            {% if hasStudio %}
         <table>
         <tr>
             <th style="width: 15%;">NAME</th>
             <th style="width: 15%;">STATUS</th>
             <th style="width: 15%;">LINK</th>
             <th style="width: 15%;">START_TIME</th>
-            <th style="width: 15%;">END_START</th>
+            <th style="width: 15%;">END_TIME</th>
         </tr>
             {% for studio in studios %}
             <tr>
@@ -45,7 +47,7 @@
             
             <form method="POST">
                    
-            <td>  {% csrf_token %} <button name="jumpstudio" type="submit" value= "{{studio.link}}">
+            <td>  {% csrf_token %} <button class="btn btn-dark" name="jumpstudio" type="submit" value= "{{studio.link}}">
                 <a name="activestudio" id="activestudio" value= "{{studio.link}}">{{studio.link}}</a>
             </button>
             </td>
@@ -56,12 +58,19 @@
             {% endfor %}
         
         </table>
+        {% endif %}
+        {% if not hasStudio %}
+        <p><b> No studio is created for now</b></p>
+        {% endif %}
         </div>
-        <div id="comment">
+        
+       
+        <div id="comment"> 
+            {% if hasComment %}
             <table>
                 <tr>
-                        <th >TEXT</th>
-                        <th >STUDIO</th>
+                        <th style="width: 50%;">&nbsp;TEXT&nbsp;</th>
+                        <th style="width: 50%;">&nbsp;STUDIO&nbsp;</th>
                         
                 </tr>
                 
@@ -73,14 +82,25 @@
                 {% endfor %}
             
         </table>
+
+        {% endif %}
+        {% if not hasComment %}
+        <p><b> No comment is created for now</b></p>
+        {% endif %}
         </div>
+        
+        
         <div id="music">
+            {% if not hasMusic %}
+                <p><b> No liked music is created for now</b></p>
+            {% endif %}
+        {% if hasMusic %}
             <table>
                 <tr>
                         
-                        <th style="width: 30%;">NAME</th>
-                        <th style="width: 30%;">URL</th>
-                        <th style="width: 30%;">DESCRIPTION</th>
+                        <th style="width: 30%;">&nbsp;NAME&nbsp;</th>
+                        <th style="width: 30%;">&nbsp;URL&nbsp;</th>
+                        <th style="width: 30%;">&nbsp;DESCRIPTION&nbsp;</th>
                 </tr>
 
                 {% for music in musics %}
@@ -91,7 +111,10 @@
                 </tr>
                 {% endfor %}
             </table>
+        {% endif %}
         </div>
+        
+        
 </div>
 
     
