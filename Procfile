@@ -1,1 +1,2 @@
-web: daphne mysite.asgi:application --bind 0.0.0.0 -v2
+web: daphne mysite.asgi:application
+worker: python3 manage.py runworker
