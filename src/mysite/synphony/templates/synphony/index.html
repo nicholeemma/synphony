@@ -18,7 +18,7 @@
 
 <div class="col-8">
 
-{% if isHost %}
+{% if isHost and isActive %}
 <form  method = "POST">
     {% csrf_token %}
     <button class="btn btn-dark" style="float: right; width: 7%;"id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
@@ -47,20 +47,22 @@
           Your browser does not support the audio element.
 </audio>-->
 
-<audio {% if isHost %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar", src="">
+<audio {% if isHost and isActive %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar", src="">
 	<source id="audiosrc" src="" type="audio/mpeg">
 	Your browser does not support the audio element.
 </audio>
 </div>
-{% if not isHost %}
+{% if not isHost and isActive  %}
 <button type="button" class="btn btn-dark my-2" id="start-btn" onclick=start_playing(this)>Start</button>
-{% else %}
+{% elif isActive%}
 <button type="button" class="btn btn-dark my-2" id="close-btn" onclick=close_studio(this)>Close</button>
 {% endif %}
-{% if isHost %}
+
+{% if isHost and isActive %}
 <button type="button" class="btn btn-dark my-2" id="playall-btn" value="loop" onclick="play_all(this.value)">Play all</button>
 {% endif %}
-{% if isHost %}
+
+{% if isHost and isActive %}
 <button type="button" class="btn btn-dark my-2" id="playall-btn" value="shuffle" onclick="play_all(this.value)">Shuffle all</button>
 {% endif %}
 
@@ -71,14 +73,14 @@
 	{% csrf_token %}
 	{% for music in musics %}
 	<tr>
-		{% if isHost %}
+		{% if isHost and isActive %}
 		<td> <div class = "to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div> </td>
 		{% endif %}
 
 		<td>{{music.name}}</td>
 		<td>{{music.description}}</td>
 
-		{% if isHost %}
+		{% if isHost and isActive %}
 		<td>
 			<button class="btn btn-dark"  name="remove_song" value="{{music.id}}" value="{{music.id}}" name="remove_song">Remove</button>
 		</td>
@@ -93,7 +95,7 @@
 		<!-- {{show}} -->
 	</tbody>
 </table>
-
+{% if isActive %}
   </div>
   <div id="commenthere" style="float: right; height:50%; border-left: 50px;" class="col-4">
     <label id="timer" class="card" style="padding: 1em; float: right;"></label><br>
@@ -105,6 +107,7 @@
     <br>
     <button class="btn btn-dark" id="postComment" name="postComment" style="width: 100%;">post</button>
 </div>
+{% endif %}
 
 <script>
     var key = {{ key_json }}; //studio hashed key
