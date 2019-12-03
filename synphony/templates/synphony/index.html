@@ -107,7 +107,7 @@
     var key = {{ key_json }}; //studio hashed key
    // open new sockect
     var chatSocket = new WebSocket(
-        'wss://' + window.location.host +
+        'ws://' + window.location.host +
         '/ws/synphony/' + key + '/');
 
     // append comment history
