@@ -161,7 +161,8 @@ def displaySongList(request):
 	# TODO currently, only search songs by title
 	# search songs using third-party API of Netease Music
 	# use song title to call api
-	URL = "http://localhost:3000/search?keywords=" + title
+	URL = "https://netmusicapi.herokuapp.com/search?keywords=" + title
+	# URL = "http://localhost:3000/search?keywords=" + title
 	r = requests.get(url=URL)
 	print(r.encoding)
 	print(r.headers['content-type'])
