@@ -1,4 +1,4 @@
-var webSocket = new WebSocket('ws://' + window.location.host + '/ws/playlist' + window.location.pathname);
+var webSocket = new WebSocket('wss://' + window.location.host + '/ws/playlist' + window.location.pathname);
 
 $(function () {
     console.log("playlist.js loaded!");
