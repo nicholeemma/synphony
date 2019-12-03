@@ -127,14 +127,15 @@ def user_logout(request):
 @login_required
 def studio_view(request):
     error = ""
+    
     if request.method == 'POST':
 		# Check exisiting studio
         studio = Studio.objects.filter(host=request.user,status=True)
-        if len(studio)>1:
+        if len(studio)>=1:
             form = CreateStudioForm()
             error = "You can only one active studio, go to history find your active studio"
             print("you can only have one")
-        elif len(studio)==1:
+        else:
             form = CreateStudioForm(request.POST)
             if form.is_valid():
                 hashcode = (str(form.cleaned_data) + str(random.random())).encode('utf-8')
@@ -149,6 +150,7 @@ def studio_view(request):
                 return redirect(reverse('index', args=[link]))
     else:
         form = CreateStudioForm()
+    
     context = {'form': form,'error':error}
     return render(request, 'synphony/create_studio.html', context)
 
