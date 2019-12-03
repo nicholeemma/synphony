@@ -17,6 +17,7 @@
 
 
 <div class="col-8">
+
 {% if isHost %}
 <form  method = "POST">
     {% csrf_token %}
@@ -36,15 +37,14 @@
 			<button class="btn btn-dark" style="float: right;" name="song-name-add"  value="{{song.id}}"> Add </button>
 		</div>
     </div>
-	{% endfor %}
-</div>
-<br>
-{% endif %}
-<!-- Audio -->
-<!--<audio controls autoplay controller class="audio" id="music-bar" style="width: 100%;margin-bottom: 4%;">
+    <br>
+    {% endif %}
+    <!-- Audio -->
+    <!--<audio controls autoplay controller class="audio" id="music-bar" style="width: 100%;margin-bottom: 4%;">
         <source id="audiosrc" src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3" type="audio/mpeg">
           Your browser does not support the audio element.
 </audio>-->
+
 <audio {% if isHost %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar", src="">
 	<source id="audiosrc" src="" type="audio/mpeg">
 	Your browser does not support the audio element.
@@ -99,19 +99,19 @@
         <br>
         <textarea id = "commentinput" style="width: 100%;" name="commentinput">
         </textarea>
-        <br>
-        <button class="btn btn-dark" id="postComment" name="postComment" style="width: 100%;">post</button>
+    <br>
+    <button class="btn btn-dark" id="postComment" name="postComment" style="width: 100%;">post</button>
 </div>
 
 <script>
     var key = {{ key_json }}; //studio hashed key
-   // open new sockect
+    // open new sockect
     var chatSocket = new WebSocket(
         'ws://' + window.location.host +
         '/ws/synphony/' + key + '/');
 
     // append comment history
-    chatSocket.onmessage = function(e) {
+    chatSocket.onmessage = function (e) {
         var data = JSON.parse(e.data);
         var message = data['message'];
         console.log("message received: " + message)
@@ -119,19 +119,19 @@
     };
 
     //disonnect
-    chatSocket.onclose = function(e) {
+    chatSocket.onclose = function (e) {
         console.error('Chat socket closed unexpectedly');
     };
 
     // post comment
     document.querySelector('#commentinput').focus();
-    document.querySelector('#commentinput').onkeyup = function(e) {
+    document.querySelector('#commentinput').onkeyup = function (e) {
         if (e.keyCode === 13) {  // enter, return
             document.querySelector('#postComment').click();
         }
     };
 
-    document.querySelector('#postComment').onclick = function(e) {
+    document.querySelector('#postComment').onclick = function (e) {
         var messageInputDom = document.querySelector('#commentinput');
         var message = messageInputDom.value;
         var user = "{{user.username}}: ";
@@ -143,6 +143,31 @@
         console.log(message + " sent!")
         messageInputDom.value = '';
     };
+
+    /* Alan - adding countdown timer for the studio */
+    var countDownDate = new Date();
+    var nextTime = countDownDate.setHours(countDownDate.getHours() + 2);
+    if(!localStorage.getItem('currentTime')){
+        window.localStorage.setItem('currentTime', nextTime);
+    }
+
+    var x = setInterval(function () {
+
+        var now = new Date().getTime();
+        var distance = window.localStorage.getItem('currentTime') - now;
+        console.log(distance);
+
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.getElementById("timer").innerHTML = hours + "h "
+            + minutes + "m " + seconds + "s ";
+        if (distance <= 0) {
+            clearInterval(x);
+            document.getElementById("close-btn").click();
+            window.localStorage.clear();
+        }
+    }, 1000);
+    /* Alan - countdown timer finished */
 </script>
 {% endblock main %}
-

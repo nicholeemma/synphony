@@ -115,7 +115,9 @@ def home_page(request):
 	if request.user.is_authenticated:
 		return render(request, 'synphony/homepage.html')
 	else:
-		return render(request, 'synphony/login.html')
+		form = UserCreationForm()
+		context = {'form': form}
+		return render(request, 'synphony/login.html', context)
 
 
 

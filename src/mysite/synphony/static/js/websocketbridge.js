@@ -25,7 +25,6 @@ function start_playing(cur) {
 			document.getElementById('music-bar').muted = true;
 			$(cur).html("Start");
 		}
-
 	}
 }
 
@@ -153,12 +152,22 @@ function process_participant_sync(){
 			document.getElementById('start-btn').disabled = true;
 
 			syncSocket.close();
-
 		}
 	};
 }
 
 function close_studio() {
+	alert("Studio is closing");
+
+	var isHost = $("#music-bar").attr("data-isHost")
+
+	if(isHost === "True" && webSocket.readyState === WebSocket.OPEN) { 
+
+		document.getElementById('music-bar').pause();
+		document.getElementById('music-bar').muted = true;
+
+		$('#close-btn').html("The studio has been closed.");
+		document.getElementById('close-btn').disabled = true;
 
 	var isHost = $("#music-bar").attr("data-isHost")
 

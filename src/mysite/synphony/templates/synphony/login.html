@@ -28,7 +28,11 @@
                     {% if errors %}
                     <div class="alert alert-warning" role="alert"><b>{{errors}}</b></div>
                     {% endif %}
-                    <h7>Don't have an account yet? <a href="{% url 'signup' %}" class="alert-link "> Sign up.</a></h7>
+                    <h7>Don't have an account yet? <a href="{% url 'signup' %}" class="alert-link "> Sign up.</a></h7><br><br>
+                    <span class="badge badge-light">Login with</span>
+                    <a href="{% url 'social:begin' 'google-oauth2' %}">
+                       <img src = "{% static 'media/gmail.jpg' %}" height="50em" width="100em" alt="Gmail">
+                      </a>
                 </div>
             </form>
         </div>
