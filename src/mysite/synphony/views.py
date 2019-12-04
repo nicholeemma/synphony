@@ -140,8 +140,7 @@ def user_logout(request):
 def studio_view(request):
     error = ""
     studios = Studio.objects.filter(host=request.user,status=True)
-    all_studios = Studio.objects.filter(host=request.user)
-    hasStudio = (len(all_studios)>=1)
+    hasStudio = (len(studios)>=1)
     if request.method == 'POST':
 		# Check exisiting studio
 
