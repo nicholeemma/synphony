@@ -43,11 +43,11 @@ def index(request, key=""):
 	if request.method == 'POST' and 'song-name-submit' in request.POST:
 		list = displaySongList(request)
 
+	cur_studio = Studio.objects.get(link__exact=key)
 	# comments = Comment.objects.all()
 	ctx.update({"musics": musics, "list": list, "user": request.user,
-		   'key_json': mark_safe(json.dumps(key))})
+		   'key_json': mark_safe(json.dumps(key)), "studio": cur_studio})
 	# check / add new user as participants of this studio
-	cur_studio = Studio.objects.get(link__exact=key)
 	addParticipants(ctx['user'], cur_studio)
 	return render(request, 'synphony/index.html', ctx)
 
