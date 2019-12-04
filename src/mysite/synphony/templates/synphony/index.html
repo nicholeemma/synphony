@@ -43,17 +43,13 @@
     </div>
     <br>
     {% endif %}
-    <!-- Audio -->
-    <!--<audio controls autoplay controller class="audio" id="music-bar" style="width: 100%;margin-bottom: 4%;">
-        <source id="audiosrc" src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3" type="audio/mpeg">
-          Your browser does not support the audio element.
-</audio>-->
+
 
 <audio {% if isHost and isActive %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar", src="">
 	<source id="audiosrc" src="" type="audio/mpeg">
 	Your browser does not support the audio element.
 </audio>
-</div>
+
 <br>
 {% if not isHost and isActive  %}
 <button type="button" class="btn btn-dark my-2" id="start-btn" onclick=start_playing(this)>Start</button>
@@ -98,8 +94,9 @@
 		<!-- {{show}} -->
 	</tbody>
 </table>
+</div>
 {% if isActive %}
-  </div>
+
   <div id="commenthere" style="float: right; height:50%; border-left: 50px;" class="col-4">
     <label id="timer" class="card" style="padding: 1em; float: right;"></label><br>
         <div id="commentcontent" style="width: 100%; overflow-y: scroll;">
