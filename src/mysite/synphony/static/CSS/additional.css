@@ -45,6 +45,9 @@ a:active {
     color: black;
 }
 
+#myTable {
+  color: black;
+}
 /* Pulse */
 @-webkit-keyframes hvr-pulse {
   25% {
