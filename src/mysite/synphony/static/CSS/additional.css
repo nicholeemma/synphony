@@ -6,19 +6,19 @@
     border-bottom: 10px solid transparent;
 }
 
-a:link {
+.main-btn:link {
   color:white;
  
   }
-  a:visited {
+  .main-btn:visited {
   color:white;
  
   }
-  a:hover {
+  .main-btn:hover {
   color:white;
  
   }
-  a:active {
+  .main-btn:active {
   color:#FFFFFF;
   
   }
