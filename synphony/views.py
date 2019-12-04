@@ -115,7 +115,7 @@ def home_page(request):
 	if request.user.is_authenticated:
 		return render(request, 'synphony/homepage.html')
 	else:
-		return render(request, 'synphony/login.html')
+		return redirect(reverse('login'))
 
 
 
