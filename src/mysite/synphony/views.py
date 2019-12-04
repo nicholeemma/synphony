@@ -51,20 +51,6 @@ def index(request, key=""):
 	addParticipants(ctx['user'], cur_studio)
 	return render(request, 'synphony/index.html', ctx)
 
-# def signup(request):
-#   if request.method == 'POST':
-#       form = UserCreationForm(request.POST)
-#       if form.is_valid():
-#           form.save()
-#           username = request.POST.get('username')
-#           password = request.POST.get('password')
-#           user = authenticate(username=username, password=password)
-#           login(request, user)
-#           return redirect('index')
-#   else:
-#       form = UserCreationForm()
-#   context = {'form': form}
-#   return render(request, 'synphony/signup.html', context)
 
 def addParticipants(user, studio):
 	user_list = Participant.objects.filter(studio = studio)
@@ -194,9 +180,8 @@ def view_history(request):
 def displaySongList(request):
 	print(request.path)
 
-# Commented out since search API unusable
 	title = request.POST.get('song-name')
-	# TODO currently, only search songs by title
+	# only search songs by title
 	# search songs using third-party API of Netease Music
 	# use song title to call api
 	# URL = "https://netmusicapi.herokuapp.com/search?keywords=" + title
@@ -226,58 +211,9 @@ def displaySongList(request):
 			dic['ar'] += j['name'] + "/ "
 		dic['ar'] = dic['ar'][0: -2]  # remove last "/ "
 		list.append(dic)
-	# list = []
-	# dic_1 = {}
-	# dic_1['name'] = '近く远い斜め色の空'
-	# dic_1['ar'] = 'DDBY'
-	# dic_1['id'] = '715681'
-	# list.append(dic_1)
-	# dic_2 = {}
-	# dic_2['name'] = '淡々泡々'
-	# dic_2['ar'] = 'Foxtail-Grass Studio'
-	# dic_2['id'] = '27669786'
-	# list.append(dic_2)
-	# dic_3 = {}
-	# dic_3['name'] = 'ティコ'
-	# dic_3['ar'] = '押尾コータロー'
-	# dic_3['id'] = '22822613'
-	# list.append(dic_3)
-	# dic_4 = {}
-	# dic_4['name'] = '~Give Me Full of Your Tears'
-	# dic_4['ar'] = '九条咲夜'
-	# dic_4['id'] = '252479'
-	# list.append(dic_4)
+
+
 	return list
-
-
-# display the playlist for an active studio
-def showStudio(request):
-	pass
-
-# add a song to the playlist for an active studio
-
-# # commented out -> has migrated to websockets
-# def addSongsToStudio(request, key=""):
-# 	# print(request.POST)
-# 	rsp = dict()
-
-# 	try:
-# 		studio = Studio.objects.get(link__exact=key)
-# 	except:
-# 		rsp['error'] = "Studio not found!"
-# 		return JsonResponse(rsp)
-
-# 	music_form = MusicForm(request.POST)
-# 	if(music_form.is_valid()):
-# 		music = music_form.save()
-# 		studio.music.add(music)
-# 		rsp['music'] = model_to_dict(music)
-# 	else:
-# 		rsp['error'] = "form not valid!"
-# 		print(music_form.errors)
-# 		print("forms not valid!")
-# 	return JsonResponse(rsp)
-
 
 # commented out -> has migrated to websockets
 # remove a song from the playlist for an active studio
