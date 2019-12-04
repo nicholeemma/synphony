@@ -108,6 +108,8 @@ def user_login(request):
 
 
 def home_page(request):
+	# if('synphony' not in request.path):
+	# 	return redirect('/synphony')
 	if request.user.is_authenticated:
 		return render(request, 'synphony/homepage.html')
 	else:

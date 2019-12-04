@@ -11,7 +11,7 @@
     }
 </style> -->
 <div class="col-4">
-   
+
         <button class="btn btn-dark" style="width: 100%;
         margin-bottom: 50px;" onclick="viewStudio()">
             My Studio
@@ -26,10 +26,10 @@
         margin-bottom: 50px;"  onclick="viewMusic()">
             Liked Music
         </button>
-   
+
 </div>
 <div class="col-8" style="color:black;">
-        
+
         <div id="studio">
             {% if hasStudio %}
         <table>
@@ -38,49 +38,49 @@
             <th style="width: 15%;">STATUS</th>
             <th style="width: 15%;">LINK</th>
             <th style="width: 15%;">START_TIME</th>
-            
+
         </tr>
             {% for studio in studios %}
             <tr>
             <td> {{studio.name}}</td>
             <td> {{studio.status}}</td>
-            
+
             <form method="POST">
-                   
+
             <td>  {% csrf_token %} <button class="btn btn-dark" name="jumpstudio" type="submit" value= "{{studio.link}}">
                 <a name="activestudio" id="activestudio" value= "{{studio.link}}">{{studio.link}}</a>
             </button>
             </td>
             </form>
             <td> {{studio.start_time}}</td>
-            
+
         </tr>
             {% endfor %}
-        
+
         </table>
         {% endif %}
         {% if not hasStudio %}
         <p><b> No studio is created for now</b></p>
         {% endif %}
         </div>
-        
-       
-        <div id="comment"> 
+
+
+        <div id="comment">
             {% if hasComment %}
             <table>
                 <tr>
                         <th style="width: 50%;">&nbsp;TEXT&nbsp;</th>
                         <th style="width: 50%;">&nbsp;STUDIO&nbsp;</th>
-                        
+
                 </tr>
-                
+
                 {% for comment in comments %}
                 <tr>
                 <td> {{comment.text}}</td>
-                <td> {{comment.commented_on.name}}</td>                
+                <td> {{comment.commented_on.name}}</td>
                 </tr>
                 {% endfor %}
-            
+
         </table>
 
         {% endif %}
@@ -88,8 +88,8 @@
         <p><b> No comment is created for now</b></p>
         {% endif %}
         </div>
-        
-        
+
+
         <div id="music">
             {% if not hasMusic %}
                 <p><b> No liked music is created for now</b></p>
@@ -97,25 +97,21 @@
         {% if hasMusic %}
             <table>
                 <tr>
-                        
+
                         <th style="width: 30%;">&nbsp;NAME&nbsp;</th>
-                      
+
                         <th style="width: 30%;">&nbsp;DESCRIPTION&nbsp;</th>
                 </tr>
 
                 {% for music in musics %}
                 <tr>
                 <td> {{music.name}}</td>
-               
-                <td> {{music.description}}</td>               
+
+                <td> {{music.description}}</td>
                 </tr>
                 {% endfor %}
             </table>
         {% endif %}
         </div>
-        
-        
 </div>
-
-    
 {% endblock %}
