@@ -1,4 +1,8 @@
 {% extends 'synphony/base.html' %}
+{% block extrajs %}
+{% load static %}
+<script src="{% static 'js/sharablelink.js' %}"></script>
+{% endblock extrajs%}
 {% block title %}Create a studio{% endblock title %}
 {% load static %}
 {% block main %}
@@ -13,8 +17,8 @@
 <div class="container pt-5">
 
 <form method="POST"> {% csrf_token %}
-        
-  <b>  Go to the Existing Active Studio </b>
+
+  <b>  Go to Your Existing Active Studio </b>
   <hr>
     <br>
         {% for studio in studios %}
@@ -24,10 +28,23 @@
                 </a>
         </button>
         {% endfor %}
-       
     <br>
     <br>
     <br>
+<br>
+{% for studio in studios %}
+  <b>  Share Your Studio Link </b>
+  <hr>
+    <br>
+    <!-- The text field -->
+    <input type="text" value="{{studio.link}}" id="sharablelink" readonly>
+
+    <!-- The button used to copy the text -->
+    <button class="btn btn-dark" onclick="copySharableLink()">Copy link</button>
+    <br>
+    <br>
+    <br>
+     {% endfor %}
 </form>
 </div>
 {% endif %}
@@ -35,17 +52,17 @@
 
 <div class="container pt-5">
 <form method="POST"> {% csrf_token %}
-    
+
         <label class="app-label">Enter Studio name: </label>{{form.name}}<br>
         <hr>
         <input type="submit" class="btn btn-dark" name ="createstudio"value="Create">
-   
+
     <br>
     <p>
         <b>
         {{error}}
         </b>
-    </p> 
+    </p>
 
 </form>
 </div>
