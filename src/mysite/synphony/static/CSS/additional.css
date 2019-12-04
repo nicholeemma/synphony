@@ -132,12 +132,7 @@ a:active {
             /* Footer height */
   }
 
-  body{
-    font-family: 'Source Sans Pro', sans-serif;
-    color: black;
-    background-size: 1450px 690px;
-  }
-
+ 
   title{
     font-family: 'Source Sans Pro', sans-serif;
   }
@@ -234,3 +229,4 @@ a:active {
   display: auto;
   position: absolute;
   }
+ 
