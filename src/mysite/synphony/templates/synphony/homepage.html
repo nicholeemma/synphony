@@ -1,24 +1,26 @@
 {% extends 'synphony/base.html' %}
 {% block extrajs %}
 {% load static %}
-
-
+<script src="{% static 'js/sharablelink.js' %}"></script>
 {% endblock extrajs%}
 {% block title %}Studio{% endblock title%}
 {% block main %}
 
-<div style="width: 100%;">
+<div style="width: 100%; margin-bottom: 5%">
     <center>
-<h1 class ="theme">Synchronize Your Synphony.</h1></center>
+<h1 class ="theme">Synchronize Your Symphony.</h1></center>
 </div>
 
 <br>
-<div>
 
-        <button class="btn btn-dark hvr-pulse">
+<!-- <div  >
+<button class="btn btn-dark hvr-pulse">
                 <a class="main-btn" href="{% url 'studio' %}">Create Studio</a>
                 </button>
-        </div>
+</div> -->
+<div >
+<input type="text" placeholder="Input Studio Link Here" id="sharablelink"  >
+<button class="btn btn-dark" onclick=openStudio() id="enterStudio">Go to Studio</button>
+</div>
+
 {% endblock main %}
-
-

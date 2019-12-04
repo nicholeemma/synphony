@@ -1,3 +1,4 @@
+
 function copySharableLink() {
   /* Get the text field */
   var copyText = document.getElementById("sharablelink");
@@ -12,4 +13,11 @@ function copySharableLink() {
 
   /* Alert the copied text */
   alert("Copied the text: " + copyText.value);
+}
+
+
+function openStudio(){
+   var url = $("#sharablelink").val();
+   console.log(url);
+   window.open(url);
 }
