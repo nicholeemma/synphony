@@ -6,6 +6,22 @@
     border-bottom: 10px solid transparent;
 }
 
+a:link {
+  color:white;
+ 
+  }
+  a:visited {
+  color:white;
+ 
+  }
+  a:hover {
+  color:white;
+ 
+  }
+  a:active {
+  color:#FFFFFF;
+  
+  }
 .theme {
   margin-top: 11%;
   font-size: 60px;
