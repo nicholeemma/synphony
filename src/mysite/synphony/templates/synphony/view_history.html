@@ -99,14 +99,14 @@
                 <tr>
                         
                         <th style="width: 30%;">&nbsp;NAME&nbsp;</th>
-                        <th style="width: 30%;">&nbsp;URL&nbsp;</th>
+                      
                         <th style="width: 30%;">&nbsp;DESCRIPTION&nbsp;</th>
                 </tr>
 
                 {% for music in musics %}
                 <tr>
                 <td> {{music.name}}</td>
-                <td> <a href="{{music.url}}"></a>Link</td> 
+               
                 <td> {{music.description}}</td>               
                 </tr>
                 {% endfor %}

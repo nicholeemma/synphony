@@ -39,7 +39,15 @@
 .theme:active {
     transform: scale(1.1);
 }
+a:hover,
+a:focus,
+a:active {
+    color: black;
+}
 
+#myTable {
+  color: black;
+}
 /* Pulse */
 @-webkit-keyframes hvr-pulse {
   25% {
@@ -81,6 +89,10 @@
   animation-iteration-count: infinite;
 }
 
+.head-syn{
+  padding-left: 3%;
+  padding-top: 1%;
+}
 
 .title_synphony{
   font-size: 30px;

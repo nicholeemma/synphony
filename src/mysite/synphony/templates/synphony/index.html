@@ -21,13 +21,16 @@
 <div class="col-8">
 
 {% if isHost and isActive %}
+<div class="search-box-result-wrapper">
 <form  method = "POST">
     {% csrf_token %}
-    <button class="btn btn-dark" style="float: right; width: 7%;"id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
+    <input style="width:90%;"id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required>
+    <button class="btn btn-dark" id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
 
-    <input style="width:90%;"id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
+    <br/>
 
 </form>
+</div>
 <!-- Below is the search result -->
 <div class="search-box-result-wrapper" style="height:20%; overflow-y: scroll; margin-top: 3%;">
     {% for song in list %}
@@ -66,7 +69,7 @@
 {% endif %}
 
 <!-- Below is the playlist of the studio -->
-<table  class="table table-bordered"  id="myTable" style="color: white;">
+<table  class="table table-bordered"  id="myTable" >
 	<tbody>
 	<!-- NEED TO CHANGE BY NICOLE -->
 	{% csrf_token %}
