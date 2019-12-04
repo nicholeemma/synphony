@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 import sys
 
-# sys.stdout.reconfigure(encoding='utf-8')
+sys.stdout.reconfigure(encoding='utf-8')
 
 @login_required
 def index(request, key=""):
@@ -51,20 +51,6 @@ def index(request, key=""):
 	addParticipants(ctx['user'], cur_studio)
 	return render(request, 'synphony/index.html', ctx)
 
-# def signup(request):
-#   if request.method == 'POST':
-#       form = UserCreationForm(request.POST)
-#       if form.is_valid():
-#           form.save()
-#           username = request.POST.get('username')
-#           password = request.POST.get('password')
-#           user = authenticate(username=username, password=password)
-#           login(request, user)
-#           return redirect('index')
-#   else:
-#       form = UserCreationForm()
-#   context = {'form': form}
-#   return render(request, 'synphony/signup.html', context)
 
 def addParticipants(user, studio):
 	user_list = Participant.objects.filter(studio = studio)
@@ -196,9 +182,8 @@ def view_history(request):
 def displaySongList(request):
 	print(request.path)
 
-# Commented out since search API unusable
 	title = request.POST.get('song-name')
-	# TODO currently, only search songs by title
+	# only search songs by title
 	# search songs using third-party API of Netease Music
 	# use song title to call api
 	# URL = "https://netmusicapi.herokuapp.com/search?keywords=" + title
@@ -229,37 +214,8 @@ def displaySongList(request):
 		dic['ar'] = dic['ar'][0: -2]  # remove last "/ "
 		list.append(dic)
 
+
 	return list
-
-
-# display the playlist for an active studio
-def showStudio(request):
-	pass
-
-# add a song to the playlist for an active studio
-
-# # commented out -> has migrated to websockets
-# def addSongsToStudio(request, key=""):
-# 	# print(request.POST)
-# 	rsp = dict()
-
-# 	try:
-# 		studio = Studio.objects.get(link__exact=key)
-# 	except:
-# 		rsp['error'] = "Studio not found!"
-# 		return JsonResponse(rsp)
-
-# 	music_form = MusicForm(request.POST)
-# 	if(music_form.is_valid()):
-# 		music = music_form.save()
-# 		studio.music.add(music)
-# 		rsp['music'] = model_to_dict(music)
-# 	else:
-# 		rsp['error'] = "form not valid!"
-# 		print(music_form.errors)
-# 		print("forms not valid!")
-# 	return JsonResponse(rsp)
-
 
 # commented out -> has migrated to websockets
 # remove a song from the playlist for an active studio
