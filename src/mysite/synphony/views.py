@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 import sys
 
-# sys.stdout.reconfigure(encoding='utf-8')
+sys.stdout.reconfigure(encoding='utf-8')
 
 @login_required
 def index(request, key=""):
