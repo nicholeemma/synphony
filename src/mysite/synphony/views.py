@@ -133,8 +133,8 @@ def user_logout(request):
 def studio_view(request):
     error = ""
     studios = Studio.objects.filter(host=request.user,status=True)
-	all_studios = Studio.objects.filter(host=request.user)
-    hasStudio = (len(all_studios)>=1)
+    
+    hasStudio = (len(studios)>=1)
     if request.method == 'POST':
 		# Check exisiting studio
         
@@ -166,10 +166,11 @@ def studio_view(request):
     context = {'form': form,'error':error,'studios':studios,'hasStudio':hasStudio}
     return render(request, 'synphony/create_studio.html', context)
 
-
+@login_required
 def view_history(request):
     comments = Comment.objects.filter(user_name=request.user)
     studios = Studio.objects.filter(host=request.user)
+    print(studios)
     musics = request.user.music_set.all()
     hasStudio = (len(studios)>=1)
     hasComment = (len(comments)>=1)
