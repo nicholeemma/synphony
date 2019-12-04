@@ -12,7 +12,7 @@
   display: inline-block;
     vertical-align: middle;
     transform: translateZ(0);
-    text-shadow: 0 0 2px grey;
+    
     backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
     transition-duration: 0.3s;
