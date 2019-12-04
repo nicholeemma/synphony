@@ -14,7 +14,9 @@
 {% endblock extrajs%}
 {% block title %}Studio{% endblock title%}
 {% block main %}
-
+{% if not isActive %}
+<h2>This studio has been closed.</h2>
+{% endif %}
 
 <div class="col-8">
 

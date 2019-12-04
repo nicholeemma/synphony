@@ -21,7 +21,6 @@ import sys
 def index(request, key=""):
 
 	ctx = dict()
-
 	try:
 		cur_studio = Studio.objects.get(link__exact=key)
 		ctx['isHost'] = (cur_studio.host.id == request.user.id)
@@ -47,6 +46,9 @@ def index(request, key=""):
 	# comments = Comment.objects.all()
 	ctx.update({"musics": musics, "list": list, "user": request.user,
 		   'key_json': mark_safe(json.dumps(key))})
+	# check / add new user as participants of this studio
+	cur_studio = Studio.objects.get(link__exact=key)
+	addParticipants(ctx['user'], cur_studio)
 	return render(request, 'synphony/index.html', ctx)
 
 # def signup(request):
@@ -64,6 +66,11 @@ def index(request, key=""):
 #   context = {'form': form}
 #   return render(request, 'synphony/signup.html', context)
 
+def addParticipants(user, studio):
+	user_list = Participant.objects.filter(studio = studio)
+	if user not in user_list:
+		participant = Participant(participant_user=user, studio=studio)
+		participant.save()
 
 def signup(request):
 	if request.user.is_authenticated:
@@ -133,11 +140,10 @@ def user_logout(request):
 def studio_view(request):
     error = ""
     studios = Studio.objects.filter(host=request.user,status=True)
-    
     hasStudio = (len(studios)>=1)
     if request.method == 'POST':
 		# Check exisiting studio
-        
+
         if "jumpstudio" in request.POST:
             # link = request.POST["activestudio"]
             link=request.POST.get('jumpstudio')
@@ -162,7 +168,7 @@ def studio_view(request):
                 return redirect(reverse('index', args=[link]))
     else:
         form = CreateStudioForm()
-    
+
     context = {'form': form,'error':error,'studios':studios,'hasStudio':hasStudio}
     return render(request, 'synphony/create_studio.html', context)
 
