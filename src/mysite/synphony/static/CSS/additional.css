@@ -1,24 +1,91 @@
 .to_right {
     width: 0;
     height: 0;
-    border-left: 10px solid #cccf;
+    border-left: 10px solid black;
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
+}
+
+.theme {
+  margin-top: 11%;
+  font-size: 60px;
+  display: inline-block;
+    vertical-align: middle;
+    transform: translateZ(0);
+    text-shadow: 0 0 2px grey;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    transition-duration: 0.3s;
+    transition-property: transform;
+}
+.theme:hover,
+.theme:focus,
+.theme:active {
+    transform: scale(1.1);
+}
+
+/* Pulse */
+@-webkit-keyframes hvr-pulse {
+  25% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+  75% {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+}
+@keyframes hvr-pulse {
+  25% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+  75% {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+}
+.hvr-pulse {
+  margin-top: 20%;
+  color: white;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+.hvr-pulse:hover, .hvr-pulse:focus, .hvr-pulse:active {
+  -webkit-animation-name: hvr-pulse;
+  animation-name: hvr-pulse;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+
+.title_synphony{
+  font-size: 30px;
+  margin-bottom: 30px;
 }
 
 .ul-base {
     list-style-type: none;
     margin: 0;
     padding: 0;
+   
   }
 
   .navbar {
     float: right;
+   
   }
 
   li a {
     display: block;
-    color: white;
+    color: black;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
@@ -39,6 +106,8 @@
 
   body{
     font-family: 'Source Sans Pro', sans-serif;
+    color: black;
+    background-size: 1450px 690px;
   }
 
   title{
