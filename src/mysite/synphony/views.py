@@ -122,6 +122,8 @@ def user_login(request):
 
 
 def home_page(request):
+	# if('synphony' not in request.path):
+	# 	return redirect('/synphony')
 	if request.user.is_authenticated:
 		return render(request, 'synphony/homepage.html')
 	else:
@@ -226,27 +228,7 @@ def displaySongList(request):
 			dic['ar'] += j['name'] + "/ "
 		dic['ar'] = dic['ar'][0: -2]  # remove last "/ "
 		list.append(dic)
-	# list = []
-	# dic_1 = {}
-	# dic_1['name'] = '近く远い斜め色の空'
-	# dic_1['ar'] = 'DDBY'
-	# dic_1['id'] = '715681'
-	# list.append(dic_1)
-	# dic_2 = {}
-	# dic_2['name'] = '淡々泡々'
-	# dic_2['ar'] = 'Foxtail-Grass Studio'
-	# dic_2['id'] = '27669786'
-	# list.append(dic_2)
-	# dic_3 = {}
-	# dic_3['name'] = 'ティコ'
-	# dic_3['ar'] = '押尾コータロー'
-	# dic_3['id'] = '22822613'
-	# list.append(dic_3)
-	# dic_4 = {}
-	# dic_4['name'] = '~Give Me Full of Your Tears'
-	# dic_4['ar'] = '九条咲夜'
-	# dic_4['id'] = '252479'
-	# list.append(dic_4)
+
 	return list
 
 
