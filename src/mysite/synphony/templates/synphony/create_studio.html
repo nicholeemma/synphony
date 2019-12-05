@@ -1,3 +1,7 @@
+<!-- The page is used to create studio for users. 
+Users can enter the studio name to create / go to the exsiting studio
+Only one active is allowed for users -->
+
 {% extends 'synphony/base.html' %}
 {% block extrajs %}
 {% load static %}
@@ -6,13 +10,7 @@
 {% block title %}Create a studio{% endblock title %}
 {% load static %}
 {% block main %}
-<!-- <style type="text/css">
-    body {
-        background-image: url('{% static "media/homepage.jpg" %}');
-        background-repeat: no-repeat;
-        background-size: 1450px 690px;
-    }
-</style> -->
+
 {% if hasStudio %}
 <div class="container pt-5">
 
