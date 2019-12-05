@@ -184,6 +184,7 @@ def studio_view(request):
 
 @login_required
 def view_history(request):
+    
     comments = Comment.objects.filter(user_name=request.user)
     studios = Studio.objects.filter(host=request.user)
     participated_records = Participant.objects.filter(participant_user=request.user)
@@ -202,6 +203,10 @@ def view_history(request):
 
 
 def displaySongList(request):
+    '''
+    Display the songs,
+    Add seleted songs to the page
+    '''
     print(request.path)
 
     title = request.POST.get('song-name')
@@ -244,6 +249,11 @@ def displaySongList(request):
 # commented out -> has migrated to websockets
 # remove a song from the playlist for an active studio
 def deleteSongsFromPlayList(request, key=""):
+    '''
+    Delete songs from playlist
+    User will not see the deleted music in the studio any more
+    Delete the selected songs from music table
+    '''
 
     rsp = dict()
     try:
@@ -301,6 +311,9 @@ def likeSongsFromPlayList(request, key=""):
 
 
 def closeStudio(request, key=""):
+    '''
+    Close the studio, change the studio status to false. Disable all functions
+    '''
 
     rsp = dict()
 
