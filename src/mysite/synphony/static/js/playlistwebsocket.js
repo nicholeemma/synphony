@@ -65,7 +65,9 @@ function process_host(){
         var msg_type = data['msg_type'];
         var msg_content = data['msg_content']
 
-        if (msg_type === 'add_song' && !('error' in msg_content )){
+        if ('error' in msg_content) {
+            alert("Error: " + msg_content['error']);
+		} else if (msg_type === 'add_song'){
         }
     }
 }
@@ -80,8 +82,10 @@ function process_participant(){
         var msg_content = data['msg_content'];
 
         //add songs
-        if (msg_type === 'add_song' && !('error' in msg_content ) ){
-                        let rows =  '';
+        if ('error' in msg_content){
+            if(isHost === "True") { alert("Error: " + msg_content['error']); }
+		} else if (msg_type === 'add_song'){
+            let rows =  '';
             var id = msg_content['id'];
             var name = msg_content['name'];
             var url =  msg_content['url'];

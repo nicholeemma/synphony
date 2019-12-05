@@ -120,7 +120,7 @@ class PlaylistConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'sync_message',
                 'msg_type': msg_type,
-                        'msg_content': rsp
+                'msg_content': rsp
             }
         )
 

@@ -22,27 +22,29 @@
 {% endif %}
 <div class="col-8">
 
-{% if isHost and isActive %}
-<div class="search-box-result-wrapper">
-<form  method = "POST">
-    {% csrf_token %}
-    <input style="width:90%;"id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required>
-    <button class="btn btn-dark" id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
+    {% if isHost and isActive %}
+    <div class="search-box-result-wrapper">
+        <form method="POST">
+            {% csrf_token %}
+            <input style="width:90%;" id="song-name" name="song-name" type="text" size="100"
+                placeholder="Search by typing song titles" required>
+            <button class="btn btn-dark" id="song-name-submit" style="border-radius: 50%;" name="song-name-submit" type="submit" />Get</button>
 
-    <br/>
+            <br />
 
-</form>
-</div>
-<!-- Below is the search result -->
-<div class="search-box-result-wrapper" style="height:20%; overflow-y: scroll; margin-top: 3%;">
-    {% for song in list %}
-	<div class="row m-1">
-		<div class="col-10">
-			<li id="{{song.id}}">{{song.name}}, by: {{song.ar}} </li>
-		</div>
-		<div class="col-2">
-			<button class="btn btn-dark" style="float: right;" name="song-name-add"  value="{{song.id}}"> Add </button>
-        </div>
+        </form>
+    </div>
+    <!-- Below is the search result -->
+    <div class="search-box-result-wrapper" style="height:20%; overflow-y: scroll; margin-top: 3%;">
+        {% for song in list %}
+        <div class="row m-1">
+            <div class="col-10">
+                <li id="{{song.id}}">{{song.name}}, by: {{song.ar}} </li>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-dark" style="float: right; border-radius: 50%;" name="song-name-add" value="{{song.id}}"> Add
+                </button>
+            </div>
         </div>
         {% endfor %}
     </div>
@@ -50,85 +52,98 @@
     {% endif %}
 
 
-<audio {% if isHost and isActive %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar", src="">
-	<source id="audiosrc" src="" type="audio/mpeg">
-	Your browser does not support the audio element.
-</audio>
+    <audio {% if isHost and isActive %}controls{% endif %} autoplay controller class="audio audio-control"
+        data-isHost="{{ isHost }}" id="music-bar" , src="">
+        <source id="audiosrc" src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
-<br>
-{% if not isHost and isActive  %}
-<button type="button" class="btn btn-dark my-2" id="start-btn" onclick=start_playing(this)>Start</button>
-{% elif isActive%}
-<button type="button" class="btn btn-dark my-2" id="close-btn" onclick=close_studio(this)>Close</button>
-{% endif %}
+    <br>
+    {% if not isHost and isActive  %}
+    <button type="button" class="btn btn-dark my-2" style="border-radius: 50%;" id="start-btn" onclick=start_playing(this)>Start</button>
+    {% elif isActive%}
+    <button type="button" class="btn btn-dark my-2" style="border-radius: 50%;" id="close-btn" onclick=close_studio(this)>Close</button>
+    {% endif %}
 
-{% if isHost and isActive %}
-<button type="button" class="btn btn-dark my-2" id="playall-btn" value="loop" onclick="play_all(this.value)">Play all</button>
-<button type="button" class="btn btn-dark my-2" id="playall-btn" value="shuffle" onclick="play_all(this.value)">Shuffle all</button>
-{% endif %}
+    {% if isHost and isActive %}
+    <button type="button" class="btn btn-dark my-2" style="border-radius: 50%;" id="playall-btn" value="loop" onclick="play_all(this.value)">Play
+        all</button>
+    <button type="button" class="btn btn-dark my-2" style="border-radius: 50%;" id="playall-btn" value="shuffle"
+        onclick="play_all(this.value)">Shuffle all</button>
+    {% endif %}
 
-<!-- Below is the playlist of the studio -->
-<table  class="table table-bordered"  id="myTable" >
-	<tbody>
-	<!-- NEED TO CHANGE BY NICOLE -->
-	{% csrf_token %}
-	{% for music in musics %}
-	<tr>
-		{% if isHost and isActive %}
-		<td> <div class = "to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div> </td>
-		{% endif %}
+    <!-- Below is the playlist of the studio -->
+    <table class="table table-bordered" id="myTable">
+        <tbody>
+            <!-- NEED TO CHANGE BY NICOLE -->
+            {% csrf_token %}
+            {% for music in musics %}
+            <tr>
+                {% if isHost and isActive %}
+                <td>
+                    <div class="to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div>
+                </td>
+                {% endif %}
 
-		<td>{{music.name}}</td>
-		<td>{{music.description}}</td>
+                <td>{{music.name}}</td>
+                <td>{{music.description}}</td>
 
-		{% if isHost and isActive %}
-		<td>
-			<button class="btn btn-dark"  name="remove_song" value="{{music.id}}" value="{{music.id}}" name="remove_song">Remove</button>
-		</td>
-		{% endif %}
+                {% if isHost and isActive %}
+                <td>
+                    <button class="btn btn-dark" name="remove_song" value="{{music.id}}" value="{{music.id}}"
+                        name="remove_song">Remove</button>
+                </td>
+                {% endif %}
 
-		<td>
-			<button class="btn btn-dark" name="song" value="{{music.id}}"  data-id="{{music.id}}"
-				onclick=likeSongs(this)>{% if user in music.liked_user.all %}Unlike{% else %}Like{% endif %}</button>
-		</td>
-	</tr>
-	{% endfor %}
-		<!-- {{show}} -->
-	</tbody>
-</table>
+                <td>
+                    <button class="btn btn-dark" name="song" value="{{music.id}}" data-id="{{music.id}}"
+                        onclick=likeSongs(this)>{% if user in music.liked_user.all %}Unlike{% else %}Like{% endif %}</button>
+                </td>
+            </tr>
+            {% endfor %}
+            <!-- {{show}} -->
+        </tbody>
+    </table>
 </div>
 {% if isActive %}
 
-  <div id="commenthere" style="float: right; height:50%; border-left: 50px;" class="col-4">
-    <label id="timer" class="card" style="padding: 1em; float: right;"></label><br>
+<div id="commenthere" style="float: right; height:50%; border-left: 50px;" class="col-4">
+    <b class="btn btn-secondary" data-toggle="collapse" href="#mc1"> Studio Info </b>
+    <hr>
+    <div class="card collapse multi-collapse" id="mc1" style="padding: 1em;"><b>Studio started at:</b><i>{{startTime}}
+        </i><br><b>Studio will end at:
+        </b><i>{{endTime}}</i>
+        <br><i><b>Remaining time in Studio:</b></i><label id="timer"></label>
+    </div><br>
     <div>
-  <b>  Share Your Studio Link </b>
-  <hr>
-    <br>
-    <!-- The text field -->
-    <input type="text" value="{{studio.link}}" id="sharablelink" readonly>
+        <b> Share Your Studio Link </b>
+        <hr>
+        <!-- The text field -->
+        <input type="text" value="{{studio.link}}" id="sharablelink" readonly>
+        <!-- The button used to copy the text -->
+        <button class="btn btn-dark"  onclick="copySharableLink()">Copy link</button><br><br>
 
-    <!-- The button used to copy the text -->
-    <button class="btn btn-dark" onclick="copySharableLink()">Copy link</button>
-    <br>
-    <br>
-    <br>
-</div>
-        <div id="commentcontent" style="width: 100%; overflow-y: scroll;">
-        </div>
+    </div>
+    <div>
+    <b> Comment box </b>
+    <hr>
+    <div id="commentcontent" style="width: 100%; overflow-y: scroll;">
+
         <br>
-        <textarea id = "commentinput" style="width: 100%;" name="commentinput">
+        <textarea id="commentinput" style="width: 100%;" name="commentinput">
         </textarea>
-    <br>
+        <br>
+    </div>
     <button class="btn btn-dark" id="postComment" name="postComment" style="width: 100%;">post</button>
+</div>
 </div>
 {% endif %}
 
 <script>
     var key = {{ key_json }}; //studio hashed key
 
-   // open new sockect
-   
+    // open new sockect
+
     var chat_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     var chatSocket = new ReconnectingWebSocket(
         chat_scheme + '://' + window.location.host + '/ws/synphony/' + key + '/');
@@ -138,7 +153,7 @@
         var data = JSON.parse(e.data);
         var message = data['message'];
         console.log("message received: " + message)
-        document.querySelector('#commentcontent').innerHTML += (message +  "<br />");
+        document.querySelector('#commentcontent').innerHTML += (message + "<br />");
     };
 
     //disonnect
@@ -168,29 +183,26 @@
     };
 
     /* Alan - adding countdown timer for the studio */
-    var countDownDate = new Date();
-    var nextTime = countDownDate.setHours(countDownDate.getHours() + 2);
-    if(!localStorage.getItem('currentTime')){
-        window.localStorage.setItem('currentTime', nextTime);
-    }
+
+    let time = {{ startTime }};
+    var ti = new Date(time);
 
     var x = setInterval(function () {
-
-        var now = new Date().getTime();
-        var distance = window.localStorage.getItem('currentTime') - now;
-        console.log(distance);
-
+        var now = new Date();
+        var distance = now - time;
+        var st = new Date({{ startTime }});
+        var en = new Date({{ endTime }});
+        var distance = en - now;
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        document.getElementById("timer").innerHTML = hours + "h "
-            + minutes + "m " + seconds + "s ";
+        document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
         if (distance <= 0) {
             clearInterval(x);
             document.getElementById("close-btn").click();
-            window.localStorage.clear();
         }
     }, 1000);
     /* Alan - countdown timer finished */
+
 </script>
 {% endblock main %}
