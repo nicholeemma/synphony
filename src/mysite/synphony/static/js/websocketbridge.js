@@ -1,3 +1,4 @@
+
 var sync_scheme = window.location.protocol == "https:" ? "wss" : "ws";
 var syncSocket = new ReconnectingWebSocket(sync_scheme + '://' + window.location.host + '/ws/sync' + window.location.pathname);
 
@@ -9,7 +10,6 @@ $(document).ready(function(){
 	if(isHost === "True") { process_host_sync(); }
 
 });
-
 
 
 function start_playing(cur) {

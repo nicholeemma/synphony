@@ -6,26 +6,33 @@
 <script src="{% static 'js/websocketbridge.js' %}" type="text/javascript"></script>
 <!-- <script src="{% static 'js/comments.js' %}" type="text/javascript"></script> -->
 <script src="{% static 'js/playlistwebsocket.js' %}" type="text/javascript"></script>
-<style type="text/css">
+<script src="{% static 'js/sharablelink.js' %}"></script>
+<!-- <style type="text/css">
     body {
         background-image: url('{% static "media/homepage.jpg" %}');
         background-size: 1450px 690px;
     }
-</style>
+</style> -->
 {% endblock extrajs%}
 {% block title %}Studio{% endblock title%}
 {% block main %}
 
-
+{% if not isActive %}
+<h2>This studio has been closed.</h2>
+{% endif %}
 <div class="col-8">
-{% if isHost %}
+
+{% if isHost and isActive %}
+<div class="search-box-result-wrapper">
 <form  method = "POST">
     {% csrf_token %}
-    <button class="btn btn-dark" style="float: right; width: 7%;"id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
+    <input style="width:90%;"id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required>
+    <button class="btn btn-dark" id="song-name-submit" name="song-name-submit" type="submit"/>Get</button>
 
-    <input style="width:90%;"id="song-name" name="song-name" type="text" size="100" placeholder="Search by typing song titles" required><br/>
+    <br/>
 
 </form>
+</div>
 <!-- Below is the search result -->
 <div class="search-box-result-wrapper" style="height:20%; overflow-y: scroll; margin-top: 3%;">
     {% for song in list %}
@@ -35,45 +42,46 @@
 		</div>
 		<div class="col-2">
 			<button class="btn btn-dark" style="float: right;" name="song-name-add"  value="{{song.id}}"> Add </button>
-		</div>
+        </div>
+        </div>
+        {% endfor %}
     </div>
-	{% endfor %}
-</div>
-<br>
-{% endif %}
-<!-- Audio -->
-<!--<audio controls autoplay controller class="audio" id="music-bar" style="width: 100%;margin-bottom: 4%;">
-        <source id="audiosrc" src="https://m8.music.126.net/20191103122027/29fb188753b59507e8a6ea5e02d7c6be/ymusic/5459/0352/535b/c32298577948180f7c1ed1dd811d4077.mp3" type="audio/mpeg">
-          Your browser does not support the audio element.
-</audio>-->
-<audio {% if isHost %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar", src="">
+    <br>
+    {% endif %}
+
+
+<audio {% if isHost and isActive %}controls{% endif %} autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar", src="">
 	<source id="audiosrc" src="" type="audio/mpeg">
 	Your browser does not support the audio element.
 </audio>
 
-{% if not isHost %}
+<br>
+{% if not isHost and isActive  %}
 <button type="button" class="btn btn-dark my-2" id="start-btn" onclick=start_playing(this)>Start</button>
-{% else %}
+{% elif isActive%}
 <button type="button" class="btn btn-dark my-2" id="close-btn" onclick=close_studio(this)>Close</button>
+{% endif %}
+
+{% if isHost and isActive %}
 <button type="button" class="btn btn-dark my-2" id="playall-btn" value="loop" onclick="play_all(this.value)">Play all</button>
 <button type="button" class="btn btn-dark my-2" id="playall-btn" value="shuffle" onclick="play_all(this.value)">Shuffle all</button>
 {% endif %}
 
 <!-- Below is the playlist of the studio -->
-<table  class="table table-bordered"  id="myTable" style="color: white;">
+<table  class="table table-bordered"  id="myTable" >
 	<tbody>
 	<!-- NEED TO CHANGE BY NICOLE -->
 	{% csrf_token %}
 	{% for music in musics %}
 	<tr>
-		{% if isHost %}
+		{% if isHost and isActive %}
 		<td> <div class = "to_right" onclick=playMusic(this.id) id="{{music.url}}" value="{{music.url}}"> </div> </td>
 		{% endif %}
 
 		<td>{{music.name}}</td>
 		<td>{{music.description}}</td>
 
-		{% if isHost %}
+		{% if isHost and isActive %}
 		<td>
 			<button class="btn btn-dark"  name="remove_song" value="{{music.id}}" value="{{music.id}}" name="remove_song">Remove</button>
 		</td>
@@ -88,29 +96,45 @@
 		<!-- {{show}} -->
 	</tbody>
 </table>
+</div>
+{% if isActive %}
 
-  </div>
   <div id="commenthere" style="float: right; height:50%; border-left: 50px;" class="col-4">
+    <label id="timer" class="card" style="padding: 1em; float: right;"></label><br>
+    <div>
+  <b>  Share Your Studio Link </b>
+  <hr>
+    <br>
+    <!-- The text field -->
+    <input type="text" value="{{studio.link}}" id="sharablelink" readonly>
+
+    <!-- The button used to copy the text -->
+    <button class="btn btn-dark" onclick="copySharableLink()">Copy link</button>
+    <br>
+    <br>
+    <br>
+</div>
         <div id="commentcontent" style="width: 100%; overflow-y: scroll;">
         </div>
         <br>
         <textarea id = "commentinput" style="width: 100%;" name="commentinput">
         </textarea>
-        <br>
-        <button class="btn btn-dark" id="postComment" name="postComment" style="width: 100%;">post</button>
+    <br>
+    <button class="btn btn-dark" id="postComment" name="postComment" style="width: 100%;">post</button>
 </div>
+{% endif %}
 
 <script>
     var key = {{ key_json }}; //studio hashed key
+
    // open new sockect
    
     var chat_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     var chatSocket = new ReconnectingWebSocket(
-        chat_scheme + '://' + window.location.host +
-        '/ws/synphony/' + key + '/');
+        chat_scheme + '://' + window.location.host + '/ws/synphony/' + key + '/');
 
     // append comment history
-    chatSocket.onmessage = function(e) {
+    chatSocket.onmessage = function (e) {
         var data = JSON.parse(e.data);
         var message = data['message'];
         console.log("message received: " + message)
@@ -118,19 +142,19 @@
     };
 
     //disonnect
-    chatSocket.onclose = function(e) {
+    chatSocket.onclose = function (e) {
         console.error('Chat socket closed unexpectedly');
     };
 
     // post comment
     document.querySelector('#commentinput').focus();
-    document.querySelector('#commentinput').onkeyup = function(e) {
+    document.querySelector('#commentinput').onkeyup = function (e) {
         if (e.keyCode === 13) {  // enter, return
             document.querySelector('#postComment').click();
         }
     };
 
-    document.querySelector('#postComment').onclick = function(e) {
+    document.querySelector('#postComment').onclick = function (e) {
         var messageInputDom = document.querySelector('#commentinput');
         var message = messageInputDom.value;
         var user = "{{user.username}}: ";
@@ -142,6 +166,31 @@
         console.log(message + " sent!")
         messageInputDom.value = '';
     };
+
+    /* Alan - adding countdown timer for the studio */
+    var countDownDate = new Date();
+    var nextTime = countDownDate.setHours(countDownDate.getHours() + 2);
+    if(!localStorage.getItem('currentTime')){
+        window.localStorage.setItem('currentTime', nextTime);
+    }
+
+    var x = setInterval(function () {
+
+        var now = new Date().getTime();
+        var distance = window.localStorage.getItem('currentTime') - now;
+        console.log(distance);
+
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.getElementById("timer").innerHTML = hours + "h "
+            + minutes + "m " + seconds + "s ";
+        if (distance <= 0) {
+            clearInterval(x);
+            document.getElementById("close-btn").click();
+            window.localStorage.clear();
+        }
+    }, 1000);
+    /* Alan - countdown timer finished */
 </script>
 {% endblock main %}
-
