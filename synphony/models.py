@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
-import datetime
 from django.contrib.auth.models import User
+from datetime import datetime, timedelta
 
 
 class Music(models.Model):
@@ -46,8 +46,8 @@ class Studio(models.Model):
     # field_for_sharablelink
     link = models.CharField(max_length = 16)
     host = models.ForeignKey(User, on_delete=models.CASCADE)
-    start_time = models.DateTimeField(auto_now_add=True)
-    end_time = models.DateTimeField(auto_now_add=True)
+    start_time = models.DateTimeField(default=datetime.now()-timedelta(hours=5))
+    end_time = models.DateTimeField(default=datetime.now()-timedelta(hours=3))
     # playlist = models.OneToOneField(Playlist, on_delete=models.CASCADE)
 
 
