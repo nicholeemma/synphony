@@ -127,7 +127,7 @@ def user_login(request):
 
 def home_page(request):
     # if('synphony' not in request.path):
-    # 	return redirect('/synphony')
+    #   return redirect('/synphony')
     if request.user.is_authenticated:
         return render(request, 'synphony/homepage.html')
     else:
@@ -182,9 +182,11 @@ def studio_view(request):
 def view_history(request):
     comments = Comment.objects.filter(user_name=request.user)
     studios = Studio.objects.filter(host=request.user)
+    participated_records = Participant.objects.filter(participant_user=request.user)
     print(studios)
     musics = request.user.music_set.all()
     hasStudio = (len(studios) >= 1)
+    hasParticipation = (len(participated_records) >= 1)
     hasComment = (len(comments) >= 1)
     hasMusic = (len(musics) >= 1)
     if request.method == "POST":
@@ -192,8 +194,7 @@ def view_history(request):
             link = request.POST.get('jumpstudio')
             print(link)
             return redirect(reverse('index', args=[link]))
-    context = {"comments": comments, "studios": studios, "musics": musics,
-               "hasStudio": hasStudio, "hasComment": hasComment, "hasMusic": hasMusic}
+    context = {"comments": comments, "studios": studios, "participated_records": participated_records, "musics": musics, "hasStudio": hasStudio, "hasParticipation": hasParticipation, "hasComment": hasComment, "hasMusic": hasMusic}
     return render(request, "synphony/view_history.html", context)
 
 
