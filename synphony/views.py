@@ -168,8 +168,8 @@ def studio_view(request):
                     host=request.user
                 )
                 # startTime = Studio.objects.get(start_time=studios)
-            newStudio.save()
-            return redirect(reverse('index', args=[link]))
+                newStudio.save()
+                return redirect(reverse('index', args=[link]))
     else:
         form = CreateStudioForm()
 
