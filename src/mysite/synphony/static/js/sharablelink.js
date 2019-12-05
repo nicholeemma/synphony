@@ -21,6 +21,9 @@ function copySharableLink() {
 
 function openStudio(){
    var url = $("#sharablelink").val();
+   if (!url.startsWith("https://")){
+    url = "https://" + url;
+   }
    console.log(url);
    window.open(url);
 }
