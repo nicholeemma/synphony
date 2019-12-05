@@ -25,10 +25,10 @@ LOGOUT_REDIRECT_URL = '/'
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "m*s3k&i$b&4p*9gr*mbm$(v03=k%n1t2ko#18c=r439w&o=r1q"
+SECRET_KEY = 'm*s3k&i$b&4p*9gr*mbm$(v03=k%n1t2ko#18c=r439w&o=r1q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost"]
 
@@ -36,8 +36,8 @@ AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
 'social_core.backends.google.GoogleOAuth2',)
 # Application definition
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "526948702908-4hmckai19k3so4jm2uc4hi2jaaj0bj8b.apps.googleusercontent.com"
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "pQ1jqtyxizG0zP_msnln0zKE"
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '526948702908-4hmckai19k3so4jm2uc4hi2jaaj0bj8b.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'pQ1jqtyxizG0zP_msnln0zKE'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 INSTALLED_APPS = [
