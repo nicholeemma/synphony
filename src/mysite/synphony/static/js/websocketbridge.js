@@ -1,4 +1,4 @@
-
+// Web sockets js file for music sync
 var sync_scheme = window.location.protocol == "https:" ? "wss" : "ws";
 var syncSocket = new ReconnectingWebSocket(sync_scheme + '://' + window.location.host + '/ws/sync' + window.location.pathname);
 
@@ -166,19 +166,19 @@ function close_studio() {
 	var isHost = $("#music-bar").attr("data-isHost")
 
 	if(!(isHost === "True" && syncSocket.readyState === WebSocket.OPEN)) { return; }
-	
+
 	$.ajax({
 		url:  location.pathname.split("/")[2] + '/closeStudio',
 		type:  'post',
 		dataType:  'json',
 		data: {},
 		success:  function (response) {
-			
-			if(response.hasOwnProperty('error')) { 
+
+			if(response.hasOwnProperty('error')) {
 				console.log(response.error);
-				return; 
+				return;
 			}
-			
+
 			document.getElementById('music-bar').pause();
 			document.getElementById('music-bar').muted = true;
 

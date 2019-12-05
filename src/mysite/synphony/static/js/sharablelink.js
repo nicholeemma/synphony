@@ -1,4 +1,4 @@
-
+// Deals with sharable link
 function copySharableLink() {
   /* Get the text field */
   var copyText = document.getElementById("sharablelink");

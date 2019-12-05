@@ -1,3 +1,4 @@
+// View history page content change when pressing different buttons
 function viewStudio() {
     document.getElementById("studio").style.visibility = "visible";
     document.getElementById("comment").style.visibility = "hidden";

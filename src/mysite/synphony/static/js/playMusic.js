@@ -1,4 +1,4 @@
-// not used for now. Included in App.js
+// not used for now.
 
 function playMusic(val) {
     var audio = document.getElementById('music-bar');
@@ -17,7 +17,7 @@ function playMusic(val) {
 //     var musicList = ["/skins/skin/bj/audio/1.mp3","/skins/skin/bj/audio/1.mp3"]
 //     playMusic(musicList);
 // }
- 
+
 function play_all(musicList){
   // location.reload()
   // var musicList=document.getElementsByClassName("musicurl")
@@ -46,7 +46,7 @@ function play_all(musicList){
     document.getElementById("musicaudio").appendChild(myAudio);
     //将循环播放关闭，如果开启，将不能触发playEndedHandler方法，只能进行单曲循环
     myAudio.loop = false;
- 
+
     function playEndedHandler(){
         src = musicurllist.pop();
         myAudio.src = src;

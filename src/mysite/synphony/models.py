@@ -17,38 +17,22 @@ class Music(models.Model):
     def __str__(self):
         return self.name
 
-# The goal is to record the liked music of a certain user
-# We should implement abstract user, liked_music should be an attribute of it, as we don't know to do that
-# For now, we just extend the user here
-
-
-# class Syner(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-
-# class Playlist(models.Model):
-
-#     name = models.CharField(max_length=30)
-#     music = models.ManyToManyField(Music)
-#     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-#     created_on = models.DateTimeField(auto_now_add=True)
-
 
 class Studio(models.Model):
 
     name = models.CharField(max_length=30)
-    # participants = models.ManyToManyField(Participant)
     music = models.ManyToManyField(Music)
     # record whether the studio is active or not
     status = models.BooleanField(default=True)
     # constraint will be set in form.py cannot be larger than 10
     headcount = models.IntegerField(default=10)
     # field_for_sharablelink
-    link = models.CharField(max_length = 16)
+    link = models.CharField(max_length=16)
     host = models.ForeignKey(User, on_delete=models.CASCADE)
-    start_time = models.DateTimeField(default=datetime.now()-timedelta(hours=5))
-    end_time = models.DateTimeField(default=datetime.now()-timedelta(hours=3))
-    # playlist = models.OneToOneField(Playlist, on_delete=models.CASCADE)
+    start_time = models.DateTimeField(default=datetime.now() - timedelta(hours=5))
+    end_time = models.DateTimeField(default=datetime.now() - timedelta(hours=3))
+    # end_time is not used for now. In P2 , when VIP users customize studio lifetime, it will come into use.
+    # Right now, lifetime for each studio is defaulted to 2 hours.
 
 
 class Participant(models.Model):
@@ -56,8 +40,6 @@ class Participant(models.Model):
     participant_user = models.ForeignKey(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=11, default='participant')
     studio = models.ForeignKey(Studio, on_delete=models.CASCADE)
-
-# class Playlist(models.Model):
 
 
 class Comment(models.Model):
@@ -67,7 +49,7 @@ class Comment(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     commented_on = models.ForeignKey(Studio, on_delete=models.CASCADE)
 
-
+# This model is not used for now.
 class History(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
