@@ -1,3 +1,5 @@
+
+/*Additional css for base.html */
 .to_right {
     width: 0;
     height: 0;
@@ -8,19 +10,19 @@
 
 .main-btn:link {
   color:white;
- 
+
   }
   .main-btn:visited {
   color:white;
- 
+
   }
   .main-btn:hover {
   color:white;
- 
+
   }
   .main-btn:active {
   color:#FFFFFF;
-  
+
   }
 .theme {
   margin-top: 11%;
@@ -28,7 +30,7 @@
   display: inline-block;
     vertical-align: middle;
     transform: translateZ(0);
-    
+
     backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
     transition-duration: 0.3s;
@@ -103,12 +105,12 @@ a:active {
     list-style-type: none;
     margin: 0;
     padding: 0;
-   
+
   }
 
   .navbar {
     float: right;
-   
+
   }
 
   li a {
@@ -132,7 +134,7 @@ a:active {
             /* Footer height */
   }
 
- 
+
   title{
     font-family: 'Source Sans Pro', sans-serif;
   }
@@ -241,4 +243,3 @@ a:active {
     font-weight: bold;
     cursor: pointer;
   }
- 

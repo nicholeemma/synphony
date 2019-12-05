@@ -1,3 +1,4 @@
+// web socket js for playlist
 var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
 var webSocket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + '/ws/playlist' + window.location.pathname);
 
@@ -27,7 +28,7 @@ function process_host(){
         var json_obj = JSON.parse(Get(url));
         var musicUrl = json_obj["data"][0]["url"];
 
-        //get song info
+        //get song info, example
             //["Hello", " by: 王霏霏（Fei）/ 王嘉尔  Add"]
             // 0: "Hello"
             // 1: " by: 王霏霏（Fei）/ 王嘉尔  Add"
@@ -148,7 +149,7 @@ function process_participant(){
     }
 }
 
-
+//get http response
 function Get(yourUrl){
     var Httpreq = new XMLHttpRequest(); // a new request
     Httpreq.open("GET",yourUrl,false);

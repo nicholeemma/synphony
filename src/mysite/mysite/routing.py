@@ -1,4 +1,7 @@
+'''
+Route websocket router to Synphony
 
+'''
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 import synphony.routing

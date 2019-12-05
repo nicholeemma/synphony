@@ -6,7 +6,6 @@ import random
 import json
 import sys
 from django.shortcuts import redirect
-# from django.http import HttpResponse
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from .models import Studio, Music, Participant, Comment, History
@@ -24,17 +23,18 @@ from django.contrib import messages
 
 # sys.stdout.reconfigure(encoding='utf-8')
 
+'''Studio page'''
+
 
 @login_required
 def index(request, key=""):
 
     ctx = dict()
+    # check is studio exists, if user is host, and active or not
     try:
         cur_studio = Studio.objects.get(link__exact=key)
         ctx['isHost'] = (cur_studio.host.id == request.user.id)
         ctx['isActive'] = (cur_studio.status is True)
-        # print(ctx['isHost'])
-        # print(ctx['isActive'])
     except:
         print("Studio does not exist!")
         return redirect(reverse('home'))
@@ -47,10 +47,12 @@ def index(request, key=""):
         music_list_des.append(s_music.description)
     musics = Music.objects.filter(id__in=music_list)
 
+    #  if user search songs
     list = []
     if request.method == 'POST' and 'song-name-submit' in request.POST:
         list = displaySongList(request)
 
+    # count down studio time
     cur_studio = Studio.objects.get(link__exact=key)
     startTime = Studio.objects.filter(link=key).values('start_time')
     endTime = Studio.objects.filter(link=key).values('end_time')
@@ -63,12 +65,13 @@ def index(request, key=""):
         format = "%b %d %Y %H:%M:%S"
         st = datetime.datetime.strftime(timea, format)
         en = datetime.datetime.strftime(timeb, format)
-    # comments = Comment.objects.all()
     ctx.update({"musics": musics, "list": list, "user": request.user,
                 'key_json': mark_safe(json.dumps(key)), "studio": cur_studio, "startTime": mark_safe(json.dumps(st)), "endTime": mark_safe(json.dumps(en))})
     # check / add new user as participants of this studio
     addParticipants(ctx['user'], cur_studio)
     return render(request, 'synphony/index.html', ctx)
+
+# add participants when new participants firstly joins a studio
 
 
 def addParticipants(user, studio):
@@ -80,6 +83,9 @@ def addParticipants(user, studio):
     if not hasUser:
         participant = Participant(participant_user=user, studio=studio)
         participant.save()
+
+
+'''Sign up / Log in '''
 
 
 def signup(request):
@@ -129,18 +135,22 @@ def user_login(request):
             return render(request, 'synphony/login.html', context)
 
 
+def user_logout(request):
+    logout(request)
+    return render(request, 'synphony/logout.html')
+
+
+'''Home page '''
+
+
 def home_page(request):
-    # if('synphony' not in request.path):
-    #   return redirect('/synphony')
     if request.user.is_authenticated:
         return render(request, 'synphony/homepage.html')
     else:
         return redirect(reverse('login'))
 
 
-def user_logout(request):
-    logout(request)
-    return render(request, 'synphony/logout.html')
+'''Create studio '''
 
 
 @login_required
@@ -182,6 +192,9 @@ def studio_view(request):
     return render(request, 'synphony/create_studio.html', context)
 
 
+'''View history: Studio, Comments, Liked Songs'''
+
+
 @login_required
 def view_history(request):
     comments = Comment.objects.filter(user_name=request.user)
@@ -201,6 +214,9 @@ def view_history(request):
     return render(request, "synphony/view_history.html", context)
 
 
+'''Search songs and returns a list'''
+
+
 def displaySongList(request):
     print(request.path)
 
@@ -209,8 +225,8 @@ def displaySongList(request):
     # search songs using third-party API of Netease Music
     # use song title to call api
 
-    URL = "https://netmusicapi.herokuapp.com/search?keywords=" + title
-    # URL = "http://localhost:3000/search?keywords=" + title
+    URL = "https://netmusicapi.herokuapp.com/search?keywords=" + title  # deployed netease API
+    # URL = "http://localhost:3000/search?keywords=" + title #localhost netease API
 
     r = requests.get(url=URL)
     print(r.encoding)
@@ -218,15 +234,8 @@ def displaySongList(request):
 
     print(r)
     data = r.json()
-    # data
-    # data = sdata, "utf-8", errors="ignore")
 
     print(data)
-    # if not found -> API will return the following
-    # {"result":{"songCount":0},"code":200}
-
-    # process json -> dic list of Songs to be displayed to client
-    # i.e. name, id, author
     list = []
     for i in data['result']['songs']:
         dic = {}

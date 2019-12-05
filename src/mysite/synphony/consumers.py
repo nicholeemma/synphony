@@ -7,6 +7,8 @@ from .forms import MusicForm
 from django.contrib.auth.models import User
 import json
 
+'''Web socket for music sync'''
+
 
 class SyncConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -55,6 +57,9 @@ class SyncConsumer(AsyncWebsocketConsumer):
             'msg_type': msg_type,
             'msg_content': msg_content
         }))
+
+
+'''Web socket for playlist'''
 
 
 class PlaylistConsumer(AsyncWebsocketConsumer):
@@ -134,6 +139,9 @@ class PlaylistConsumer(AsyncWebsocketConsumer):
             'msg_type': msg_type,
             'msg_content': msg_content
         }))
+
+
+'''Web socket for Comments'''
 
 
 class StudioConsumer(AsyncWebsocketConsumer):
