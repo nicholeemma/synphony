@@ -60,15 +60,15 @@
 
     <br>
     {% if not isHost and isActive  %}
-    <button type="button" class="btn btn-dark my-2" style="border-radius: 50%;" id="start-btn" onclick=start_playing(this)>Start</button>
+    <button type="button" class="btn btn-dark" style="border-radius: 50%;" id="start-btn" onclick=start_playing(this)>Start</button>
     {% elif isActive%}
-    <button type="button" class="btn btn-dark my-2" style="border-radius: 50%;" id="close-btn" onclick=close_studio(this)>Close</button>
+    <button type="button" class="btn btn-dark" style="border-radius: 50%;" id="close-btn" onclick=close_studio(this)>Close</button>
     {% endif %}
 
     {% if isHost and isActive %}
-    <button type="button" class="btn btn-dark my-2" style="border-radius: 50%;" id="playall-btn" value="loop" onclick="play_all(this.value)">Play
+    <button type="button" class="btn btn-dark" style="border-radius: 50%;" id="playall-btn" value="loop" onclick="play_all(this.value)">Play
         all</button>
-    <button type="button" class="btn btn-dark my-2" style="border-radius: 50%;" id="playall-btn" value="shuffle"
+    <button type="button" class="btn btn-dark" style="border-radius: 50%;" id="playall-btn" value="shuffle"
         onclick="play_all(this.value)">Shuffle all</button>
     {% endif %}
 
