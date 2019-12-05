@@ -20,7 +20,7 @@ function copySharableLink() {
 
 
 function openStudio(){
-   var url = $("#sharablelink").val();
+   var url =  $("#sharablelink").val();
    console.log(url);
    window.open(url);
 }
