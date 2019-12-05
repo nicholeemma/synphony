@@ -72,8 +72,12 @@ def index(request, key=""):
 
 
 def addParticipants(user, studio):
-    user_list = Participant.objects.filter(studio=studio)
-    if user not in user_list:
+    participant_records = Participant.objects.filter(studio=studio)
+    hasUser = False
+    for participant_record in participant_records:
+        if user == participant_record.participant_user:
+            hasUser = True
+    if not hasUser:
         participant = Participant(participant_user=user, studio=studio)
         participant.save()
 
@@ -183,7 +187,6 @@ def view_history(request):
     comments = Comment.objects.filter(user_name=request.user)
     studios = Studio.objects.filter(host=request.user)
     participated_records = Participant.objects.filter(participant_user=request.user)
-    print(studios)
     musics = request.user.music_set.all()
     hasStudio = (len(studios) >= 1)
     hasParticipation = (len(participated_records) >= 1)
