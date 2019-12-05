@@ -33,7 +33,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost"]
 
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
-'social_core.backends.google.GoogleOAuth2',)
+                           'social_core.backends.google.GoogleOAuth2',)
 # Application definition
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '526948702908-4hmckai19k3so4jm2uc4hi2jaaj0bj8b.apps.googleusercontent.com'
@@ -50,10 +50,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social_django',
-    # 'django_react_templatetags',
-    # for react
-    # 'rest_framework',
-    # 'webpack_loader',
 ]
 
 MIDDLEWARE = [
@@ -72,15 +68,12 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
-        # for react
-        # 'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                # 'django_react_templatetags.context_processors.react_context_processor',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -95,7 +88,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-			#"hosts": [('127.0.0.1', 6379)],
+            #"hosts": [('127.0.0.1', 6379)],
             "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],  # redis configured at port 6379
         },
     },
@@ -107,11 +100,11 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['DBNAME_SYN'], 
-		'HOST': os.environ['DBHOST_SYN'], 
-		'USER': os.environ['DBUSER_SYN'], 
-		'PASSWORD': os.environ['DBPASS_SYN'], 
-		'OPTIONS': { 'sslmode':'require' }
+        'NAME': os.environ['DBNAME_SYN'],
+        'HOST': os.environ['DBHOST_SYN'],
+        'USER': os.environ['DBUSER_SYN'],
+        'PASSWORD': os.environ['DBPASS_SYN'],
+        'OPTIONS': {'sslmode': 'require'}
     }
 }
 
