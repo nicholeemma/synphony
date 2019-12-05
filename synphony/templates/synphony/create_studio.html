@@ -1,22 +1,71 @@
 {% extends 'synphony/base.html' %}
+{% block extrajs %}
+{% load static %}
+<script src="{% static 'js/sharablelink.js' %}"></script>
+{% endblock extrajs%}
 {% block title %}Create a studio{% endblock title %}
 {% load static %}
 {% block main %}
-<style type="text/css">
+<!-- <style type="text/css">
     body {
         background-image: url('{% static "media/homepage.jpg" %}');
         background-repeat: no-repeat;
         background-size: 1450px 690px;
     }
-</style>
+</style> -->
+{% if hasStudio %}
+<div class="container pt-5">
 
 <form method="POST"> {% csrf_token %}
-    <div class="container pt-5">
+
+  <b>  Go to Your Existing Active Studio </b>
+  <hr>
+    <br>
+        {% for studio in studios %}
+        <button class="btn btn-dark" name="jumpstudio" type="submit" value= "{{studio.link}}">
+                <a name="activestudio" id="activestudio" value= "{{studio.link}}">
+                    {{studio.link}}
+                </a>
+        </button>
+        {% endfor %}
+    <br>
+    <br>
+    <br>
+<br>
+{% for studio in studios %}
+  <b>  Share Your Studio Link </b>
+  <hr>
+    <br>
+    <!-- The text field -->
+    <input type="text" value="{{studio.link}}" id="sharablelink" readonly>
+
+    <!-- The button used to copy the text -->
+    <button class="btn btn-dark" onclick="copySharableLink()">Copy link</button>
+    <br>
+    <br>
+    <br>
+     {% endfor %}
+</form>
+</div>
+{% endif %}
+{% if not hasStudio %}
+
+<div class="container pt-5">
+<form method="POST"> {% csrf_token %}
+
         <label class="app-label">Enter Studio name: </label>{{form.name}}<br>
         <hr>
-        <input type="submit" class="btn btn-dark" value="Create">
-    </div>
+        <input type="submit" class="btn btn-dark" name ="createstudio"value="Create">
+
+    <br>
+    <p>
+        <b>
+        {{error}}
+        </b>
+    </p>
 
 </form>
+</div>
+{% endif %}
 <!-- <iframe src="https://giphy.com/embed/VnIoecjQ3caw8" width="300" height="300" frameBorder="20" class="giphy-embed"></iframe> -->
 {% endblock %}

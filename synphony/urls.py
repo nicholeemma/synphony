@@ -16,10 +16,9 @@ urlpatterns = [
     re_path(r'synphony/logout', views.user_logout, name='logout'),
     re_path(r'synphony/studio', views.studio_view, name='studio'),
     re_path(r'synphony/home', views.home_page, name='home'),
-	url("^", views.home_page, name='home'),
-
+	# url("^", views.home_page, name='home'),
     re_path(r'view_history', views.view_history, name='view_history'),
-
+    re_path(r'.*', views.home_page, name='home'),
 ]
 
 if settings.DEBUG:

@@ -54,7 +54,7 @@ class Studio(models.Model):
 class Participant(models.Model):
 
     participant_user = models.ForeignKey(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=10, default='participant')
+    role = models.CharField(max_length=11, default='participant')
     studio = models.ForeignKey(Studio, on_delete=models.CASCADE)
 
 # class Playlist(models.Model):

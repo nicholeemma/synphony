@@ -13,27 +13,29 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+import sys
 
-
-#sys.stdout.reconfigure(encoding='utf-8')
+# sys.stdout.reconfigure(encoding='utf-8')
 
 @login_required
 def index(request, key=""):
 
 	ctx = dict()
-
 	try:
 		cur_studio = Studio.objects.get(link__exact=key)
-		if not cur_studio.status:
-			return redirect(reverse('home'))
 		ctx['isHost'] = (cur_studio.host.id == request.user.id)
+		ctx['isActive'] = (cur_studio.status is True)
+		# print(ctx['isHost'])
+		# print(ctx['isActive'])
 	except:
 		print("Studio does not exist!")
 		return redirect(reverse('home'))
 
 	music_list, music_list_des = [], []
+	music_url_list =[]
 	for s_music in cur_studio.music.all():
 		music_list.append(s_music.id)
+		music_url_list.append(s_music.url)
 		music_list_des.append(s_music.description)
 	musics = Music.objects.filter(id__in=music_list)
 
@@ -41,25 +43,20 @@ def index(request, key=""):
 	if request.method == 'POST' and 'song-name-submit' in request.POST:
 		list = displaySongList(request)
 
+	cur_studio = Studio.objects.get(link__exact=key)
 	# comments = Comment.objects.all()
 	ctx.update({"musics": musics, "list": list, "user": request.user,
-		   'key_json': mark_safe(json.dumps(key))})
+		   'key_json': mark_safe(json.dumps(key)), "studio": cur_studio})
+	# check / add new user as participants of this studio
+	addParticipants(ctx['user'], cur_studio)
 	return render(request, 'synphony/index.html', ctx)
 
-# def signup(request):
-#   if request.method == 'POST':
-#       form = UserCreationForm(request.POST)
-#       if form.is_valid():
-#           form.save()
-#           username = request.POST.get('username')
-#           password = request.POST.get('password')
-#           user = authenticate(username=username, password=password)
-#           login(request, user)
-#           return redirect('index')
-#   else:
-#       form = UserCreationForm()
-#   context = {'form': form}
-#   return render(request, 'synphony/signup.html', context)
+
+def addParticipants(user, studio):
+	user_list = Participant.objects.filter(studio = studio)
+	if user not in user_list:
+		participant = Participant(participant_user=user, studio=studio)
+		participant.save()
 
 
 def signup(request):
@@ -79,7 +76,6 @@ def signup(request):
 		form = UserCreationForm()
 	context = {'form': form}
 	return render(request, 'synphony/signup.html', context)
-
 
 
 def user_login(request):
@@ -110,13 +106,13 @@ def user_login(request):
 			return render(request, 'synphony/login.html', context)
 
 
-
 def home_page(request):
+	# if('synphony' not in request.path):
+	# 	return redirect('/synphony')
 	if request.user.is_authenticated:
 		return render(request, 'synphony/homepage.html')
 	else:
 		return redirect(reverse('login'))
-
 
 
 def user_logout(request):
@@ -126,45 +122,70 @@ def user_logout(request):
 
 @login_required
 def studio_view(request):
-
+    error = ""
+    studios = Studio.objects.filter(host=request.user,status=True)
+    hasStudio = (len(studios)>=1)
     if request.method == 'POST':
-        form = CreateStudioForm(request.POST)
-        if form.is_valid():
-            hashcode = (str(form.cleaned_data) + str(random.random())).encode('utf-8')
-            link = hashlib.md5(hashcode).hexdigest()[:16]
-            newStudio = Studio(
-                name=form.cleaned_data['name'],
-                link=link,
-                host=request.user
-            )
-            newStudio.save()
-            # newStudio.music.add(*(list(form.cleaned_data['music'])))
+		# Check exisiting studio
+
+        if "jumpstudio" in request.POST:
+            # link = request.POST["activestudio"]
+            link=request.POST.get('jumpstudio')
+            print(link)
             return redirect(reverse('index', args=[link]))
+        if "createstudio" in request.POST and len(studios)>=1:
+            form = CreateStudioForm()
+            error = "You can only one active studio, go to history find your active studio"
+            print("you can only have one")
+        else:
+            form = CreateStudioForm(request.POST)
+            if form.is_valid():
+                hashcode = (str(form.cleaned_data) + str(random.random())).encode('utf-8')
+                link = hashlib.md5(hashcode).hexdigest()[:16]
+                newStudio = Studio(
+					name=form.cleaned_data['name'],
+					link=link,
+					host=request.user
+				)
+                newStudio.save()
+				# newStudio.music.add(*(list(form.cleaned_data['music'])))
+                return redirect(reverse('index', args=[link]))
     else:
         form = CreateStudioForm()
-    context = {'form': form}
+
+    context = {'form': form,'error':error,'studios':studios,'hasStudio':hasStudio}
     return render(request, 'synphony/create_studio.html', context)
 
 
+@login_required
 def view_history(request):
     comments = Comment.objects.filter(user_name=request.user)
-
     studios = Studio.objects.filter(host=request.user)
+    print(studios)
     musics = request.user.music_set.all()
-    return render(request, "synphony/view_history.html", {"comments": comments, "studios": studios, "musics": musics})
-
+    hasStudio = (len(studios)>=1)
+    hasComment = (len(comments)>=1)
+    hasMusic = (len(musics)>=1)
+    if request.method == "POST":
+        if "jumpstudio" in request.POST:
+            link=request.POST.get('jumpstudio')
+            print(link)
+            return redirect(reverse('index', args=[link]))
+    context = {"comments": comments, "studios": studios, "musics": musics,"hasStudio":hasStudio, "hasComment":hasComment, "hasMusic":hasMusic}
+    return render(request, "synphony/view_history.html", context)
 
 
 def displaySongList(request):
 	print(request.path)
 
-# Commented out since search API unusable
 	title = request.POST.get('song-name')
-	# TODO currently, only search songs by title
+	# only search songs by title
 	# search songs using third-party API of Netease Music
 	# use song title to call api
+
 	URL = "https://netmusicapi.herokuapp.com/search?keywords=" + title
 	# URL = "http://localhost:3000/search?keywords=" + title
+
 	r = requests.get(url=URL)
 	print(r.encoding)
 	print(r.headers['content-type'])
@@ -190,57 +211,8 @@ def displaySongList(request):
 			dic['ar'] += j['name'] + "/ "
 		dic['ar'] = dic['ar'][0: -2]  # remove last "/ "
 		list.append(dic)
-	# list = []
-	# dic_1 = {}
-	# dic_1['name'] = '近く远い斜め色の空'
-	# dic_1['ar'] = 'DDBY'
-	# dic_1['id'] = '715681'
-	# list.append(dic_1)
-	# dic_2 = {}
-	# dic_2['name'] = '淡々泡々'
-	# dic_2['ar'] = 'Foxtail-Grass Studio'
-	# dic_2['id'] = '27669786'
-	# list.append(dic_2)
-	# dic_3 = {}
-	# dic_3['name'] = 'ティコ'
-	# dic_3['ar'] = '押尾コータロー'
-	# dic_3['id'] = '22822613'
-	# list.append(dic_3)
-	# dic_4 = {}
-	# dic_4['name'] = '信仰は存活の為に~Give Me Full of Your Tears'
-	# dic_4['ar'] = '九条咲夜'
-	# dic_4['id'] = '252479'
-	# list.append(dic_4)
+
 	return list
-
-
-# display the playlist for an active studio
-def showStudio(request):
-	pass
-
-# add a song to the playlist for an active studio
-
-# # commented out -> has migrated to websockets
-# def addSongsToStudio(request, key=""):
-# 	# print(request.POST)
-# 	rsp = dict()
-
-# 	try:
-# 		studio = Studio.objects.get(link__exact=key)
-# 	except:
-# 		rsp['error'] = "Studio not found!"
-# 		return JsonResponse(rsp)
-
-# 	music_form = MusicForm(request.POST)
-# 	if(music_form.is_valid()):
-# 		music = music_form.save()
-# 		studio.music.add(music)
-# 		rsp['music'] = model_to_dict(music)
-# 	else:
-# 		rsp['error'] = "form not valid!"
-# 		print(music_form.errors)
-# 		print("forms not valid!")
-# 	return JsonResponse(rsp)
 
 
 # commented out -> has migrated to websockets
@@ -300,7 +272,6 @@ def likeSongsFromPlayList(request, key=""):
 		music.liked_user.add(request.user)
 
 	return JsonResponse(rsp)
-
 
 
 def closeStudio(request, key=""):
