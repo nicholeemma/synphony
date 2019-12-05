@@ -11,14 +11,15 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.join(BASE_DIR, 'synphony')
 
 LOGIN_URL = "/synphony/login"
-LOGIN_REDIRECT_URL = 'synphony/index.html'
-LOGOUT_REDIRECT_URL = 'synphony/login.html'
+LOGIN_REDIRECT_URL = '/synphony/login'
+LOGOUT_REDIRECT_URL = '/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -31,8 +32,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost"]
 
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
+'social_core.backends.google.GoogleOAuth2',)
 # Application definition
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '526948702908-4hmckai19k3so4jm2uc4hi2jaaj0bj8b.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'pQ1jqtyxizG0zP_msnln0zKE'
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 INSTALLED_APPS = [
     'channels',
@@ -43,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     # 'django_react_templatetags',
     # for react
     # 'rest_framework',
@@ -88,7 +95,8 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],  # redis configured at port 6379
+			#"hosts": [('127.0.0.1', 6379)],
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],  # redis configured at port 6379
         },
     },
 }
@@ -98,8 +106,12 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['DBNAME_SYN'], 
+		'HOST': os.environ['DBHOST_SYN'], 
+		'USER': os.environ['DBUSER_SYN'], 
+		'PASSWORD': os.environ['DBPASS_SYN'], 
+		'OPTIONS': { 'sslmode':'require' }
     }
 }
 
@@ -144,3 +156,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Configure Django App for Heroku.
+django_heroku.settings(locals())

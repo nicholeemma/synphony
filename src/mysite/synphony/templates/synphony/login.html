@@ -5,13 +5,14 @@
 {% block loginnav %}
 {% endblock %}
 
-<style type="text/css">
+<!--<style type="text/css">
     body {
         background-image: url('{% static "media/login.jpg" %}');
         background-repeat: no-repeat;
         background-size: 1450px 690px;
     }
-</style>
+</style>-->
+
 <div class="container pt-3">
     <div class="row justify-content-sm-center">
         <div class="card border-info text-center">
@@ -28,7 +29,11 @@
                     {% if errors %}
                     <div class="alert alert-warning" role="alert"><b>{{errors}}</b></div>
                     {% endif %}
-                    <h7>Don't have an account yet? <a href="{% url 'signup' %}" class="alert-link "> Sign up.</a></h7>
+                    <h7>Don't have an account yet? <a href="{% url 'signup' %}" class="alert-link "> Sign up.</a></h7><br><br>
+                    <span class="badge badge-light">Login with</span>
+                    <a href="{% url 'social:begin' 'google-oauth2' %}">
+                       <img src = "{% static 'media/gmail.jpg' %}" height="50em" width="100em" alt="Gmail">
+                      </a>
                 </div>
             </form>
         </div>
