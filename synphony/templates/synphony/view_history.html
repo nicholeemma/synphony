@@ -40,10 +40,11 @@
             <th style="width: 15%;">START_TIME</th>
 
         </tr>
+        <!-- studio as a host -->
             {% for studio in studios %}
             <tr>
             <td> {{studio.name}}</td>
-            <td> {{studio.status}}</td>
+            <td> {%if studio.status %}Active{% else %}Closed{% endif %}</td>
 
             <form method="POST">
 
@@ -56,11 +57,38 @@
 
         </tr>
             {% endfor %}
+        </table>
+          {% endif %}
 
+        {% if hasParticipation %}
+        <table>
+         <tr>
+            <th style="width: 15%;">PARTICIPATION</th>
+            <th style="width: 15%;"> </th>
+            <th style="width: 15%;"> </th>
+            <th style="width: 15%;"> </th>
+        </tr>
+        <!-- studio as a participant -->
+         {% for participated_record in participated_records %}
+            <tr>
+            <td> {{participated_record.studio.name}}</td>
+            <td> {%if participated_record.studio.status %}Active{% else %}Closed{% endif %}</td>
+
+            <form method="POST">
+
+            <td>  {% csrf_token %} <button class="btn btn-dark" name="jumpstudio" type="submit" value= "{{participated_record.studio.link}}">
+                <a name="activestudio" id="activestudio" value="{{studio.link}}">{{participated_record.studio.link}}</a>
+            </button>
+            </td>
+            </form>
+            <td> {{participated_record.studio.start_time}}</td>
+
+        </tr>
+            {% endfor %}
         </table>
         {% endif %}
-        {% if not hasStudio %}
-        <p><b> No studio is created for now</b></p>
+        {% if not hasStudio and not hasParticipation %}
+        <p><b> No studio is created or participated for now</b></p>
         {% endif %}
         </div>
 

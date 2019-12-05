@@ -60,15 +60,15 @@
 
     <br>
     {% if not isHost and isActive  %}
-    <button type="button" class="btn btn-dark my-2" style="border-radius: 50%;" id="start-btn" onclick=start_playing(this)>Start</button>
+    <button type="button" class="btn btn-dark" style="border-radius: 50%;" id="start-btn" onclick=start_playing(this)>Start</button>
     {% elif isActive%}
-    <button type="button" class="btn btn-dark my-2" style="border-radius: 50%;" id="close-btn" onclick=close_studio(this)>Close</button>
+    <button type="button" class="btn btn-dark" style="border-radius: 50%;" id="close-btn" onclick=close_studio(this)>Close</button>
     {% endif %}
 
     {% if isHost and isActive %}
-    <button type="button" class="btn btn-dark my-2" style="border-radius: 50%;" id="playall-btn" value="loop" onclick="play_all(this.value)">Play
+    <button type="button" class="btn btn-dark" style="border-radius: 50%;" id="playall-btn" value="loop" onclick="play_all(this.value)">Play
         all</button>
-    <button type="button" class="btn btn-dark my-2" style="border-radius: 50%;" id="playall-btn" value="shuffle"
+    <button type="button" class="btn btn-dark" style="border-radius: 50%;" id="playall-btn" value="shuffle"
         onclick="play_all(this.value)">Shuffle all</button>
     {% endif %}
 
@@ -128,11 +128,9 @@
     <b> Comment box </b>
     <hr>
     <br>
-    <textarea id="commentinput" style="width: 100%;" name="commentinput">
-    </textarea>
+    <textarea id="commentinput" style="width: 100%;" name="commentinput"></textarea>
     <br>
-    <div id="commentcontent" style="width: 100%; overflow-y: scroll;">
-    </div>
+    <div id="commentcontent" style="width: 100%; overflow-y: scroll;"></div>
     <button class="btn btn-dark" id="postComment" name="postComment" style="width: 100%;">post</button>
 </div>
 </div>
