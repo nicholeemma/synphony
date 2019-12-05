@@ -65,7 +65,9 @@ function process_host(){
         var msg_type = data['msg_type'];
         var msg_content = data['msg_content']
 
-        if (msg_type === 'add_song' && !('error' in msg_content )){
+        if ('error' in msg_content) {
+            alert("Error: " + msg_content['error']);
+		} else if (msg_type === 'add_song'){
         }
     }
 }

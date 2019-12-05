@@ -6,3 +6,4 @@ channels_redis
 requests
 gunicorn
 python-social-auth[django]
+social-auth-app-django
