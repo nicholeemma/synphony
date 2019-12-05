@@ -2,7 +2,8 @@
 function copySharableLink() {
   /* Get the text field */
   var copyText = document.getElementById("sharablelink");
-  copyText.value = window.location.host  + "/" + window.location.pathname.split("/")[1] + "/" + copyText.value;
+  var oldText = copyText.value;
+  copyText.value = window.location.protocol + '//' + window.location.host  + "/" + window.location.pathname.split("/")[1] + "/" + copyText.value;
 
   /* Select the text field */
   copyText.select();
@@ -13,6 +14,8 @@ function copySharableLink() {
 
   /* Alert the copied text */
   alert("Copied the text: " + copyText.value);
+
+  copyText.value = oldText;
 }
 
 
