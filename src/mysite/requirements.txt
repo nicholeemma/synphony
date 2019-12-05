@@ -1,0 +1,7 @@
+django==2.2.7
+psycopg2
+django-heroku
+channels
+channels_redis
+requests
+gunicorn

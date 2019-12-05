@@ -1,4 +1,4 @@
-from django.conf.urls import include
+from django.conf.urls import include, url
 from django.urls import path
 from django.contrib import admin
 from django.views.static import serve
@@ -7,7 +7,8 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('synphony/', include('synphony.urls')),
+	url(r'^', include('synphony.urls')),
+    # path('synphony/', include('synphony.urls')),
     path('admin/', admin.site.urls),
 ]
 

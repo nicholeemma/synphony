@@ -1,4 +1,5 @@
-var webSocket = new WebSocket('ws://' + window.location.host + '/ws/playlist' + window.location.pathname);
+var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+var webSocket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + '/ws/playlist' + window.location.pathname);
 
 $(function () {
     console.log("playlist.js loaded!");

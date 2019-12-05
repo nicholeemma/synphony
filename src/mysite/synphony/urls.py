@@ -6,15 +6,17 @@ from django.conf.urls import url
 from django.conf.urls.static import static
 
 urlpatterns = [
-    url("^(?P<key>[a-f0-9]{16})$", views.index, name="index"),
+    url("^synphony/(?P<key>[a-f0-9]{16})$", views.index, name="index"),
     # url("^(?P<key>[a-f0-9]{16})/addSongs$", views.addSongsToStudio, name="addSongs"),
-    url("^(?P<key>[a-f0-9]{16})/deleteSongs$", views.deleteSongsFromPlayList, name="deleteSongs"),
-    url("^(?P<key>[a-f0-9]{16})/likeSongs$", views.likeSongsFromPlayList, name="likeSongs"),
-    re_path(r'signup', views.signup, name='signup'),
-    re_path(r'login', views.user_login, name='login'),
-    re_path(r'logout', views.user_logout, name='logout'),
-    re_path(r'studio', views.studio_view, name='studio'),
-    re_path(r'home', views.home_page, name='home'),
+    url("^synphony/(?P<key>[a-f0-9]{16})/deleteSongs$", views.deleteSongsFromPlayList, name="deleteSongs"),
+    url("^synphony/(?P<key>[a-f0-9]{16})/likeSongs$", views.likeSongsFromPlayList, name="likeSongs"),
+	url("^synphony/(?P<key>[a-f0-9]{16})/closeStudio$", views.closeStudio, name="closeStudio"),
+    re_path(r'synphony/signup', views.signup, name='signup'),
+    re_path(r'synphony/login', views.user_login, name='login'),
+    re_path(r'synphony/logout', views.user_logout, name='logout'),
+    re_path(r'synphony/studio', views.studio_view, name='studio'),
+    re_path(r'synphony/home', views.home_page, name='home'),
+	url("^", views.home_page, name='home'),
 
     re_path(r'view_history', views.view_history, name='view_history'),
 

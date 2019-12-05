@@ -24,6 +24,8 @@ def index(request, key=""):
 
 	try:
 		cur_studio = Studio.objects.get(link__exact=key)
+		if not cur_studio.status:
+			return redirect(reverse('home'))
 		ctx['isHost'] = (cur_studio.host.id == request.user.id)
 	except:
 		print("Studio does not exist!")
@@ -113,7 +115,7 @@ def home_page(request):
 	if request.user.is_authenticated:
 		return render(request, 'synphony/homepage.html')
 	else:
-		return render(request, 'synphony/login.html')
+		return redirect(reverse('login'))
 
 
 
@@ -161,7 +163,8 @@ def displaySongList(request):
 	# TODO currently, only search songs by title
 	# search songs using third-party API of Netease Music
 	# use song title to call api
-	URL = "http://localhost:3000/search?keywords=" + title
+	URL = "https://netmusicapi.herokuapp.com/search?keywords=" + title
+	# URL = "http://localhost:3000/search?keywords=" + title
 	r = requests.get(url=URL)
 	print(r.encoding)
 	print(r.headers['content-type'])
@@ -295,5 +298,30 @@ def likeSongsFromPlayList(request, key=""):
 	except:
 		# Like music
 		music.liked_user.add(request.user)
+
+	return JsonResponse(rsp)
+
+
+
+def closeStudio(request, key=""):
+
+	rsp = dict()
+
+	# check login status
+	if not request.user.is_authenticated:
+		rsp['error'] = "Please login to close studio!"
+		return JsonResponse(rsp)
+
+	# check if studio exists
+	try:
+		cur_studio = Studio.objects.get(link__exact=key)
+		if not cur_studio.status:
+			rsp['error'] = "Studio already closed!"
+			return JsonResponse(rsp)
+		cur_studio.status = False
+		cur_studio.save()
+	except:
+		rsp['error'] = "Studio not found!"
+		return JsonResponse(rsp)
 
 	return JsonResponse(rsp)
